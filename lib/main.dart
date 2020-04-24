@@ -1,7 +1,7 @@
 import 'package:ecohub_app/services/auth.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MyApp(authState: AuthStatus.NOT_LOGGED_IN));
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -30,17 +30,6 @@ class _MyAppState extends State<MyApp>{
   AuthStatus authState;
   BaseAuth auth;
   String userId;
-  //Widget _currentPage =
-
-
-  _toProfile(String userId){
-    setState(() {
-      //_currentPage = Profile();
-      this.userId = userId;
-      authState = AuthStatus.LOGGED_IN;
-    });
-  }
-
 
 
   @override
@@ -67,37 +56,22 @@ class _MyAppState extends State<MyApp>{
   }
 }
 
-class Login extends StatefulWidget {
+class Login extends StatelessWidget {
   const Login({
     Key key,
-    this.authState,
     this.auth,
 //    @required this.toProfile,
-    this.myapp,
+    @required this.myapp,
   }) : super(key: key);
 
 //  final void Function() toProfile;
-  final AuthStatus authState;
   final BaseAuth auth;
   final _MyAppState myapp;
 
-
-  @override
-  _LoginState createState() => _LoginState();
-}
-
-class _LoginState extends State<Login> {
-
-  AuthStatus authState;
-  BaseAuth auth;
-  _MyAppState myapp;
-
   void _login() async {
-    String userId = await widget.auth.signIn("amelachuri@gmail.com", "password");
-    setState(() {
-      authState = AuthStatus.LOGGED_IN;
-    });
-    myapp.setState((){myapp.userId = userId;myapp.authState = AuthStatus.LOGGED_IN;});
+    String userId = await auth.signIn("amelachuri@gmail.com", "password");
+
+    this.myapp.setState((){myapp.userId = userId;myapp.authState = AuthStatus.LOGGED_IN;});
     print("$userId");
   }
 
