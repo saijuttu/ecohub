@@ -41,10 +41,11 @@ class _MyHomePageState extends State<MyHomePage> {
     TextEditingController passwordController = new TextEditingController();
 
     return Scaffold
-      ( backgroundColor: Color.fromRGBO(44, 47, 51, 1),
-      body: Center
+      (
+      backgroundColor: Color.fromRGBO(44, 47, 51, 1),
+      body: Padding
         (
-
+        padding: EdgeInsets.symmetric(horizontal: 50.0),
         child: Column
           (
           mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.blueAccent,
+                    color: Colors.white,
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -67,13 +68,13 @@ class _MyHomePageState extends State<MyHomePage> {
                 hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
 
             TextField(textAlign: TextAlign.center,controller: passwordController,style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.blueAccent,
+                    color: Colors.white,
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
@@ -81,13 +82,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
 
             RaisedButton(color: Color.fromRGBO(42, 222, 42, 1),
               onPressed: () {},
               child: const Text('Login', style: TextStyle(fontSize: 20, color: Colors.white))
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
           ],
         ),
       ),
