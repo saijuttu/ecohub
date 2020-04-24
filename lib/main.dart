@@ -18,8 +18,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
-
 class Wrapper extends StatefulWidget {
   const Wrapper({
     Key key,
@@ -50,7 +48,9 @@ class _WrapperState extends State<Wrapper> {
               child: FlatButton(
                 onPressed: () async {
                   String userId = await widget.auth.signIn("amelachuri@gmail.com", "password");
-                  this.authState= AuthStatus.LOGGED_IN;
+                  setState(() {
+                    this.authState = AuthStatus.LOGGED_IN;
+                  });
                   print("$userId");
                 },
                 child: Text(
