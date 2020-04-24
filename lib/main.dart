@@ -1,79 +1,140 @@
+import 'package:ecohub_app/services/auth.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
+enum AuthStatus {
+  NOT_DETERMINED,
+  NOT_LOGGED_IN,
+  LOGGED_IN,
+}
+
 class MyApp extends StatefulWidget {
+  const MyApp({
+    Key key,
+    this.authState,
+    this.auth,
+    this.userId,
+  }) : super(key: key);
+
+  final AuthStatus authState;
+  final BaseAuth auth;
+  final String userId;
+
   // This widget is the root of your application.
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp>{
-  Widget _currentPage = MyHomePage(title: 'Demo Home Page');
+  AuthStatus authState;
+  BaseAuth auth;
+  String userId;
+  //Widget _currentPage =
 
-  void _changePage(Widget _newPage){
+
+  _toProfile(String userId){
     setState(() {
-      _currentPage = _newPage;
+      //_currentPage = Profile();
+      this.userId = userId;
+      authState = AuthStatus.LOGGED_IN;
     });
   }
+
+
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: _currentPage,
-    );
+    print(this.authState);
+    if(this.authState!= AuthStatus.LOGGED_IN) {
+      return MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: new Login(auth: Auth(), myapp: this),
+      );
+    }
+    else{
+      return MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: new Profile(userId: this.userId),
+      );
+    }
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
+class Login extends StatefulWidget {
+  const Login({
+    Key key,
+    this.authState,
+    this.auth,
+//    @required this.toProfile,
+    this.myapp,
+  }) : super(key: key);
+
+//  final void Function() toProfile;
+  final AuthStatus authState;
+  final BaseAuth auth;
+  final _MyAppState myapp;
+
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _LoginState createState() => _LoginState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _LoginState extends State<Login> {
 
-  void _incrementCounter() {
+  AuthStatus authState;
+  BaseAuth auth;
+  _MyAppState myapp;
+
+  void _login() async {
+    String userId = await widget.auth.signIn("amelachuri@gmail.com", "password");
     setState(() {
-      _counter++;
+      authState = AuthStatus.LOGGED_IN;
     });
+    myapp.setState((){myapp.userId = userId;myapp.authState = AuthStatus.LOGGED_IN;});
+    print("$userId");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+        appBar: AppBar(
+          title: Text('Eco-Hub'),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        body: Center(
+            child: FlatButton(
+              onPressed: () async {
+                _login();
+              },
+              child: Text(
+                "Log In",
+              ),
+            )
+        )
+    )
+    ;
+  }
+}
+
+class Profile extends StatelessWidget {
+  final String userId;
+  const Profile({
+    Key key,
+    this.userId,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      "$userId",
     );
   }
 }
+
 
