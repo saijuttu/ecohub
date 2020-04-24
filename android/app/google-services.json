@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "86589670969",
+    "firebase_url": "https://ecohubfirebase.firebaseio.com",
+    "project_id": "ecohubfirebase",
+    "storage_bucket": "ecohubfirebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:86589670969:android:7e18369af4977f98a3afe8",
+        "android_client_info": {
+          "package_name": "ecohub.ecohub_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "86589670969-d5hdvrbj0u17096fble581bh6kkhdoen.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcvBvgqLr8dO5B3iLdcdNgPmA4nZ5__WQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "86589670969-d5hdvrbj0u17096fble581bh6kkhdoen.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
