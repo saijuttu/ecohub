@@ -137,7 +137,7 @@ class Login extends StatefulWidget {
         myapp.userId = userId;
         myapp.authState = AuthStatus.LOGGED_IN;
       });
-      this.myapp.changePage(PageType.PROFILE);
+      this.myapp.changePage(PageType.DASHBOARD);
     }else{
       print("Failed to login");
     }

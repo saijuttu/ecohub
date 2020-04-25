@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:ecohub_app/feed.dart';
 import 'package:ecohub_app/profile.dart';
 
-class MyApp extends StatelessWidget {
+class Dashboard extends StatelessWidget {
+  final String userId;
+  const Dashboard({
+    Key key,
+    this.userId
+  }): super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,7 +27,7 @@ class MyApp extends StatelessWidget {
           ),
           body: TabBarView(
             children: <Widget>[
-              new Profile(),
+              new Profile(userId: userId),
               new Feed()
             ],
           ),

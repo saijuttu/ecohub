@@ -2,6 +2,7 @@ import 'package:ecohub_app/services/auth.dart';
 import 'package:ecohub_app/register.dart';
 import 'package:ecohub_app/login.dart';
 import 'package:ecohub_app/profile.dart';
+import 'package:ecohub_app/dashboard.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -16,6 +17,7 @@ enum PageType{
   LOGIN,
   PROFILE,
   REGISTER,
+  DASHBOARD,
 }
 
 class MyApp extends StatefulWidget {
@@ -61,6 +63,10 @@ class MyAppState extends State<MyApp>{
       break;
       case PageType.REGISTER:{
         home = Register(auth: Auth(), myapp: this);
+      }
+      break;
+      case PageType.DASHBOARD:{
+        home = Dashboard(userId: userId);
       }
       break;
     }
