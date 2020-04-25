@@ -1,35 +1,30 @@
 import 'package:ecohub_app/services/auth.dart';
-import 'package:ecohub_app/main.dart';
 import 'package:flutter/material.dart';
+
+import 'main.dart';
 
 class Profile extends StatelessWidget {
   final String userId;
-  final MyAppState myapp;
   final String username;
   final String imageURL;
   final int score;
   final String email;
+  final MyAppState myapp;
   const Profile({Key key,
     this.userId,
     this.username,
     this.imageURL,
     this.score,
-    this.email
+    this.email,
     @required this.myapp,
-  }) : super(key: key);
-
-
-  @override
-  ProfileState createState() => ProfileState();
-}
-
-class ProfileState extends State<Profile> {
-  final formKey= GlobalKey<FormState>();
-  void _submit(){
-
+  }
+      ): super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController emailController = new TextEditingController();
+    TextEditingController passwordController = new TextEditingController();
+
     return Scaffold(
       body: Container(
           child: ListView(
@@ -49,7 +44,7 @@ class ProfileState extends State<Profile> {
                                   image: new DecorationImage(
                                       fit: BoxFit.fill,
                                       image: new NetworkImage(
-                                         imageURL)
+                                          imageURL)
                                   )
                               )),
                         ],
@@ -123,4 +118,3 @@ class ProfileState extends State<Profile> {
 
   }
 }
-
