@@ -8,6 +8,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ecohub_app/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Register extends StatefulWidget {
   Register({Key key, this.title, this.auth, this.myapp}) : super(key: key);
@@ -135,6 +136,8 @@ class _RegisterState extends State<Register> {
                     }else{
                       print("Success");
                       widget.myapp.changePage(PageType.LOGIN);
+                      Firestore.instance.collection('profiles').document(userId)
+                          .setData({ 'username': usernameController.text, 'organizer' : false, 'score' :0, 'pic' : "" });
                     }
                   },
                   child: const Text('Register', style: TextStyle(fontSize: 20, color: Colors.white))
