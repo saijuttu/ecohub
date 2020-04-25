@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import './profile.dart' as profile;
-import './feed.dart' as feed;
+import 'package:ecohub_app/feed.dart';
+import 'package:ecohub_app/profile.dart';
 
 class MyApp extends StatelessWidget {
   @override
@@ -21,8 +21,8 @@ class MyApp extends StatelessWidget {
           ),
           body: TabBarView(
             children: <Widget>[
-              new profile.Profile(),
-              new feed.Feed()
+              new Profile(),
+              new Feed()
             ],
           ),
         ),

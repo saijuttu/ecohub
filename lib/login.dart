@@ -4,6 +4,8 @@ import 'package:ecohub_app/main.dart';
 
 
 class _LoginState extends State<Login> {
+
+
   String emessage = "";
   @override
   Widget build(BuildContext context) {
@@ -97,6 +99,12 @@ class _LoginState extends State<Login> {
                 },
                 child: const Text('Login', style: TextStyle(fontSize: 20, color: Colors.white))
             ),
+            RaisedButton(color: Color.fromRGBO(42, 222, 42, 1),
+                onPressed: (){
+                    widget._toRegister();
+                },
+                child: const Text('Register', style: TextStyle(fontSize: 20, color: Colors.white))
+            ),
             SizedBox(height: 20),
             Text("$emessage")
           ],
@@ -123,7 +131,6 @@ class Login extends StatefulWidget {
   final MyAppState myapp;
   final String title;
 
-
   void _login(String email, String password) async {
     String userId = await auth.signIn(email.trim(), password.trim());
     if(userId.length > 0) {
@@ -137,5 +144,7 @@ class Login extends StatefulWidget {
     }
   }
 
-
+  void _toRegister(){
+    this.myapp.changePage(PageType.REGISTER);
+  }
 }
