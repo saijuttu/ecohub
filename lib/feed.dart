@@ -7,13 +7,14 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
-  int itemCount = 6;
+  int itemCount = 2;
 
   Widget BlogList(){
     return Container(
       child: Column(
         children: <Widget>[
         ListView.builder(
+          padding: EdgeInsets.symmetric(horizontal:16),
           itemCount: itemCount,
           shrinkWrap: true,
           itemBuilder:(context,index){
@@ -36,7 +37,7 @@ class _FeedState extends State<Feed> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlogList(),
-      backgroundColor: Colors.greenAccent,
+      backgroundColor: Colors.black87,
 
 
     );
@@ -60,13 +61,16 @@ class BlogsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-
+      margin: EdgeInsets.only(bottom: 16),
       height: 150,
-
       child: Stack(children: <Widget>[
         ClipRRect(
           borderRadius: BorderRadius.circular(6),
-          child: Image.network(imgUrl)),
+          child: Image.network(
+              'https://cdn.pixabay.com/photo/2016/10/22/17/46/scotland-1761292_960_720.jpg',
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.cover)
+        ),
         Container(
           height: 150,
           decoration: BoxDecoration(
@@ -76,14 +80,28 @@ class BlogsTile extends StatelessWidget {
 
           ),
 
-        Container(child: Column(children: <Widget>[
-          Text(title),
-
-
-          Text(hours),
-
-          Text(location),
-        ])
+        Container(
+          width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Text(title,
+                      style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w500)
+                      ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text(hours,
+                      style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400)
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text(location,
+                      style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400)
+                  ),
+            ])
         )
       ],),
     );
