@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ecohub_app/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Register extends StatefulWidget {
   Register({Key key, this.title, this.auth, this.myapp}) : super(key: key);
@@ -138,6 +139,8 @@ class _RegisterState extends State<Register> {
                       widget.myapp.changePage(PageType.LOGIN);
                       Firestore.instance.collection('profiles').document(userId)
                           .setData({ 'username': usernameController.text, 'organizer' : false, 'score' :0, 'pic' : "" });
+                      Uploader uploader = Uploader(userId: userId, file: await _image);
+                      uploader.startupUpload();
                     }
                   },
                   child: const Text('Register', style: TextStyle(fontSize: 20, color: Colors.white))
@@ -156,3 +159,35 @@ class _RegisterState extends State<Register> {
     );
   }
 }
+
+class Uploader extends StatefulWidget{
+  final String userId;
+  final File file;
+
+  Uploader({Key key, this.userId, this.file}) : super(key: key);
+
+  final FirebaseStorage storage = FirebaseStorage(storageBucket: "gs://ecohubfirebase.appspot.com");
+
+  StorageUploadTask uploadTask;
+
+  void startupUpload(){
+    String filepath = 'images/$userId';
+    uploadTask = storage.ref().child(filepath).putFile(file);
+    if(uploadTask.isSuccessful){
+      print("Sucessful upload");
+    }
+
+  }
+
+  createState() => UploaderState();
+}
+
+class UploaderState extends State<Uploader>{
+
+
+  @override
+  Widget build(BuildContext context){
+
+  }
+}
+

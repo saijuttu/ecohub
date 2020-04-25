@@ -4,6 +4,8 @@ import 'package:ecohub_app/login.dart';
 import 'package:ecohub_app/profile.dart';
 import 'package:ecohub_app/dashboard.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main() => runApp(MyApp());
 
@@ -44,6 +46,10 @@ class MyAppState extends State<MyApp>{
   BaseAuth auth;
   String userId;
   PageType currentPage;
+  String username = "user.name";
+  String imageUrl = "https://firebasestorage.googleapis.com/v0/b/ecohubfirebase.appspot.com/o/IMG_1734.JPG?alt=media&token=84aa8a1a-cc71-4bee-a798-a8dfdd57bfcb";
+  int score = 0;
+  String email = "email@email.com";
 
   void changePage(PageType newPage){
     setState(() {
@@ -53,20 +59,37 @@ class MyAppState extends State<MyApp>{
 
   @override
   Widget build(BuildContext context) {
+
+
+
     Widget home = new Login(auth: Auth(), myapp: this, title: "LOGIN", );
     switch(this.currentPage){
       case PageType.LOGIN: {}
       break;
       case PageType.PROFILE:{
-        home = Profile(userId: this.userId);
+        Firestore.instance.collection('profiles').document(userId).get().then((string) {
+          setState(() {
+            username = string.data['username'];
+            score = string.data['score'];
+          });
+        });
+        home = Profile(userId: this.userId, username: this.username, imageURL: this.imageUrl, score: this.score,email: this.email);
       }
       break;
       case PageType.REGISTER:{
+
         home = Register(auth: Auth(), myapp: this);
       }
       break;
       case PageType.DASHBOARD:{
-        home = Dashboard(userId: userId);
+        Firestore.instance.collection('profiles').document(userId).get().then((string) {
+          setState(() {
+            username = string.data['username'];
+            score = string.data['score'];
+          });
+        });
+
+        home = Dashboard(userId: this.userId, username: this.username, imageURL: this.imageUrl, score: this.score,email: this.email);
       }
       break;
     }

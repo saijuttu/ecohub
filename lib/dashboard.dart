@@ -4,9 +4,17 @@ import 'package:ecohub_app/profile.dart';
 
 class Dashboard extends StatelessWidget {
   final String userId;
+  final String username;
+  final String imageURL;
+  final int score;
+  final String email;
   const Dashboard({
     Key key,
-    this.userId
+    this.userId,
+    this.username,
+    this.imageURL,
+    this.score,
+    this.email,
   }): super(key: key);
 
   @override
@@ -27,7 +35,7 @@ class Dashboard extends StatelessWidget {
           ),
           body: TabBarView(
             children: <Widget>[
-              new Profile(userId: userId),
+              new Profile(userId: this.userId, username: this.username, imageURL: this.imageURL, score: this.score,email: this.email),
               new Feed()
             ],
           ),

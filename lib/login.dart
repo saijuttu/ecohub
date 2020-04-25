@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ecohub_app/services/auth.dart';
 import 'package:ecohub_app/main.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 
 class _LoginState extends State<Login> {
@@ -114,7 +115,6 @@ class _LoginState extends State<Login> {
   }
 }
 
-
 class Login extends StatefulWidget {
   @override
   _LoginState createState() => _LoginState();
@@ -133,15 +133,22 @@ class Login extends StatefulWidget {
   void _login(String email, String password) async {
     String userId = await auth.signIn(email.trim(), password.trim());
     if(userId.length > 0) {
+      StorageReference ref = FirebaseStorage.instance.ref().child("images/$userId");
+      String url = (await ref.getDownloadURL()).toString();
+      String email = (await auth.getCurrentUser()).email;
       this.myapp.setState(() {
         myapp.userId = userId;
         myapp.authState = AuthStatus.LOGGED_IN;
+        myapp.email = email;
+        this.myapp.imageUrl = url;
       });
       this.myapp.changePage(PageType.DASHBOARD);
     }else{
       print("Failed to login");
     }
   }
+
+
 
   void _toRegister(){
     this.myapp.changePage(PageType.REGISTER);
