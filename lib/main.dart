@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
           ),
           body: TabBarView(
             children: <Widget>[
-              new profile.Profile(),
-              new feed.Feed()
+              new feed.Feed(),
+              new profile.Profile()
             ],
           ),
         ),
