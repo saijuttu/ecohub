@@ -22,6 +22,9 @@ class Organize extends StatefulWidget {
       this.myapp.changePage(PageType.MAPS);
     }
 
+    void _cancel(){
+      this.myapp.changePage(PageType.ORGDASH);
+    }
   @override
   OrganizeState createState() => OrganizeState();
 
@@ -165,15 +168,20 @@ class OrganizeState extends State<Organize> {
                 Padding(padding: EdgeInsets.only(left: 31),
                   child: Align(
                     alignment: Alignment.bottomLeft,
-
                     child: FloatingActionButton(backgroundColor: Colors.red,
-                      child: Icon(Icons.delete),),
+                      child: Icon(Icons.cancel),
+                        onPressed: (){
+                          widget._cancel();
+                        }
+                    ),
                   ),),
 
                 Align(
                   alignment: Alignment.bottomRight,
                   child: FloatingActionButton(backgroundColor: Color.fromRGBO(42, 222, 42, 1),
                     child: Icon(Icons.check),
+                    //ADD FIRE BASE CODE HERE TO ADD TO DB
+
 
                     ),
 

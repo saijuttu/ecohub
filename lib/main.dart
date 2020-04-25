@@ -85,7 +85,9 @@ class MyAppState extends State<MyApp>{
 
     Widget home = new Login(auth: Auth(), myapp: this, title: "LOGIN", );
     switch(this.currentPage){
-      case PageType.LOGIN: {}
+      case PageType.LOGIN: {
+        home = Login(myapp:this);
+      }
       break;
       case PageType.PROFILE:{
         Firestore.instance.collection('profiles').document(userId).get().then((string) {
