@@ -7,12 +7,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ecohub_app/main.dart';
 
 class Register extends StatefulWidget {
-  Register({Key key, this.title, this.auth}) : super(key: key);
+  Register({Key key, this.title, this.auth, this.myapp}) : super(key: key);
 
   final Auth auth;
   final String title;
+  final MyAppState myapp;
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -132,7 +134,7 @@ class _RegisterState extends State<Register> {
                       print("Failure");
                     }else{
                       print("Success");
-
+                      widget.myapp.changePage(PageType.LOGIN);
                     }
                   },
                   child: const Text('Register', style: TextStyle(fontSize: 20, color: Colors.white))
