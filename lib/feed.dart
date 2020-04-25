@@ -8,50 +8,46 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
-  int itemCount = 3;
-  List<BlogsTile> tiles = [];
 
-  Future<String> addTiles() async {
-    setState(() {
-      Firestore.instance.collection("Locations")
-          .getDocuments()
-          .then((QuerySnapshot snapshot) {
-        snapshot.documents.forEach((f) => tiles.add(new BlogsTile(imgUrl: f.data['imageURL'],
-            title: f.data["Event Name"],
-            description: f.data["Description"],
-            date: "date",
-            hours: "${f.data["Hours"]}",
-            organizer: "organizer",
-            location: f.data["Location"])));
-        return 'success';
-      });
-    });
-
-  }
+  QuerySnapshot documents;
 
   void wait() async {
-    await addTiles();
-    print("Loaded Tiles");
-    print(tiles.length);
+    QuerySnapshot docs = await Firestore.instance.collection("Locations").getDocuments();
+    setState(() {
+      this.documents = docs;
+    });
   }
 
-  Widget BlogList(){
 
+  Widget BlogList(){
   wait();
 
     return Container(
       child: Column(
         children: <Widget>[
-        ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal:16, vertical: 16),
-          itemCount: tiles.length,
-          shrinkWrap: true,
-          itemBuilder:(context,index){
-            return tiles[index];
-          }
-        )],
+
+          Expanded(
+            child:ListView.builder(
+      padding: EdgeInsets.symmetric(horizontal:16, vertical: 16),
+        itemCount: documents.documents.length,
+        shrinkWrap: true,
+        itemBuilder:(context,index){
+          return  BlogsTile(
+              title: documents.documents[index].data["Event Name"],
+              imgUrl: documents.documents[index].data['imageURL'],
+              description: documents.documents[index].data["Description"],
+              date: "date",
+              hours: "${documents.documents[index].data["Hours"]} hours",
+              organizer: "organizer",
+              location: documents.documents[index].data["Location"]);
+        }
+    ),
+        )
+      ],
+
       )
     );
+
   }
 
   @override
@@ -82,9 +78,9 @@ class BlogsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return InkWell(
+    return GestureDetector(
         onTap: (){
-          print("tapped on");
+          print(title);
         },
       child: Container(
       margin: EdgeInsets.only(bottom: 16),
