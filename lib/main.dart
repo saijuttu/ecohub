@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp>{
   @override
   Widget build(BuildContext context) {
     print("authstate: $authState");
-    Widget home = new Login(auth: Auth(), myapp: this);
+    Widget home = new Login(auth: Auth(), myapp: this, title: "LOGIN");
     switch(this.currentPage){
       case Page.LOGIN:{}
       break;
@@ -67,17 +67,18 @@ class _MyAppState extends State<MyApp>{
   }
 }
 
+
 class Login extends StatelessWidget {
   const Login({
     Key key,
     this.auth,
-//    @required this.toProfile,
+    this.title,
     @required this.myapp,
   }) : super(key: key);
 
-//  final void Function() toProfile;
   final BaseAuth auth;
   final _MyAppState myapp;
+  final String title;
 
   void _login() async {
     String userId = await auth.signIn("amelachuri@gmail.com", "password");
@@ -92,22 +93,64 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Eco-Hub'),
-        ),
-        body: Center(
-            child: FlatButton(
+    TextEditingController emailController = new TextEditingController();
+    TextEditingController passwordController = new TextEditingController();
+
+    return Scaffold
+      (
+      backgroundColor: Color.fromRGBO(44, 47, 51, 1),
+      body: Padding
+        (
+        padding: EdgeInsets.symmetric(horizontal: 50.0),
+        child: Column
+          (
+          mainAxisAlignment: MainAxisAlignment.center,
+
+          children: <Widget>
+          [
+            Text('EcoHub',style: TextStyle(fontSize: 50,color: Color.fromRGBO(42, 222, 42, 1)),),
+            Text('____________________________',style: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),),
+            SizedBox(height: 100),
+
+            TextField(textAlign: TextAlign.center, controller: emailController, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                  hintText: 'Email',
+                hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
+              ),
+            ),
+            SizedBox(height: 20),
+
+            TextField(textAlign: TextAlign.center,controller: passwordController,style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                  hintText: 'Password',
+                  hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
+              ),
+            ),
+            SizedBox(height: 20),
+
+            RaisedButton(color: Color.fromRGBO(42, 222, 42, 1),
               onPressed: () async {
                 _login();
               },
-              child: Text(
-                "Log In",
-              ),
-            )
-        )
-    )
-    ;
+              child: const Text('Login', style: TextStyle(fontSize: 20, color: Colors.white))
+            ),
+            SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
   }
 }
 
