@@ -2,6 +2,7 @@ import 'package:ecohub_app/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecohub_app/eventView.dart';
 
+
 void main() => runApp(MyApp(authState: AuthStatus.NOT_LOGGED_IN));
 
 enum AuthStatus {
@@ -40,7 +41,7 @@ class MyAppState extends State<MyApp>{
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: new EventView(auth: Auth(), myapp: this),
+        home: new Submit(auth: Auth(), myapp: this),
       );
   }
 }
