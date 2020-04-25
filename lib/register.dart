@@ -1,39 +1,32 @@
 
+import 'package:flutter/material.dart';
+import 'package:ecohub_app/services/auth.dart';
+
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:ecohub_app/services/auth.dart';
-import 'package:flutter/material.dart';
-import 'main.dart';
+import 'package:ecohub_app/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Organize extends StatefulWidget {
-    final String userId;
-    final MyAppState myapp;
-    const Organize({
-    Key key,
-    this.userId,
-    @required this.myapp,
-    }) : super(key: key);
+class Register extends StatefulWidget {
+  Register({Key key, this.title, this.auth, this.myapp}) : super(key: key);
 
-    void _submit(){
-      this.myapp.changePage(PageType.MAPS);
-    }
+  final Auth auth;
+  final String title;
+  final MyAppState myapp;
 
   @override
-  OrganizeState createState() => OrganizeState();
+  _RegisterState createState() => _RegisterState();
 
 }
 
-class OrganizeState extends State<Organize> {
-
-
+class _RegisterState extends State<Register> {
   Future<File> _image;
 
   Future getImage() async{
-    Future<File> image = ImagePicker.pickImage(source: ImageSource.gallery);
+    Future<File> image = ImagePicker.pickImage(source: ImageSource.camera);
 
     setState(() {
       _image = image;
@@ -69,23 +62,15 @@ class OrganizeState extends State<Organize> {
     );
   }
 
-  bool keyboardOpen = false;
-  void initState() {
-    super.initState();
-    KeyboardVisibilityNotification().addNewListener(
-      onChange: (bool visible) {
-        setState(() => keyboardOpen = visible);
-      },
-    );
-  }
-
-
   @override
   Widget build(BuildContext context) {
+    TextEditingController emailController = new TextEditingController();
+    TextEditingController passwordController = new TextEditingController();
+    TextEditingController usernameController = new TextEditingController();
+
     return Scaffold
       (
       backgroundColor: Color.fromRGBO(44, 47, 51, 1),
-      //  backgroundColor: Colors.white,
       body: Padding
         (
         padding: EdgeInsets.symmetric(horizontal: 50.0),
@@ -102,7 +87,7 @@ class OrganizeState extends State<Organize> {
               showImage(),
 
               SizedBox(height: 75),
-              TextField(textAlign: TextAlign.center, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),keyboardType: TextInputType.number,
+              TextField(textAlign: TextAlign.center, controller: usernameController, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -110,28 +95,12 @@ class OrganizeState extends State<Organize> {
                     ),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  hintText: 'Hours',
+                  hintText: 'Username',
                   hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
                 ),
               ),
               SizedBox(height: 20),
-
-              FlatButton(
-                onPressed: () => {},
-                color: Colors.blue,
-                padding: EdgeInsets.all(10.0),
-                child: Column( // Replace with a Row for horizontal icon + text
-                  children: <Widget>[
-                    Icon(Icons.add),
-                    Text("Add Map Location")
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-
-              TextField(textAlign: TextAlign.center, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
-                keyboardType: TextInputType.multiline,
-                maxLines: 5,
+              TextField(textAlign: TextAlign.center, controller: emailController, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -139,11 +108,42 @@ class OrganizeState extends State<Organize> {
                     ),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  hintText: 'Description',
+                  hintText: 'Email',
                   hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
                 ),
               ),
               SizedBox(height: 20),
+
+              TextField(textAlign: TextAlign.center,controller: passwordController,style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  hintText: 'Password',
+                  hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
+                ),
+              ),
+              SizedBox(height: 20),
+
+              RaisedButton(color: Color.fromRGBO(42, 222, 42, 1),
+                  onPressed: () async {
+                    String userId = await widget.auth.signUp(emailController.text.trim(), passwordController.text.trim());
+                    if(userId==""){
+                      print("Failure");
+                    }else{
+                      print("Success");
+                      widget.myapp.changePage(PageType.LOGIN);
+                      Firestore.instance.collection('profiles').document(userId)
+                          .setData({ 'username': usernameController.text, 'organizer' : false, 'score' :0, 'pic' : "" });
+                    }
+                  },
+                  child: const Text('Register', style: TextStyle(fontSize: 20, color: Colors.white))
+              ),
+              SizedBox(height: 20),
+
             ],
           ),
         ),
@@ -153,35 +153,6 @@ class OrganizeState extends State<Organize> {
 //        tooltip: 'Pick Image',
 //        child: Icon(Icons.add_a_photo),
 //      ),
-
-        floatingActionButton:
-            keyboardOpen?SizedBox():
-        Stack(
-          children: <Widget>[
-
-                Padding(padding: EdgeInsets.only(left: 31),
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-
-                    child: FloatingActionButton(backgroundColor: Colors.red,
-                      child: Icon(Icons.delete),),
-                  ),),
-
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: FloatingActionButton(backgroundColor: Color.fromRGBO(42, 222, 42, 1),
-                    child: Icon(Icons.check),
-                    onPressed:(){
-                      print("update");
-                      widget._submit();
-                    }
-                    ),
-
-                ),
-
-          ],
-        )
     );
   }
 }
-

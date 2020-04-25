@@ -1,3 +1,4 @@
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,11 +9,15 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:permission/permission.dart';
 import 'package:location_permissions/location_permissions.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:ecohub_app/main.dart';
 class Maps extends StatefulWidget {
-  Maps({Key key, this.title}) : super(key: key);
-
-
-  final String title;
+  final String userId;
+  final MyAppState myapp;
+  const Maps({
+    Key key,
+    this.userId,
+    @required this.myapp,
+  }) : super(key: key);
 
   @override
   _MapsState createState() => _MapsState();
@@ -78,3 +83,4 @@ class _MapsState extends State<Maps> {
 
   }
 }
+
