@@ -39,7 +39,7 @@ class OrgDashState extends State<OrgDash> {
     return Stack(
         children: <Widget>[
           Container(
-          child: Column(
+            child: Column(
             children: <Widget>[
               Expanded(
                 child: ListView.builder(
@@ -62,6 +62,7 @@ class OrgDashState extends State<OrgDash> {
               )
             ],
           ),
+          ),
           Padding(padding: EdgeInsets.only(left: 31),
             child: Align(
               alignment: Alignment.bottomLeft,
@@ -76,7 +77,7 @@ class OrgDashState extends State<OrgDash> {
           Align(
             alignment: Alignment.bottomRight,
             child: FloatingActionButton(
-                child: const Icon(Icons.check),
+                child: const Icon(Icons.add),
                 onPressed:(){
                   print("update");
                   widget._submit();
@@ -84,9 +85,10 @@ class OrgDashState extends State<OrgDash> {
             ),
 
           ),
+
         ],
-      )
-    );
+
+      );
 
   }
 
@@ -117,8 +119,6 @@ class BlogsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
     return GestureDetector(
         onTap: (){
           print(title);
