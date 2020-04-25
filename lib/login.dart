@@ -142,7 +142,7 @@ class Login extends StatefulWidget {
         myapp.email = email;
         this.myapp.imageUrl = url;
       });
-      this.myapp.changePage(PageType.ORGDASH);
+      this.myapp.changePage(PageType.DASHBOARD);
     }else{
       print("Failed to login");
     }

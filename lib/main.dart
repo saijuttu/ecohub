@@ -89,10 +89,15 @@ class MyAppState extends State<MyApp>{
       break;
       case PageType.PROFILE:{
         Firestore.instance.collection('profiles').document(userId).get().then((string) {
+
           setState(() {
             username = string.data['username'];
             score = string.data['score'];
+            if(string.data['organizer']){
+              currentPage = PageType.ORGDASH;
+            }
           });
+
         });
         home = Profile(userId: this.userId, username: this.username, imageURL: this.imageUrl, score: this.score,email: this.email, myapp: this);
       }
@@ -104,10 +109,15 @@ class MyAppState extends State<MyApp>{
       break;
       case PageType.DASHBOARD:{
         Firestore.instance.collection('profiles').document(userId).get().then((string) {
+
           setState(() {
             username = string.data['username'];
             score = string.data['score'];
+            if(string.data['organizer']){
+              currentPage = PageType.ORGDASH;
+            }
           });
+
         });
 
         home = Dashboard(userId: this.userId, username: this.username, imageURL: this.imageUrl, score: this.score,email: this.email, myapp:this);
