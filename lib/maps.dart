@@ -2,13 +2,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ecohub_app/main.dart';
+import 'dart:typed_data';
 import 'package:geocoder/geocoder.dart';
 import 'package:flutter/services.dart';
-import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
-
+import 'package:image_picker_saver/image_picker_saver.dart';
 class Maps extends StatefulWidget {
   final String userId;
   final MyAppState myapp;
@@ -41,7 +41,7 @@ class _MapsState extends State<Maps> {
     });
   }
   void _getLocation() async {
-
+    takeScreenShot();
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -55,6 +55,19 @@ class _MapsState extends State<Maps> {
     print(middlePoint.latitude);
 
     getUserLocation(middlePoint);
+
+  }
+  double middleX()
+  {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double middleX = screenWidth / 2;
+    return middleX;
+  }
+  double middleY()
+  {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double middleY = screenHeight / 2;
+    return middleY;
   }
 
   void getUserLocation(LatLng ln) async {//call this async method from whereever you need
@@ -67,22 +80,53 @@ class _MapsState extends State<Maps> {
   }
 //  static GlobalKey previewContainer = new GlobalKey();
 //
-//  takeScreenShot() async{
-//    RenderRepaintBoundary boundary = previewContainer.currentContext.findRenderObject();
-//    ui.Image image = await boundary.toImage();
-//    final directory = (await getApplicationDocumentsDirectory()).path;
-//    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-//    Uint8List pngBytes = byteData.buffer.asUint8List();
-//    print(pngBytes);
-//    File imgFile =new File('$directory/screenshot.png');
-//    imgFile.writeAsBytes(pngBytes);
+  void takeScreenShot() async{
+
+    RenderRepaintBoundary boundary = screen.currentContext.findRenderObject();
+    ui.Image image = await boundary.toImage();
+    final directory = (await getApplicationDocumentsDirectory()).path;
+    ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    Uint8List pngBytes = byteData.buffer.asUint8List();
+
+    var filePath = await ImagePickerSaver.saveFile(
+        fileData: pngBytes);
+    print(filePath);
+   // var savedFile= File.fromUri(Uri.file(filePath));
+
+  }
+ // GlobalKey rootWidgetKey = GlobalKey();
+
+ // List<Uint8List> images = List();
+
+//  _capturePng() async {
+//    try {
+//      RenderRepaintBoundary boundary =
+//      rootWidgetKey.currentContext.findRenderObject();
+//      var image = await boundary.toImage(pixelRatio: 3.0);
+//      ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
+//      Uint8List pngBytes = byteData.buffer.asUint8List();
+//      images.add(pngBytes);
+//      setState(() {});
+//      return pngBytes;
+//    } catch (e) {
+//      print(e);
+//    }
+//    return null;
 //  }
+
+
+  static GlobalKey screen = new GlobalKey();
 
   @override
   Widget build(BuildContext context)
   {
 
-    return Stack(children: [
+    return new Scaffold(
+
+      body: RepaintBoundary(
+        key: screen,
+      child: Stack(
+        children: [
       GoogleMap(
         initialCameraPosition: CameraPosition(
             target: LatLng(24, -110),
@@ -95,17 +139,20 @@ class _MapsState extends State<Maps> {
       ),
 
       Positioned(
+
           bottom: 50,
-          right: 10,
+          left: 10,
           child:
           FlatButton
             (
             child: Icon(Icons.pin_drop, color: Colors.white),
             color: Colors.green,
-            onPressed: (){_getLocation();widget.backToOrganize();},
+            onPressed: (){_getLocation();},
           )
       )
-    ]);
+    ])
+      )
+    );
 
 
   }
