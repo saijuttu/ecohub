@@ -117,7 +117,10 @@ class OrganizeState extends State<Organize> {
               SizedBox(height: 20),
 
               FlatButton(
-                onPressed: () => {},
+                onPressed:(){
+                  print("update");
+                  widget._submit();
+                },
                 color: Colors.blue,
                 padding: EdgeInsets.all(10.0),
                 child: Column( // Replace with a Row for horizontal icon + text
@@ -171,10 +174,7 @@ class OrganizeState extends State<Organize> {
                   alignment: Alignment.bottomRight,
                   child: FloatingActionButton(backgroundColor: Color.fromRGBO(42, 222, 42, 1),
                     child: Icon(Icons.check),
-                    onPressed:(){
-                      print("update");
-                      widget._submit();
-                    }
+
                     ),
 
                 ),
