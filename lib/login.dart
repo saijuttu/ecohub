@@ -9,6 +9,12 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     TextEditingController emailController = new TextEditingController();
     TextEditingController passwordController = new TextEditingController();
+    bool invalid()
+    {
+      if(emessage!="")
+        return true;
+      return false;
+    }
 
     return Scaffold
       (
@@ -16,30 +22,58 @@ class _LoginState extends State<Login> {
       body: Padding
         (
         padding: EdgeInsets.symmetric(horizontal: 50.0),
+    child: SingleChildScrollView(
         child: Column
           (
           mainAxisAlignment: MainAxisAlignment.center,
 
           children: <Widget>
           [
+            SizedBox(height: 100),
             Text('EcoHub',style: TextStyle(fontSize: 50,color: Color.fromRGBO(42, 222, 42, 1)),),
             Text('____________________________',style: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),),
             SizedBox(height: 100),
 
+            invalid()?
             TextField(textAlign: TextAlign.center, controller: emailController, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.white,
+                    color: Colors.red,
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 hintText: 'Email',
                 hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
               ),
-            ),
+            ):
+        TextField(textAlign: TextAlign.center, controller: emailController, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
+      decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.white,
+          ),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        hintText: 'Email',
+        hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
+      ),
+    ),
             SizedBox(height: 20),
 
+            invalid()?
+            TextField(textAlign: TextAlign.center,controller: passwordController,style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.red,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                hintText: 'Password',
+                hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
+              ),
+            ):
             TextField(textAlign: TextAlign.center,controller: passwordController,style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
@@ -68,6 +102,7 @@ class _LoginState extends State<Login> {
           ],
         ),
       ),
+      )
     );
   }
 }
