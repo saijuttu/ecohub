@@ -1,6 +1,7 @@
 import 'package:ecohub_app/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ecohub_app/submit.dart';
+import 'package:ecohub_app/eventView.dart';
+
 
 void main() => runApp(MyApp(authState: AuthStatus.NOT_LOGGED_IN));
 
@@ -44,7 +45,3 @@ class MyAppState extends State<MyApp>{
       );
   }
 }
-
-
-
-
