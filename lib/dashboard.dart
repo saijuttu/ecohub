@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:ecohub_app/feed.dart';
 import 'package:ecohub_app/profile.dart';
+import 'package:ecohub_app/main.dart';
 
 class Dashboard extends StatelessWidget {
   final String userId;
+  final MyAppState myapp;
   final String username;
   final String imageURL;
   final int score;
@@ -15,6 +17,7 @@ class Dashboard extends StatelessWidget {
     this.imageURL,
     this.score,
     this.email,
+    @required this.myapp,
   }): super(key: key);
 
   @override

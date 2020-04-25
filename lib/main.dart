@@ -1,7 +1,11 @@
+import 'package:ecohub_app/maps.dart';
+import 'package:flutter/material.dart';
 import 'package:ecohub_app/services/auth.dart';
 import 'package:ecohub_app/register.dart';
 import 'package:ecohub_app/login.dart';
 import 'package:ecohub_app/profile.dart';
+import 'package:ecohub_app/orgdash.dart';
+import 'package:ecohub_app/organize.dart';
 import 'package:ecohub_app/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,6 +24,9 @@ enum PageType{
   PROFILE,
   REGISTER,
   DASHBOARD,
+  ORGANIZE,
+  ORGDASH,
+  MAPS,
 }
 
 Map<int, Color> color =
@@ -87,7 +94,7 @@ class MyAppState extends State<MyApp>{
             score = string.data['score'];
           });
         });
-        home = Profile(userId: this.userId, username: this.username, imageURL: this.imageUrl, score: this.score,email: this.email);
+        home = Profile(userId: this.userId, username: this.username, imageURL: this.imageUrl, score: this.score,email: this.email, myapp: this);
       }
       break;
       case PageType.REGISTER:{
@@ -103,7 +110,19 @@ class MyAppState extends State<MyApp>{
           });
         });
 
-        home = Dashboard(userId: this.userId, username: this.username, imageURL: this.imageUrl, score: this.score,email: this.email);
+        home = Dashboard(userId: this.userId, username: this.username, imageURL: this.imageUrl, score: this.score,email: this.email, myapp:this);
+      }
+      break;
+      case PageType.ORGDASH:{
+        home = OrgDash(userId: userId, myapp:this);
+      }
+      break;
+      case PageType.ORGANIZE:{
+        home = Organize(userId: userId, myapp:this);
+      }
+      break;
+      case PageType.MAPS:{
+        home = Maps(userId: userId, myapp:this);
       }
       break;
     }
