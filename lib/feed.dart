@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Feed extends StatefulWidget {
 
@@ -8,25 +9,45 @@ class Feed extends StatefulWidget {
 
 class _FeedState extends State<Feed> {
   int itemCount = 3;
+  List<BlogsTile> tiles = [];
+
+  Future<String> addTiles() async {
+    setState(() {
+      Firestore.instance.collection("Locations")
+          .getDocuments()
+          .then((QuerySnapshot snapshot) {
+        snapshot.documents.forEach((f) => tiles.add(new BlogsTile(imgUrl: f.data['imageURL'],
+            title: f.data["Event Name"],
+            description: f.data["Description"],
+            date: "date",
+            hours: "${f.data["Hours"]}",
+            organizer: "organizer",
+            location: f.data["Location"])));
+        return 'success';
+      });
+    });
+
+  }
+
+  void wait() async {
+    await addTiles();
+    print("Loaded Tiles");
+    print(tiles.length);
+  }
 
   Widget BlogList(){
+
+  wait();
+
     return Container(
       child: Column(
         children: <Widget>[
         ListView.builder(
           padding: EdgeInsets.symmetric(horizontal:16, vertical: 16),
-          itemCount: itemCount,
+          itemCount: tiles.length,
           shrinkWrap: true,
           itemBuilder:(context,index){
-            return BlogsTile(
-                imgUrl: "https://drive.google.com/open?id=1TQrjw3l8cdWlL6GXzpU8e58aNlxHG2E8",
-                title: "title",
-                description: "description",
-                date: "date",
-                hours: "hours",
-                organizer: "organizer",
-                location: "location"
-            );
+            return tiles[index];
           }
         )],
       )
@@ -72,7 +93,7 @@ class BlogsTile extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(6),
           child: Image.network(
-              'https://cdn.pixabay.com/photo/2016/10/22/17/46/scotland-1761292_960_720.jpg',
+              imgUrl,
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover)
         ),
