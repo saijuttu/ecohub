@@ -22,7 +22,7 @@ class _RegisterState extends State<Register> {
   Future<File> _image;
 
   Future getImage() async{
-    Future<File> image = ImagePicker.pickImage(source: ImageSource.gallery);
+    Future<File> image = ImagePicker.pickImage(source: ImageSource.camera);
 
     setState(() {
       _image = image;
