@@ -20,7 +20,6 @@ class MyApp extends StatelessWidget {
 
               tabs: [
                 Tab(icon: Icon(Icons.beach_access)),
-                Tab(icon: Icon(Icons.border_top)),
 
               ],
             ),

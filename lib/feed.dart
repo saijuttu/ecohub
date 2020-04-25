@@ -7,14 +7,14 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
-  int itemCount = 2;
+  int itemCount = 3;
 
   Widget BlogList(){
     return Container(
       child: Column(
         children: <Widget>[
         ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal:16),
+          padding: EdgeInsets.symmetric(horizontal:16, vertical: 16),
           itemCount: itemCount,
           shrinkWrap: true,
           itemBuilder:(context,index){
@@ -60,7 +60,12 @@ class BlogsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+
+    return InkWell(
+        onTap: (){
+          print("tapped on");
+        },
+      child: Container(
       margin: EdgeInsets.only(bottom: 16),
       height: 150,
       child: Stack(children: <Widget>[
@@ -102,8 +107,9 @@ class BlogsTile extends StatelessWidget {
                       style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400)
                   ),
             ])
-        )
-      ],),
+          )
+        ],),
+      )
     );
   }
 }
