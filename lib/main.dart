@@ -1,7 +1,7 @@
 import 'package:ecohub_app/services/auth.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp(authState: AuthStatus.NOT_LOGGED_IN, currentPage: Page.LOGIN,));
+void main() => runApp(MyApp());
 
 enum AuthStatus {
   NOT_DETERMINED,
@@ -47,8 +47,7 @@ class _MyAppState extends State<MyApp>{
 
   @override
   Widget build(BuildContext context) {
-    print("authstate: $authState");
-    Widget home = new Login(auth: Auth(), myapp: this, title: "LOGIN");
+    Widget home = new Login(auth: Auth(), myapp: this, title: "LOGIN", );
     switch(this.currentPage){
       case Page.LOGIN:{}
       break;
@@ -67,30 +66,8 @@ class _MyAppState extends State<MyApp>{
   }
 }
 
-
-class Login extends StatelessWidget {
-  const Login({
-    Key key,
-    this.auth,
-    this.title,
-    @required this.myapp,
-  }) : super(key: key);
-
-  final BaseAuth auth;
-  final _MyAppState myapp;
-  final String title;
-
-  void _login() async {
-    String userId = await auth.signIn("amelachuri@gmail.com", "password");
-
-    this.myapp.setState((){
-      myapp.userId = userId;
-      myapp.authState = AuthStatus.LOGGED_IN;
-    });
-    this.myapp.changePage(Page.PROFILE);
-    print("$userId");
-  }
-
+class _LoginState extends State<Login> {
+  String emessage = "";
   @override
   Widget build(BuildContext context) {
     TextEditingController emailController = new TextEditingController();
@@ -120,7 +97,7 @@ class Login extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                  hintText: 'Email',
+                hintText: 'Email',
                 hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
               ),
             ),
@@ -134,24 +111,61 @@ class Login extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                  hintText: 'Password',
-                  hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
+                hintText: 'Password',
+                hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
               ),
             ),
             SizedBox(height: 20),
 
             RaisedButton(color: Color.fromRGBO(42, 222, 42, 1),
-              onPressed: () async {
-                _login();
-              },
-              child: const Text('Login', style: TextStyle(fontSize: 20, color: Colors.white))
+                onPressed: () async {
+                  widget._login(emailController.text, passwordController.text);
+                  setState(() {
+                    emessage = "Invalid username or password";
+                  });
+                },
+                child: const Text('Login', style: TextStyle(fontSize: 20, color: Colors.white))
             ),
             SizedBox(height: 20),
+            Text("$emessage")
           ],
         ),
       ),
     );
   }
+}
+
+
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+
+  const Login({
+    Key key,
+    this.auth,
+    this.title,
+    @required this.myapp,
+  }) : super(key: key);
+
+  final BaseAuth auth;
+  final _MyAppState myapp;
+  final String title;
+
+
+  void _login(String email, String password) async {
+    String userId = await auth.signIn(email.trim(), password.trim());
+    if(userId.length > 0) {
+      this.myapp.setState(() {
+        myapp.userId = userId;
+        myapp.authState = AuthStatus.LOGGED_IN;
+      });
+      this.myapp.changePage(Page.PROFILE);
+    }else{
+      print("Failed to login");
+    }
+  }
+
+
 }
 
 class Profile extends StatelessWidget {
