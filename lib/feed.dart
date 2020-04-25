@@ -7,30 +7,35 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
-  int itemCount = 3;
+  int itemCount = 4;
 
   Widget BlogList(){
     return Container(
       child: Column(
         children: <Widget>[
-        ListView.builder(
-          padding: EdgeInsets.symmetric(horizontal:16, vertical: 16),
-          itemCount: itemCount,
-          shrinkWrap: true,
-          itemBuilder:(context,index){
-            return BlogsTile(
-                imgUrl: "https://drive.google.com/open?id=1TQrjw3l8cdWlL6GXzpU8e58aNlxHG2E8",
-                title: "title",
-                description: "description",
-                date: "date",
-                hours: "hours",
-                organizer: "organizer",
-                location: "location"
-            );
-          }
-        )],
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(horizontal:16, vertical: 16),
+              itemCount: itemCount,
+              shrinkWrap: true,
+              itemBuilder:(context,index){
+              return BlogsTile(
+                  imgUrl: "https://drive.google.com/open?id=1TQrjw3l8cdWlL6GXzpU8e58aNlxHG2E8",
+                  title: "title",
+                  description: "description",
+                  date: "date",
+                  hours: "hours",
+                  organizer: "organizer",
+                  location: "location"
+
+              );
+            }
+          ),
+        )
+      ],
       )
     );
+
   }
 
   @override
@@ -61,9 +66,9 @@ class BlogsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return InkWell(
+    return GestureDetector(
         onTap: (){
-          print("tapped on");
+          print(title);
         },
       child: Container(
       margin: EdgeInsets.only(bottom: 16),
