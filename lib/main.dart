@@ -60,7 +60,7 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.REGISTER:{
-        home = Register();
+        home = Register(auth: Auth(), myapp: this);
       }
       break;
     }

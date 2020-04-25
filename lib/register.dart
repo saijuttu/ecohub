@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:ecohub_app/services/auth.dart';
 
@@ -6,12 +7,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ecohub_app/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Register extends StatefulWidget {
-  Register({Key key, this.title}) : super(key: key);
+  Register({Key key, this.title, this.auth, this.myapp}) : super(key: key);
 
-
+  final Auth auth;
   final String title;
+  final MyAppState myapp;
 
   @override
   _RegisterState createState() => _RegisterState();
@@ -62,6 +66,7 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     TextEditingController emailController = new TextEditingController();
     TextEditingController passwordController = new TextEditingController();
+    TextEditingController usernameController = new TextEditingController();
 
     return Scaffold
       (
@@ -82,7 +87,7 @@ class _RegisterState extends State<Register> {
               showImage(),
 
               SizedBox(height: 75),
-              TextField(textAlign: TextAlign.center, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
+              TextField(textAlign: TextAlign.center, controller: usernameController, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -124,7 +129,17 @@ class _RegisterState extends State<Register> {
               SizedBox(height: 20),
 
               RaisedButton(color: Color.fromRGBO(42, 222, 42, 1),
-                  onPressed: () {},
+                  onPressed: () async {
+                    String userId = await widget.auth.signUp(emailController.text.trim(), passwordController.text.trim());
+                    if(userId==""){
+                      print("Failure");
+                    }else{
+                      print("Success");
+                      widget.myapp.changePage(PageType.LOGIN);
+                      Firestore.instance.collection('profiles').document(userId)
+                          .setData({ 'username': usernameController.text, 'organizer' : false, 'score' :0, 'pic' : "" });
+                    }
+                  },
                   child: const Text('Register', style: TextStyle(fontSize: 20, color: Colors.white))
               ),
               SizedBox(height: 20),
