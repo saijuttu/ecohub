@@ -2,8 +2,11 @@ import 'package:ecohub_app/services/auth.dart';
 import 'package:ecohub_app/register.dart';
 import 'package:ecohub_app/login.dart';
 import 'package:ecohub_app/profile.dart';
+import 'package:ecohub_app/orgdash.dart';
 import 'package:ecohub_app/dashboard.dart';
 import 'package:flutter/material.dart';
+import 'package:ecohub_app/organize.dart';
+import 'package:ecohub_app/maps.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,6 +21,9 @@ enum PageType{
   PROFILE,
   REGISTER,
   DASHBOARD,
+  ORGANIZE,
+  ORGDASH,
+  MAPS,
 }
 
 Map<int, Color> color =
@@ -72,7 +78,7 @@ class MyAppState extends State<MyApp>{
       case PageType.LOGIN: {}
       break;
       case PageType.PROFILE:{
-        home = Profile(userId: this.userId);
+        home = Profile(userId: this.userId, myapp:this);
       }
       break;
       case PageType.REGISTER:{
@@ -80,7 +86,19 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.DASHBOARD:{
-        home = Dashboard(userId: userId);
+        home = Dashboard(userId: userId, myapp: this);
+      }
+      break;
+      case PageType.ORGDASH:{
+        home = OrgDash(userId: userId, myapp:this);
+      }
+      break;
+      case PageType.ORGANIZE:{
+        home = Organize(userId: userId, myapp:this);
+      }
+      break;
+      case PageType.MAPS:{
+        home = Maps(userId: userId, myapp:this);
       }
       break;
     }

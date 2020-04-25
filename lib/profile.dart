@@ -1,11 +1,14 @@
 import 'package:ecohub_app/services/auth.dart';
+import 'package:ecohub_app/main.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
   final String userId;
+  final MyAppState myapp;
   const Profile({
     Key key,
     this.userId,
+    @required this.myapp,
   }) : super(key: key);
 
 
@@ -21,9 +24,6 @@ class ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = new TextEditingController();
-    TextEditingController passwordController = new TextEditingController();
-
     return Scaffold(
       body: Container(
               child: ListView(
