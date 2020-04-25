@@ -130,6 +130,7 @@ class EventView extends StatelessWidget {
               child: const Icon(Icons.cancel),
               onPressed: (){
                 print("Cancel");
+                //myapp.changePage(PageType.Feed)
               }
           ),
         ),
@@ -139,6 +140,7 @@ class EventView extends StatelessWidget {
               child: const Icon(Icons.check),
               onPressed: (){
                 print("Accepted");
+                //myapp.changePage(PageType.Submit, event_id)
               }
           ),
         ),

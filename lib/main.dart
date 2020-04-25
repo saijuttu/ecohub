@@ -41,7 +41,7 @@ class MyAppState extends State<MyApp>{
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: new Submit(auth: Auth(), myapp: this),
+        home: new EventView(auth: Auth(), myapp: this),
       );
   }
 }
