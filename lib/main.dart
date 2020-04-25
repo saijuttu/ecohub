@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './profile.dart' as profile;
 import './feed.dart' as feed;
+import './orgdash.dart' as orgdash;
 import 'feed.dart';
 
 void main() {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
-        length: 1,
+        length: 2,
         child: Scaffold(
           appBar: AppBar(
             title: Text('ecohub'),
@@ -20,13 +21,15 @@ class MyApp extends StatelessWidget {
 
               tabs: [
                 Tab(icon: Icon(Icons.beach_access)),
+                Tab(icon: Icon(Icons.account_balance),)
 
               ],
             ),
           ),
           body: new TabBarView(
             children: <Widget>[
-              new Feed()
+              new feed.Feed(),
+              new orgdash.OrgDash()
             ]
 
 //            children: [
