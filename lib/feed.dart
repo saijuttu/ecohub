@@ -7,7 +7,7 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
-  int itemCount = 10;
+  int itemCount = 6;
 
   Widget BlogList(){
     return Container(
@@ -36,7 +36,7 @@ class _FeedState extends State<Feed> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlogList(),
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.greenAccent,
 
 
     );
@@ -60,7 +60,9 @@ class BlogsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+
       height: 150,
+
       child: Stack(children: <Widget>[
         ClipRRect(
           borderRadius: BorderRadius.circular(6),
@@ -69,16 +71,17 @@ class BlogsTile extends StatelessWidget {
           height: 150,
           decoration: BoxDecoration(
               color: Colors.black45.withOpacity(0.3),
-              borderRadius: BorderRadius.circular(6)
+              borderRadius: BorderRadius.circular(15)
           ),
 
           ),
+
         Container(child: Column(children: <Widget>[
           Text(title),
-          Text(description),
-          Text(date),
+
+
           Text(hours),
-          Text(organizer),
+
           Text(location),
         ])
         )
