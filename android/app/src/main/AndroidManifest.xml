@@ -9,6 +9,7 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="ecohub_app"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="MAPS API KEY"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

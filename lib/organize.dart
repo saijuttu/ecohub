@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 class Organize extends StatefulWidget {
   Organize({Key key, this.title}) : super(key: key);
 
@@ -128,6 +129,12 @@ class _OrganizeState extends State<Organize> {
 
 
               SizedBox(height: 20),
+              GoogleMap(
+                initialCameraPosition: CameraPosition(
+                  target: LatLng(24,-110),
+                  zoom: 15
+                ),
+              )
 
             ],
           ),
@@ -138,6 +145,8 @@ class _OrganizeState extends State<Organize> {
 //        tooltip: 'Pick Image',
 //        child: Icon(Icons.add_a_photo),
 //      ),
+
+
 
         floatingActionButton:
             keyboardOpen?SizedBox():
