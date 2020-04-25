@@ -1,74 +1,106 @@
 import 'package:flutter/material.dart';
+import 'package:ecohub_app/services/auth.dart';
+import 'package:ecohub_app/main.dart';
 
-void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class _LoginState extends State<Login> {
+  String emessage = "";
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
+    TextEditingController emailController = new TextEditingController();
+    TextEditingController passwordController = new TextEditingController();
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-
-        title: Text(widget.title),
-      ),
-      body: Center(
-
-        child: Column(
-
+    return Scaffold
+      (
+      backgroundColor: Color.fromRGBO(44, 47, 51, 1),
+      body: Padding
+        (
+        padding: EdgeInsets.symmetric(horizontal: 50.0),
+        child: Column
+          (
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+
+          children: <Widget>
+          [
+            Text('EcoHub',style: TextStyle(fontSize: 50,color: Color.fromRGBO(42, 222, 42, 1)),),
+            Text('____________________________',style: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),),
+            SizedBox(height: 100),
+
+            TextField(textAlign: TextAlign.center, controller: emailController, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                hintText: 'Email',
+                hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+            SizedBox(height: 20),
+
+            TextField(textAlign: TextAlign.center,controller: passwordController,style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
+              decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.white,
+                  ),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                hintText: 'Password',
+                hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
+              ),
             ),
+            SizedBox(height: 20),
+
+            RaisedButton(color: Color.fromRGBO(42, 222, 42, 1),
+                onPressed: () async {
+                  widget._login(emailController.text, passwordController.text);
+                  setState(() {
+                    emessage = "Invalid username or password";
+                  });
+                },
+                child: const Text('Login', style: TextStyle(fontSize: 20, color: Colors.white))
+            ),
+            SizedBox(height: 20),
+            Text("$emessage")
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+}
+
+
+class Login extends StatefulWidget {
+  @override
+  _LoginState createState() => _LoginState();
+
+  const Login({
+    Key key,
+    this.auth,
+    this.title,
+    @required this.myapp,
+  }) : super(key: key);
+
+  final BaseAuth auth;
+  final MyAppState myapp;
+  final String title;
+
+
+  void _login(String email, String password) async {
+    String userId = await auth.signIn(email.trim(), password.trim());
+    if(userId.length > 0) {
+      this.myapp.setState(() {
+        myapp.userId = userId;
+        myapp.authState = AuthStatus.LOGGED_IN;
+      });
+      this.myapp.changePage(PageType.PROFILE);
+    }else{
+      print("Failed to login");
+    }
+  }
+
+
 }
