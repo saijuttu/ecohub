@@ -80,6 +80,7 @@ class _OrganizeState extends State<Organize> {
     return Scaffold
       (
       backgroundColor: Color.fromRGBO(44, 47, 51, 1),
+      //  backgroundColor: Colors.white,
       body: Padding
         (
         padding: EdgeInsets.symmetric(horizontal: 50.0),
@@ -96,7 +97,7 @@ class _OrganizeState extends State<Organize> {
               showImage(),
 
               SizedBox(height: 75),
-              TextField(textAlign: TextAlign.center, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
+              TextField(textAlign: TextAlign.center, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -109,7 +110,21 @@ class _OrganizeState extends State<Organize> {
                 ),
               ),
               SizedBox(height: 20),
-              TextField(textAlign: TextAlign.center, controller: emailController, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
+
+              FlatButton(
+                onPressed: () => {},
+                color: Colors.blue,
+                padding: EdgeInsets.all(10.0),
+                child: Column( // Replace with a Row for horizontal icon + text
+                  children: <Widget>[
+                    Icon(Icons.add),
+                    Text("Add Map Location")
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+
+              TextField(textAlign: TextAlign.center, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
                 keyboardType: TextInputType.multiline,
                 maxLines: 5,
                 decoration: InputDecoration(
@@ -128,13 +143,7 @@ class _OrganizeState extends State<Organize> {
 
 
 
-              SizedBox(height: 20),
-              GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(24,-110),
-                  zoom: 15
-                ),
-              )
+
 
             ],
           ),
@@ -157,14 +166,15 @@ class _OrganizeState extends State<Organize> {
                   child: Align(
                     alignment: Alignment.bottomLeft,
 
-                    child: FloatingActionButton(
+                    child: FloatingActionButton(backgroundColor: Colors.red,
                       child: Icon(Icons.delete),),
                   ),),
 
                 Align(
                   alignment: Alignment.bottomRight,
-                  child: FloatingActionButton(
+                  child: FloatingActionButton(backgroundColor: Color.fromRGBO(42, 222, 42, 1),
                     child: Icon(Icons.check),),
+
                 ),
 
           ],

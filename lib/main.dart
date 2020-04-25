@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:ecohub_app/organize.dart';
+import 'package:ecohub_app/maps.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 void main() => runApp(MyApp());
