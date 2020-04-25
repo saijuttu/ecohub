@@ -1,7 +1,10 @@
 import 'package:ecohub_app/services/auth.dart';
 import 'package:ecohub_app/main.dart';
 import 'package:flutter/material.dart';
-
+import 'package:location/location.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 class EventView extends StatelessWidget {
   const EventView({
     Key key,
@@ -12,9 +15,33 @@ class EventView extends StatelessWidget {
   final BaseAuth auth;
   final MyAppState myapp;
 
+
+
   @override
   Widget build(BuildContext context) {
+
+    void getUserLocation() async {//call this async method from whereever you need
+
+      final coordinates = new Coordinates(29.791081, -95.808231);
+      var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+      var first = addresses.first;
+      print('ADRESSADRESSASDEAASDASDASD ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare} ADRESSADRESSASDEAASDASDASD');
+   //   return first;
+    }
+    getUserLocation();
+//    _getLocation() async
+//    {
+//      Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+//      debugPrint('location: ${position.latitude}');
+//      final coordinates = new Coordinates(position.latitude, position.longitude);
+//      var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+//      var first = addresses.first;
+//      print("${first.featureName} : ${first.addressLine}");
+//    }
     return Stack(
+
+
+
       children: <Widget>[
         Scaffold(
           body: ListView(
@@ -117,13 +144,16 @@ class EventView extends StatelessWidget {
                   'MAP',
                   style: TextStyle(
                       fontSize: 20,
+
                       color: Color.fromRGBO(192, 192, 192, 1)
                   ),
                 ),
               ),
             ],
           ),
+
         ),
+
         Align(
           alignment: Alignment.bottomLeft,
           child: FloatingActionButton(
