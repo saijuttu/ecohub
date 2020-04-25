@@ -1,5 +1,9 @@
 import 'package:ecohub_app/maps.dart';
 import 'package:flutter/material.dart';
+import './profile.dart' as profile;
+import './feed.dart' as feed;
+import './orgdash.dart' as orgdash;
+import 'feed.dart';
 import 'package:ecohub_app/services/auth.dart';
 import 'package:ecohub_app/register.dart';
 import 'package:ecohub_app/login.dart';
@@ -147,6 +151,5 @@ class MyAppState extends State<MyApp>{
     );
   }
 }
-
 
 
