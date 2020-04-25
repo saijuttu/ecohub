@@ -56,6 +56,18 @@ class _MapsState extends State<Maps> {
 
     getUserLocation(middlePoint);
   }
+  double middleX()
+  {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double middleX = screenWidth / 2;
+    return middleX;
+  }
+  double middleY()
+  {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double middleY = screenHeight / 2;
+    return middleY;
+  }
 
   void getUserLocation(LatLng ln) async {//call this async method from whereever you need
 
@@ -96,7 +108,7 @@ class _MapsState extends State<Maps> {
 
       Positioned(
           bottom: 50,
-          right: 10,
+          left: 10,
           child:
           FlatButton
             (
@@ -104,7 +116,22 @@ class _MapsState extends State<Maps> {
             color: Colors.green,
             onPressed: (){_getLocation();widget.backToOrganize();},
           )
+      ),
+
+      Positioned(
+          bottom: middleY(),
+          right: middleX()-5,
+          child:
+              Container(
+                width: 10,
+                height: 10,
+                child: FloatingActionButton
+            (
+            backgroundColor: Colors.blue,
+          )
+              )
       )
+
     ]);
 
 

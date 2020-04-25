@@ -132,6 +132,8 @@ class OrganizeState extends State<Organize> {
               ),
               SizedBox(height: 20),
 
+
+
               TextField(textAlign: TextAlign.center, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
                 keyboardType: TextInputType.multiline,
                 maxLines: 5,

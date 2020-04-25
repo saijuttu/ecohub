@@ -83,7 +83,7 @@ class MyAppState extends State<MyApp>{
 
 
 
-    Widget home = new Login(auth: Auth(), myapp: this, title: "LOGIN", );
+    Widget home = new Organize( myapp: this);
     switch(this.currentPage){
       case PageType.LOGIN: {}
       break;
