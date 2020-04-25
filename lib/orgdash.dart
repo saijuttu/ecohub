@@ -1,39 +1,91 @@
 import 'package:flutter/material.dart';
-
+import 'package:ecohub_app/services/auth.dart';
+import 'package:flutter/material.dart';
+import 'main.dart';
 class OrgDash extends StatefulWidget {
+  final String userId;
+  final MyAppState myapp;
+  final BaseAuth auth;
+  const OrgDash({
+    Key key,
+    this.userId,
+    this.auth,
+    @required this.myapp,
+  }) : super(key: key);
+
+  void _submit(){
+    this.myapp.changePage(PageType.ORGANIZE);
+  }
+
+  void _logout(){
+    auth.signOut();
+    this.myapp.changePage(PageType.LOGIN);
+    this.myapp.setState((){
+      myapp.userId = "";
+      myapp.authState = AuthStatus.NOT_LOGGED_IN;
+      myapp.email = "";
+      myapp.imageUrl = "";
+    });
+  }
 
   @override
-  _OrgDashState createState() => _OrgDashState();
+  OrgDashState createState() => OrgDashState();
 }
 
-class _OrgDashState extends State<OrgDash> {
+class OrgDashState extends State<OrgDash> {
   int itemCount = 4;
 
   Widget BlogList(){
-    return Container(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal:16, vertical: 16),
-                  itemCount: itemCount,
-                  shrinkWrap: true,
-                  itemBuilder:(context,index){
-                    return BlogsTile(
-                        imgUrl: "https://drive.google.com/open?id=1TQrjw3l8cdWlL6GXzpU8e58aNlxHG2E8",
-                        title: "schletus",
-                        description: "yeetus",
-                        date: "date",
-                        hours: "hours",
-                        organizer: "organizer",
-                        location: "meetus"
+    return Stack(
+        children: <Widget>[
+          Container(
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: ListView.builder(
+                    padding: EdgeInsets.symmetric(horizontal:16, vertical: 16),
+                    itemCount: itemCount,
+                    shrinkWrap: true,
+                    itemBuilder:(context,index){
+                      return BlogsTile(
+                          imgUrl: "https://drive.google.com/open?id=1TQrjw3l8cdWlL6GXzpU8e58aNlxHG2E8",
+                          title: "schletus",
+                          description: "yeetus",
+                          date: "date",
+                          hours: "hours",
+                          organizer: "organizer",
+                          location: "meetus"
 
-                    );
+                      );
+                    }
+                ),
+              )
+            ],
+          ),
+          Padding(padding: EdgeInsets.only(left: 31),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: FloatingActionButton(backgroundColor: Colors.red,
+                  child: Icon(Icons.exit_to_app),
+                  onPressed: (){
+                    widget._logout();
                   }
               ),
-            )
-          ],
-        )
+            ),),
+
+          Align(
+            alignment: Alignment.bottomRight,
+            child: FloatingActionButton(
+                child: const Icon(Icons.check),
+                onPressed:(){
+                  print("update");
+                  widget._submit();
+                }
+            ),
+
+          ),
+        ],
+      )
     );
 
   }
@@ -65,6 +117,7 @@ class BlogsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
 
     return GestureDetector(
         onTap: (){
@@ -118,3 +171,4 @@ class BlogsTile extends StatelessWidget {
     );
   }
 }
+

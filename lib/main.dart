@@ -1,150 +1,155 @@
+import 'package:ecohub_app/maps.dart';
 import 'package:flutter/material.dart';
 import './profile.dart' as profile;
 import './feed.dart' as feed;
 import './orgdash.dart' as orgdash;
 import 'feed.dart';
+import 'package:ecohub_app/services/auth.dart';
+import 'package:ecohub_app/register.dart';
+import 'package:ecohub_app/login.dart';
+import 'package:ecohub_app/profile.dart';
+import 'package:ecohub_app/orgdash.dart';
+import 'package:ecohub_app/organize.dart';
+import 'package:ecohub_app/dashboard.dart';
+import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
-  runApp(MyApp());
+void main() => runApp(MyApp());
+
+enum AuthStatus {
+  NOT_DETERMINED,
+  NOT_LOGGED_IN,
+  LOGGED_IN,
 }
 
-class MyApp extends StatelessWidget {
+enum PageType{
+  LOGIN,
+  PROFILE,
+  REGISTER,
+  DASHBOARD,
+  ORGANIZE,
+  ORGDASH,
+  MAPS,
+}
+
+Map<int, Color> color =
+{
+  50:Color.fromRGBO(136,14,79, .1),
+  100:Color.fromRGBO(136,14,79, .2),
+  200:Color.fromRGBO(136,14,79, .3),
+  300:Color.fromRGBO(136,14,79, .4),
+  400:Color.fromRGBO(136,14,79, .5),
+  500:Color.fromRGBO(136,14,79, .6),
+  600:Color.fromRGBO(136,14,79, .7),
+  700:Color.fromRGBO(136,14,79, .8),
+  800:Color.fromRGBO(136,14,79, .9),
+  900:Color.fromRGBO(136,14,79, 1),
+};
+MaterialColor colorCustom = MaterialColor(0xFF880E4F, color);
+class MyApp extends StatefulWidget {
+  const MyApp({
+    Key key,
+    this.authState,
+    this.auth,
+    this.userId,
+    this.currentPage,
+  }) : super(key: key);
+
+  final AuthStatus authState;
+  final BaseAuth auth;
+  final String userId;
+  final PageType currentPage;
+
+  // This widget is the root of your application.
+  @override
+  MyAppState createState() => MyAppState();
+}
+
+class MyAppState extends State<MyApp>{
+  AuthStatus authState;
+  BaseAuth auth;
+  String userId;
+  PageType currentPage;
+  String username = "user.name";
+  String imageUrl = "https://firebasestorage.googleapis.com/v0/b/ecohubfirebase.appspot.com/o/IMG_1734.JPG?alt=media&token=84aa8a1a-cc71-4bee-a798-a8dfdd57bfcb";
+  int score = 0;
+  String email = "email@email.com";
+
+  void changePage(PageType newPage){
+    setState(() {
+      currentPage = newPage;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+
+
+
+    Widget home = new Login(auth: Auth(), myapp: this, title: "LOGIN", );
+    switch(this.currentPage){
+      case PageType.LOGIN: {
+        home = Login(myapp:this);
+      }
+      break;
+      case PageType.PROFILE:{
+        Firestore.instance.collection('profiles').document(userId).get().then((string) {
+
+          setState(() {
+            username = string.data['username'];
+            score = string.data['score'];
+            if(string.data['organizer']){
+              currentPage = PageType.ORGDASH;
+            }
+          });
+
+        });
+        home = Profile(userId: this.userId, username: this.username, imageURL: this.imageUrl, score: this.score,email: this.email, myapp: this);
+      }
+      break;
+      case PageType.REGISTER:{
+
+        home = Register(auth: Auth(), myapp: this);
+      }
+      break;
+      case PageType.DASHBOARD:{
+        Firestore.instance.collection('profiles').document(userId).get().then((string) {
+
+          setState(() {
+            username = string.data['username'];
+            score = string.data['score'];
+            if(string.data['organizer']){
+              currentPage = PageType.ORGDASH;
+            }
+          });
+
+        });
+
+        home = Dashboard(userId: this.userId, username: this.username, imageURL: this.imageUrl, score: this.score,email: this.email, myapp:this);
+      }
+      break;
+      case PageType.ORGDASH:{
+        home = OrgDash(userId: userId, myapp:this);
+      }
+      break;
+      case PageType.ORGANIZE:{
+        home = Organize(userId: userId, myapp:this);
+      }
+      break;
+      case PageType.MAPS:{
+        home = Maps(userId: userId, myapp:this);
+      }
+      break;
+    }
     return MaterialApp(
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('ecohub'),
-            bottom: TabBar(
-
-              tabs: [
-                Tab(icon: Icon(Icons.beach_access)),
-                Tab(icon: Icon(Icons.account_balance),)
-
-              ],
-            ),
-          ),
-          body: new TabBarView(
-            children: <Widget>[
-              new feed.Feed(),
-              new orgdash.OrgDash()
-            ]
-
-//            children: [
-//            new ListView(
-//              scrollDirection: Axis.vertical,
-//              children: <Widget>[
-//                Padding(
-//                  padding: const EdgeInsets.all(16.0),
-//                  child: Container(
-//                    child: FittedBox(
-//                    child: Material(
-//                      color: Colors.white,
-//                      elevation:14.0,
-//                      borderRadius: BorderRadius.circular(24.0),
-//                      shadowColor: Color(0x802196F3),
-//                        child: Row(
-//                          children: <Widget>[
-//                            Container(
-//                              child: myDetailsContainer1()
-//                            ),
-//                            Container(
-//                              height: 250,
-//                              width: 250,
-//                              child: ClipRRect(
-//                                borderRadius: new BorderRadius.circular(24.0),
-//                                child:Image(
-//                                  fit:BoxFit.contain,
-//                                  alignment: Alignment.topRight,
-//                                  image: NetworkImage(
-//                                      'https://images.unsplash.com/photo-1519501025264-65ba15a82390?ixlib=rb-1.2.1&w=1000&q=80'
-//                                  )
-//                                )
-//                              )
-//                            )
-//                          ]
-//                        )
-//                    )
-//                    )
-//                  )
-//                )
-//              ]
-//              //new feed.Feed(),
-//            ),
-//              new ListView(
-//            children: list
-//            //new profile.Profile(),
-//              ),
-//
-//            ],
-          ),
-        ),
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: colorCustom,
       ),
+      home: home,
     );
   }
 }
 
-//Widget myDetailsContainer1() {
-//  return Column(
-//    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//    children: <Widget>[
-//      Padding(
-//        padding: const EdgeInsets.only(left: 8.0),
-//        child: Container(child: Text("Candy Bliss",
-//          style: TextStyle(color: Color(0xffe6020a), fontSize: 24.0,fontWeight: FontWeight.bold),)),
-//      ),
-//      Padding(
-//        padding: const EdgeInsets.only(left: 8.0),
-//        child: Container(
-//            child: Row(
-//              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//              children: <Widget>[
-//                Container(child: Text("4.3",
-//                  style: TextStyle(color: Colors.black54, fontSize: 18.0,),)),
-//
-//                Container(child: Text("(321) \u00B7 0.9 mi",
-//                  style: TextStyle(color: Colors.black54, fontSize: 18.0,),)),
-//              ],)),
-//      ),
-//      Container(child: Text("Pastries \u00B7 Phoenix,AZ",
-//        style: TextStyle(color: Colors.black54, fontSize: 18.0,fontWeight: FontWeight.bold),)),
-//    ],
-//  );
-//}
-//
-//List<Widget> list = <Widget>[
-//new ListTile(
-//
-//title: new Text('China',
-//style: new TextStyle(fontWeight: FontWeight.w500, fontSize: 50.0)),
-//subtitle: new Text('Hours 10000'),
-//onTap: (){
-//  print("11"); //this si the on tap for t
-//},
-//
-//),
-//new ListTile(
-//title: new Text('Africa',
-//style: new TextStyle(fontWeight: FontWeight.w500, fontSize: 50.0)),
-//subtitle: new Text('Hours 1'),
-//
-//  onTap: (){
-//    print("11"); //this si the on tap for t
-//  },
-//trailing:  SizedBox(
-//  width: 50,
-// height: 100,
-//  child: Image.network('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
-//
-//),
-//)
-//
-////  isThreeLine: true,
-//
-//
-//
-//
-//
-//];
+
