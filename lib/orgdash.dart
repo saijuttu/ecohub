@@ -85,18 +85,20 @@ class OrgDashState extends State<OrgDash> {
                   }
               ),
             ),),
+          Padding(padding: EdgeInsets.only(right:31),
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: FloatingActionButton(
+                  child: const Icon(Icons.add),
+                  onPressed:(){
+                    print("update");
+                    widget._submit();
+                  }
+              ),
 
-          Align(
-            alignment: Alignment.bottomRight,
-            child: FloatingActionButton(
-                child: const Icon(Icons.add),
-                onPressed:(){
-                  print("update");
-                  widget._submit();
-                }
             ),
+          )
 
-          ),
 
         ],
 
