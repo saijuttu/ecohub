@@ -47,6 +47,9 @@ class OrgDashState extends State<OrgDash> {
   Widget BlogList(){
     wait();
 
+    if(documents==null){
+      return Text("Loading");
+    }
     return Stack(
         children: <Widget>[
           Container(
