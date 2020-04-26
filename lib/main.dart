@@ -1,5 +1,6 @@
 import 'package:ecohub_app/maps.dart';
 import 'package:flutter/material.dart';
+import 'package:ecohub_app/eventViewOrganizer.dart';
 import 'package:ecohub_app/services/auth.dart';
 import 'package:ecohub_app/register.dart';
 import 'package:ecohub_app/login.dart';
@@ -82,8 +83,6 @@ class MyAppState extends State<MyApp>{
 
   @override
   Widget build(BuildContext context) {
-
-
 
     Widget home = new Login(auth: Auth(), myapp: this, title: "LOGIN", );
     switch(this.currentPage){
