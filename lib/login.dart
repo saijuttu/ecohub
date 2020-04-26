@@ -32,14 +32,18 @@ class _LoginState extends State<Login> {
 
                   children: <Widget>
                   [
-                    SizedBox(height: 40),
-//                    new Image(
-//                      image: new AssetImage("assets/apple.png"),
-//                      width: 100,
-//                      height:  100,
-//                    ),
+                    ClipRRect(
 
-                    SizedBox(height: 10),
+                      child:  Image.network(
+                        'https://www.graphicsprings.com/filestorage/stencils/dfaefae4af3fadbeee8f4adc41a620e0.png?width=500&height=500',
+                        width: MediaQuery.of(context).size.width/3,
+                        height: MediaQuery.of(context).size.height/3,
+                        fit: BoxFit.contain,
+
+
+                      ),
+
+                    ),
                     //Text('EcoHub',style: TextStyle(fontSize: 50,color: Color.fromRGBO(42, 222, 42, 1)),),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -54,8 +58,8 @@ class _LoginState extends State<Login> {
                           )
                         ]
                     ),
-                    Text('____________________________',style: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),),
-                    SizedBox(height: 100),
+//                    Text('____________________________',style: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),),
+                    SizedBox(height: 50),
 
 
                     invalid()?
