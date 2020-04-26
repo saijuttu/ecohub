@@ -26,7 +26,7 @@ class EventViewOrganizer extends StatefulWidget {
   final MyAppState myapp;
   final String userId;
   final String imgUrl, title, description, date, hours, organizer, location;
-  final List<dynamic> userList;
+  final List userList;
 
   @override
   EventViewOrganizerState createState() => EventViewOrganizerState();

@@ -18,7 +18,7 @@ class EventView extends StatelessWidget {
     @required this.organizer,
     @required this.location,
     @required this.myapp,
-    @required this.userList,
+ //   @required this.userList,
     @required this.eventId,
   }) : super(key: key);
 
@@ -26,7 +26,7 @@ class EventView extends StatelessWidget {
   final MyAppState myapp;
   final String userId;
   final String imgUrl, title, description, date, hours, organizer, location, eventId;
-  final List<dynamic> userList;
+ // final List userList;
 
 
 
@@ -227,7 +227,7 @@ class EventView extends StatelessWidget {
           child: FloatingActionButton(
               child: const Icon(Icons.check),
               onPressed: (){
-                print("Accepted");
+
                 myapp.changePageWithData(PageType.SUBMIT, [eventId]);
               }
           ),

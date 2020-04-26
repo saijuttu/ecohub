@@ -90,7 +90,10 @@ class BlogsTile extends StatelessWidget {
 
   openTile(){
     print(title);
+
+
     List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location,this.eventId];
+
     myapp.changePageWithData(PageType.EVENTVIEW,data);
   }
 

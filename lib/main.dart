@@ -76,7 +76,7 @@ class MyAppState extends State<MyApp>{
   String imageUrl = "https://firebasestorage.googleapis.com/v0/b/ecohubfirebase.appspot.com/o/IMG_1734.JPG?alt=media&token=84aa8a1a-cc71-4bee-a798-a8dfdd57bfcb";
   int score = 0;
   String email = "email@email.com";
-  List <dynamic> userList = new List<dynamic>();
+  List  userList = new List();
   List data = [];
 
 
@@ -87,6 +87,7 @@ class MyAppState extends State<MyApp>{
   }
 
   void changePageWithData(PageType newPage, List data){
+
     setState(() {
       currentPage = newPage;
       this.data = data;
@@ -157,6 +158,7 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.EVENTVIEW:{
+
         home = EventView(
             userId: userId,
             imgUrl: data[0],
@@ -166,12 +168,15 @@ class MyAppState extends State<MyApp>{
             hours: data[4],
             organizer: data[5],
             location: data[6],
-            userList: data[7],
+            eventId: data[7],
+   //         userList: data[7],
             myapp:this);
 
       }
       break;
       case PageType.SUBMIT:{
+
+
         home = Submit(userId: userId, eventId: data[0], myapp:this);
       }
       break;

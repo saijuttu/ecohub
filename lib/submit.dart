@@ -47,7 +47,7 @@ class _SubmitState extends State<Submit> {
     QuerySnapshot allDocuments = await Firestore.instance.collection("events").getDocuments();
 
     for(int i = 0; i< allDocuments.documents.length; i++){
-      print(allDocuments.documents[i].data["eventID"] );
+      print(allDocuments.documents[i].documentID);
       print(widget.eventId);
       if(allDocuments.documents[i].documentID == widget.eventId)
       {
