@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:ecohub_app/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Feed extends StatefulWidget {
+  final MyAppState myapp;
+  const Feed({Key key,
+    @required this.myapp,
+  }
+      ): super(key: key);
 
   @override
-  _FeedState createState() => _FeedState();
+  FeedState createState() => FeedState();
 }
 
-class _FeedState extends State<Feed> {
+class FeedState extends State<Feed> {
 
   QuerySnapshot documents;
 
@@ -33,6 +39,7 @@ class _FeedState extends State<Feed> {
         shrinkWrap: true,
         itemBuilder:(context,index){
           return  BlogsTile(
+              myapp: widget.myapp,
               title: documents.documents[index].data["Event Name"],
               imgUrl: documents.documents[index].data['imageURL'],
               description: documents.documents[index].data["Description"],
@@ -64,7 +71,7 @@ class _FeedState extends State<Feed> {
 class BlogsTile extends StatelessWidget {
 
   String imgUrl, title, description, date, hours, organizer, location;
-
+  MyAppState myapp;
   BlogsTile({
     @required this.imgUrl,
     @required this.title,
@@ -72,15 +79,21 @@ class BlogsTile extends StatelessWidget {
     @required this.date,
     @required this.hours,
     @required this.organizer,
-    @required this.location});
+    @required this.location,
+    @required this.myapp,
+  });
 
+  openTile(){
+    print(title);
+    myapp.changePage(PageType.ORGVIEW);
+  }
 
   @override
   Widget build(BuildContext context) {
 
     return GestureDetector(
         onTap: (){
-          print(title);
+          openTile();
         },
       child: Container(
       margin: EdgeInsets.only(bottom: 16),

@@ -31,6 +31,7 @@ enum PageType{
   ORGANIZE,
   ORGDASH,
   MAPS,
+  ORGVIEW,
 }
 
 Map<int, Color> color =
@@ -139,6 +140,10 @@ class MyAppState extends State<MyApp>{
       break;
       case PageType.MAPS:{
         home = Maps(userId: userId, myapp:this);
+      }
+      break;
+      case PageType.ORGVIEW:{
+        home = OrgDash(userId: userId, myapp:this);
       }
       break;
     }
