@@ -80,7 +80,7 @@ class OrgDashState extends State<OrgDash> {
           Padding(padding: EdgeInsets.only(left: 31),
             child: Align(
               alignment: Alignment.bottomLeft,
-              child: FloatingActionButton(backgroundColor: Colors.red,
+              child: FloatingActionButton(backgroundColor: Colors.green,
                   child: Icon(Icons.exit_to_app),
                   onPressed: (){
                     widget._logout();
@@ -90,7 +90,7 @@ class OrgDashState extends State<OrgDash> {
           Padding(padding: EdgeInsets.only(right:31),
             child: Align(
               alignment: Alignment.bottomRight,
-              child: FloatingActionButton(backgroundColor: Colors.purple,
+              child: FloatingActionButton(backgroundColor: Colors.green,
                   child: const Icon(Icons.add),
                   onPressed:(){
                     print("update");
