@@ -163,7 +163,7 @@ class BlogsTile extends StatelessWidget {
           height: 150,
           child: Stack(children: <Widget>[
             ClipRRect(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(15),
                 child: Image.network(
                     imgUrl,
                     width: MediaQuery.of(context).size.width,
