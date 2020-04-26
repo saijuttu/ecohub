@@ -12,7 +12,7 @@ All it takes is a simple picture and a hunt for volunteering requests with your 
 
 1. Register as a user.
 
-![Step1](/images/step1.PNG)
+![Step1](/images/step1.PNG | 200x800)
 
 2. Profile keeps track of hours.
 
