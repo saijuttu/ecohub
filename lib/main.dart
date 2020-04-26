@@ -165,11 +165,13 @@ class MyAppState extends State<MyApp>{
             hours: data[4],
             organizer: data[5],
             location: data[6],
-            myapp:this);
+            eventId: data[7],
+            myapp:this,
+        );
       }
       break;
       case PageType.SUBMIT:{
-        home = Submit(userId: userId, myapp:this);
+        home = Submit(userId: userId, eventId: data[0], myapp:this);
       }
       break;
       case PageType.EVENTVIEWORG:{
