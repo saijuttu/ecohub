@@ -209,7 +209,7 @@ class OrganizeState extends State<Organize> {
                     onPressed: () async {
                       //print("${widget.eventData.address}");
                           DocumentReference ref = await Firestore.instance.collection("events").add({
-                              'userId': widget.userId,
+                            'userId': widget.userId,
                             'hours':hoursController.text,
                             'description':descriptionController.text,
                             'address': '${widget.eventData.address}',

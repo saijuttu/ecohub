@@ -64,10 +64,10 @@ class OrgDashState extends State<OrgDash> {
                       return BlogsTile(
                           myapp: widget.myapp,
                           title: documents.documents[index].data["Event Name"],
-                          imgUrl: documents.documents[index].data['imageURL'],
+                          imgUrl: documents.documents[index].data['imageUrl'],
                           description: documents.documents[index].data["Description"],
                           date: "date",
-                          hours: "${documents.documents[index].data["Hours"]} hours",
+                          hours: "${documents.documents[index].data["Hours"]}",
                           organizer: "organizer",
                           location: documents.documents[index].data["Location"]
 
