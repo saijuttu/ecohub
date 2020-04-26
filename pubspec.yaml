@@ -25,6 +25,7 @@ dependencies:
   firebase_auth: ^0.14.0+5
   cloud_firestore: ^0.13.0+1
   firebase_core: ^0.4.2+1
+  geoflutterfire: ^2.1.0
   keyboard_visibility: ^0.5.6
   image_picker: ^0.6.5+2
   google_maps_flutter: ^0.5.26+4
@@ -33,10 +34,10 @@ dependencies:
   location_permissions: ^2.0.5
   geolocator: ^5.3.1
   geocoder: ^0.2.1
+  location: ^3.0.2
   path_provider: ^1.6.7
   firebase_storage: 3.1.5
   cupertino_icons: ^0.1.2
-
 
 
 

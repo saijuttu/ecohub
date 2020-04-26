@@ -12,6 +12,7 @@ import 'package:ecohub_app/orgdash.dart';
 import 'package:ecohub_app/organize.dart';
 import 'package:ecohub_app/dashboard.dart';
 import 'package:flutter/material.dart';
+import 'package:ecohub_app/eventView.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -143,7 +144,7 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.ORGVIEW:{
-        home = OrgDash(userId: userId, myapp:this);
+        home = EventView(userId: userId, myapp:this);
       }
       break;
     }
@@ -156,5 +157,4 @@ class MyAppState extends State<MyApp>{
     );
   }
 }
-
 
