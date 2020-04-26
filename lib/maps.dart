@@ -8,6 +8,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Maps extends StatefulWidget {
   final String userId;
@@ -63,6 +64,14 @@ class _MapsState extends State<Maps> {
     var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     print('ADRESSADRESSASDEAASDASDASD ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare} ADRESSADRESSASDEAASDASDASD');
+    print('featurename: ${first.adminArea}, ${first.addressLine}  | ${first.featureName}');
+    print("${widget.userId}");
+
+    DocumentReference ref = await Firestore.instance.collection("events")
+        .add({
+      'address': '${first.addressLine}',
+    });
+    print(ref.documentID);
     //   return first;
   }
 //  static GlobalKey previewContainer = new GlobalKey();
@@ -96,7 +105,7 @@ class _MapsState extends State<Maps> {
 
       Positioned(
           bottom: 50,
-          right: 10,
+          left: 10,
           child:
           FlatButton
             (
