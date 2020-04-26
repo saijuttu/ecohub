@@ -18,12 +18,13 @@ class EventView extends StatelessWidget {
     @required this.organizer,
     @required this.location,
     @required this.myapp,
+    @required this.eventId,
   }) : super(key: key);
 
   final BaseAuth auth;
   final MyAppState myapp;
   final String userId;
-  final String imgUrl, title, description, date, hours, organizer, location;
+  final String imgUrl, title, description, date, hours, organizer, location, eventId;
 
 
 
@@ -180,7 +181,7 @@ class EventView extends StatelessWidget {
               child: const Icon(Icons.check),
               onPressed: (){
                 print("Accepted");
-                myapp.changePage(PageType.SUBMIT);
+                myapp.changePageWithData(PageType.SUBMIT, [eventId]);
               }
           ),
         ),

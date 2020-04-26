@@ -38,7 +38,7 @@ class OrgDashState extends State<OrgDash> {
   QuerySnapshot documents;
 
   void wait() async {
-    QuerySnapshot docs = await Firestore.instance.collection("Locations").getDocuments();
+    QuerySnapshot docs = await Firestore.instance.collection("events").getDocuments();
     setState(() {
       this.documents = docs;
     });
@@ -48,7 +48,7 @@ class OrgDashState extends State<OrgDash> {
     wait();
 
     if(documents==null){
-      return Text("Loading");
+      return Center(child: Text("Loading", style: TextStyle(color:Colors.white),));
     }
     return Stack(
         children: <Widget>[
