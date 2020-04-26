@@ -215,10 +215,10 @@ class OrganizeState extends State<Organize> {
                             'address': '${widget.eventData.address}',
                             'latitude': '${widget.eventData.latitude}',
                             'longitude': '${widget.eventData.longitude}',
-                            'imageUrl': 'put url here',
+                            'imageUrl': 'put url here u dumbo',
                             'isAccepted': false,
-                            'submissionList': [],
-                            'userList': [],
+                            'submissionList': new List(),
+                            'userList': new List(),
                       });//find out how to add event ID also
                     }
 
