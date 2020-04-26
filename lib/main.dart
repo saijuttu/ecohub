@@ -1,5 +1,6 @@
 import 'package:ecohub_app/maps.dart';
 import 'package:flutter/material.dart';
+import 'package:ecohub_app/eventViewOrganizer.dart';
 import 'package:ecohub_app/services/auth.dart';
 import 'package:ecohub_app/register.dart';
 import 'package:ecohub_app/login.dart';
@@ -10,6 +11,7 @@ import 'package:ecohub_app/dashboard.dart';
 import 'package:ecohub_app/eventView.dart';
 import 'package:ecohub_app/submit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecohub_app/maps.dart';
 
 void main() => runApp(MyApp());
 
@@ -29,6 +31,7 @@ enum PageType{
   MAPS,
   EVENTVIEW,
   SUBMIT,
+  EVENTVIEWORG,
 }
 
 Map<int, Color> color =
@@ -73,6 +76,8 @@ class MyAppState extends State<MyApp>{
   String imageUrl = "https://firebasestorage.googleapis.com/v0/b/ecohubfirebase.appspot.com/o/IMG_1734.JPG?alt=media&token=84aa8a1a-cc71-4bee-a798-a8dfdd57bfcb";
   int score = 0;
   String email = "email@email.com";
+  List data = [];
+
 
   void changePage(PageType newPage){
     setState(() {
@@ -80,11 +85,16 @@ class MyAppState extends State<MyApp>{
     });
   }
 
+  void changePageWithData(PageType newPage, List data){
+    setState(() {
+      currentPage = newPage;
+      this.data = data;
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
-
-
     Widget home = new Login(auth: Auth(), myapp: this, title: "LOGIN", );
     switch(this.currentPage){
       case PageType.LOGIN: {
@@ -132,7 +142,13 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.ORGANIZE:{
-        home = Organize(userId: userId, myapp:this);
+        if(data.length>0){
+          print("THIS IS ADDRESS ${data[0].address}");
+          home = Organize(userId: userId, myapp: this, eventData: data[0],);
+        }else {
+          print("data is emptyy");
+          home = Organize(userId: userId, myapp: this,);
+        }
       }
       break;
       case PageType.MAPS:{
@@ -140,11 +156,35 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.EVENTVIEW:{
-        home = EventView(userId: userId, myapp:this);
+        home = EventView(
+            userId: userId,
+            imgUrl: data[0],
+            title: data[1],
+            description: data[2],
+            date: data[3],
+            hours: data[4],
+            organizer: data[5],
+            location: data[6],
+            eventId: data[7],
+            myapp:this,
+        );
       }
       break;
       case PageType.SUBMIT:{
-        home = Submit(userId: userId, myapp:this);
+        home = Submit(userId: userId, eventId: data[0], myapp:this);
+      }
+      break;
+      case PageType.EVENTVIEWORG:{
+        home = EventViewOrganizer(
+            userId: userId,
+            imgUrl: data[0],
+            title: data[1],
+            description: data[2],
+            date: data[3],
+            hours: data[4],
+            organizer: data[5],
+            location: data[6],
+            myapp:this);
       }
     }
     return MaterialApp(

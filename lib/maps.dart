@@ -8,6 +8,14 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class LocationData{
+  final String address;
+  final String latitude;
+  final String longitude;
+  const LocationData(this.address, this.latitude, this.longitude);
+}
 
 class Maps extends StatefulWidget {
   final String userId;
@@ -20,11 +28,6 @@ class Maps extends StatefulWidget {
 
   @override
   _MapsState createState() => _MapsState();
-
-  void backToOrganize()
-  {
-    this.myapp.changePage(PageType.ORGANIZE);
-  }
 
 }
 
@@ -40,7 +43,7 @@ class _MapsState extends State<Maps> {
 
     });
   }
-  void _getLocation() async {
+  Future _getLocation() async {
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -54,7 +57,7 @@ class _MapsState extends State<Maps> {
     print(middlePoint.longitude);
     print(middlePoint.latitude);
 
-    getUserLocation(middlePoint);
+     getUserLocation(middlePoint);
   }
 
   void getUserLocation(LatLng ln) async {//call this async method from whereever you need
@@ -63,7 +66,17 @@ class _MapsState extends State<Maps> {
     var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
     print('ADRESSADRESSASDEAASDASDASD ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare} ADRESSADRESSASDEAASDASDASD');
-    //   return first;
+    print('featurename: ${first.adminArea}, ${first.addressLine}  | ${first.featureName}');
+    print("${widget.userId}");
+
+//    DocumentReference ref = await Firestore.instance.collection("events")
+//        .add({
+//      'address': '${first.addressLine}',
+//      'latitude': '${ln.latitude}',
+//      'longitude': '${ln.longitude}'
+//    });
+    LocationData data = LocationData(first.addressLine, "${ln.latitude}", "${ln.longitude}");
+    widget.myapp.changePageWithData(PageType.ORGANIZE, [data]);
   }
 //  static GlobalKey previewContainer = new GlobalKey();
 //
@@ -96,13 +109,15 @@ class _MapsState extends State<Maps> {
 
       Positioned(
           bottom: 50,
-          right: 10,
+          left: 10,
           child:
           FlatButton
             (
             child: Icon(Icons.pin_drop, color: Colors.white),
             color: Colors.green,
-            onPressed: (){_getLocation();widget.backToOrganize();},
+            onPressed: ()  async {
+               await _getLocation();
+            },
           )
       )
     ]);

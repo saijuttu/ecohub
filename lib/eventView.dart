@@ -18,25 +18,26 @@ class EventView extends StatelessWidget {
     @required this.organizer,
     @required this.location,
     @required this.myapp,
+    @required this.eventId,
   }) : super(key: key);
 
   final BaseAuth auth;
   final MyAppState myapp;
   final String userId;
-  final String imgUrl, title, description, date, hours, organizer, location;
+  final String imgUrl, title, description, date, hours, organizer, location, eventId;
 
 
 
   @override
   Widget build(BuildContext context) {
-
+    print("URL: ${this.imgUrl}");
     void getUserLocation() async {//call this async method from whereever you need
 
       final coordinates = new Coordinates(29.791081, -95.808231);
       var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
       var first = addresses.first;
       print('ADRESSADRESSASDEAASDASDASD ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare} ADRESSADRESSASDEAASDASDASD');
-   //   return first;
+      //   return first;
     }
     getUserLocation();
 //    _getLocation() async
@@ -98,7 +99,7 @@ class EventView extends StatelessWidget {
 
                             borderRadius: BorderRadius.all(Radius.circular(15.0)),
                             child:  Image.network(
-                              'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg',
+                              this.imgUrl,
                               width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height * 0.85,
                               fit: BoxFit.cover,
@@ -106,16 +107,8 @@ class EventView extends StatelessWidget {
                             ),
 
                           ),
-//                      Container(
-//                        decoration: BoxDecoration(
-//                            color: Colors.black45.withOpacity(0.3),
-//                            borderRadius: BorderRadius.circular(15)
-//
-//                        ),
-//                      ),
 
                           Container(
-//                            padding: EdgeInsets.only(bottom: 16),
                             alignment: Alignment.bottomCenter,
 
                             decoration: BoxDecoration(
@@ -161,7 +154,7 @@ class EventView extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(0,10,0, 2),
                         child: Text(
-                          "5",
+                          '${this.hours}',
                           style: TextStyle(
                             fontSize: 35,
                           ),
@@ -193,7 +186,7 @@ class EventView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20, 40),
                       child: Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                        '${this.description}',
                         style: TextStyle(
                           fontSize: 12,
                         ),
@@ -204,21 +197,16 @@ class EventView extends StatelessWidget {
                       child: Text(
                         'MAP',
                         style: TextStyle(
-                            fontSize: 20,
+                          fontSize: 20,
 
-                            color: Color.fromRGBO(192, 192, 192, 1)
+                          color: Color.fromRGBO(192, 192, 192, 1)
                         ),
                       ),
                     ),
                   ],
                 ),
-
-
-            )
-
-          )
-
-
+              ),
+            ),
         ),
 
         Align(
@@ -237,7 +225,7 @@ class EventView extends StatelessWidget {
               child: const Icon(Icons.check),
               onPressed: (){
                 print("Accepted");
-                myapp.changePage(PageType.SUBMIT);
+                myapp.changePageWithData(PageType.SUBMIT, [eventId]);
               }
           ),
         ),
@@ -245,6 +233,3 @@ class EventView extends StatelessWidget {
     );
   }
 }
-
-
-

@@ -38,7 +38,7 @@ class OrgDashState extends State<OrgDash> {
   QuerySnapshot documents;
 
   void wait() async {
-    QuerySnapshot docs = await Firestore.instance.collection("Locations").getDocuments();
+    QuerySnapshot docs = await Firestore.instance.collection("events").getDocuments();
     setState(() {
       this.documents = docs;
     });
@@ -47,6 +47,9 @@ class OrgDashState extends State<OrgDash> {
   Widget BlogList(){
     wait();
 
+    if(documents==null){
+      return Center(child: Text("Loading", style: TextStyle(color:Colors.white),));
+    }
     return Stack(
         children: <Widget>[
           Container(
@@ -149,7 +152,8 @@ class BlogsTile extends StatelessWidget {
 
   openTile(){
     print(title);
-    myapp.changePage(PageType.EVENTVIEW);
+    List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location];
+    myapp.changePageWithData(PageType.EVENTVIEWORG,data);
   }
 
   @override

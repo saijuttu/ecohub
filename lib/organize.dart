@@ -8,14 +8,18 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:ecohub_app/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
+import 'package:ecohub_app/maps.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Organize extends StatefulWidget {
     final String userId;
     final MyAppState myapp;
+    final LocationData eventData;
     const Organize({
-    Key key,
-    this.userId,
-    @required this.myapp,
+      Key key,
+      this.userId,
+      @required this.myapp,
+      this.eventData,
     }) : super(key: key);
 
     void _submit(){
@@ -32,8 +36,11 @@ class Organize extends StatefulWidget {
 
 class OrganizeState extends State<Organize> {
 
-
   Future<File> _image;
+  String description;
+  String hours;
+  final TextEditingController hoursController = new TextEditingController();
+  final TextEditingController descriptionController = new TextEditingController();
 
   Future getImage() async{
     Future<File> image = ImagePicker.pickImage(source: ImageSource.gallery);
@@ -41,6 +48,16 @@ class OrganizeState extends State<Organize> {
     setState(() {
       _image = image;
     });
+  }
+
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    hoursController.dispose();
+    descriptionController.dispose();
+    super.dispose();
   }
 
   Widget showImage() {
@@ -92,6 +109,7 @@ class OrganizeState extends State<Organize> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold
       (
       backgroundColor: Color.fromRGBO(44, 47, 51, 1),
@@ -112,7 +130,7 @@ class OrganizeState extends State<Organize> {
               showImage(),
 
               SizedBox(height: 75),
-              TextField(textAlign: TextAlign.center, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),keyboardType: TextInputType.number,
+              TextField(textAlign: TextAlign.center,keyboardType: TextInputType.number,controller: hoursController,style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -142,9 +160,7 @@ class OrganizeState extends State<Organize> {
               ),
               SizedBox(height: 20),
 
-              TextField(textAlign: TextAlign.center, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
-                keyboardType: TextInputType.multiline,
-                maxLines: 5,
+              TextField(textAlign: TextAlign.center, keyboardType: TextInputType.multiline,controller: descriptionController, maxLines: 4, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
@@ -178,6 +194,8 @@ class OrganizeState extends State<Organize> {
                     child: FloatingActionButton(backgroundColor: Colors.red,
                       child: Icon(Icons.cancel),
                         onPressed: (){
+                          //print(hoursController.text);
+                          //print(descriptionController.text);
                           widget._cancel();
                         }
                     ),
@@ -188,7 +206,17 @@ class OrganizeState extends State<Organize> {
                   child: FloatingActionButton(backgroundColor: Color.fromRGBO(42, 222, 42, 1),
                     child: Icon(Icons.check),
                     //ADD FIRE BASE CODE HERE TO ADD TO DB
-
+                    onPressed: () async {
+                      //print("${widget.eventData.address}");
+                          DocumentReference ref = await Firestore.instance.collection("events").add({
+                              'userId': widget.userId,
+                            'hours':hoursController.text,
+                            'description':descriptionController.text,
+                            'address': '${widget.eventData.address}',
+                            'latitude': '${widget.eventData.latitude}',
+                            'longitude': '${widget.eventData.longitude}'
+                      });
+                    }
 
                     ),
 
