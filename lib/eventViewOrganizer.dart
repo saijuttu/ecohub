@@ -324,7 +324,7 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
                     ),
                     Text(
                       "hub",
-                      style: TextStyle(fontSize: 27),
+                      style: TextStyle(fontSize: 27,color: Colors.white),
                     )
                   ]
               )
@@ -478,7 +478,8 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
           child: Align(
             alignment: Alignment.topLeft,
             child: FloatingActionButton(
-                child: const Icon(Icons.arrow_back_ios),
+                child: const Icon(Icons.arrow_back_ios,color: Colors.white),
+
                 backgroundColor: Colors.transparent,
 
                 onPressed: (){
