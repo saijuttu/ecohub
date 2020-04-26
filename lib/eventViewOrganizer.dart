@@ -74,181 +74,177 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
       _url2 = url;
     });
   }
-  @override
-  Widget build(BuildContext context)
+
+  void addEventToUser(userId) async{
+    QuerySnapshot allDocuments = await Firestore.instance.collection("profiles").getDocuments();
+
+
+    for(int i = 0; i< allDocuments.documents.length; i++){
+
+
+      if(allDocuments.documents[i].documentID == userId)
+      {
+        print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+
+        List<dynamic> eventList = allDocuments.documents[i].data["eventLog"];
+        print(eventList.toString());
+
+        List<dynamic> hourList = allDocuments.documents[i].data["hourLog"];
+        print(hourList.toString());
+
+        eventList.add(widget.eventId);
+        hourList.add(widget.hours);
+        print(eventList.toString());
+        print(hourList.toString());
+
+        print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
+
+        await Firestore.instance.collection("profiles").document(userId).updateData({"eventLog":eventList});
+        await Firestore.instance.collection("profiles").document(userId).updateData({"hourLog":hourList});
+      }
+    }
+  }
+
+  void getUserLocation() async {//call this async method from whereever you need
+
+    final coordinates = new Coordinates(29.791081, -95.808231);
+    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+    //     print('ADRESSADRESSASDEAASDASDASD ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare} ADRESSADRESSASDEAASDASDASD');
+    //   return first;
+  }
+
+  void removeUserFromEvent(String id)
   {
+    String docId=null;
+    List subList = new List();
+    for(int x=0;x<documents2.documents.length;x++)
+    {
+      if(documents2.documents[x].data["Location"]==widget.location)
+      {
+        docId = documents2.documents[x].documentID;
+        subList = documents2.documents[x].data["submissionList"];
+        print(subList.toString());
+      }
+    }
+    if(docId!=null)
+    {
+      print('hi');
+      for(int x=0;x<subList.length;x++)
+      {
+        print('ss');
+        String line = subList[x];
 
-    void addEventToUser(userId) async{
-      QuerySnapshot allDocuments = await Firestore.instance.collection("profiles").getDocuments();
-
-
-      for(int i = 0; i< allDocuments.documents.length; i++){
-
-
-        if(allDocuments.documents[i].documentID == userId)
+        print(line.contains(id));
+        print('hddi');
+        if(line.contains(id))
         {
-          print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-
-          List<dynamic> eventList = allDocuments.documents[i].data["eventLog"];
-          print(eventList.toString());
-
-          List<dynamic> hourList = allDocuments.documents[i].data["hourLog"];
-          print(hourList.toString());
-
-          eventList.add(widget.eventId);
-          hourList.add(widget.hours);
-          print(eventList.toString());
-          print(hourList.toString());
-
-          print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
-
-          await Firestore.instance.collection("profiles").document(userId).updateData({"eventLog":eventList});
-          await Firestore.instance.collection("profiles").document(userId).updateData({"hourLog":hourList});
+          subList.removeAt(x);
+          print(subList.toString());
+          break;
         }
       }
+
+      widget.userList.remove(id);
+      Firestore.instance.collection('events').document(docId).updateData({'userList': widget.userList, 'submissionList': subList});
+
     }
 
-    void getUserLocation() async {//call this async method from whereever you need
+  }
 
-      final coordinates = new Coordinates(29.791081, -95.808231);
-      var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
-      var first = addresses.first;
- //     print('ADRESSADRESSASDEAASDASDASD ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare} ADRESSADRESSASDEAASDASDASD');
-   //   return first;
-    }
-
-    getUserLocation();
-    void removeUserFromEvent(String id)
+  void increaseUserHours(String id)
+  {
+    int hours=-1;
+    for(int x=0;x<documents.documents.length;x++)
     {
-      String docId=null;
-      List subList = new List();
-      for(int x=0;x<documents2.documents.length;x++)
-        {
-          if(documents2.documents[x].data["Location"]==widget.location)
-          {
-            docId = documents2.documents[x].documentID;
-            subList = documents2.documents[x].data["submissionList"];
-            print(subList.toString());
-          }
-        }
-      if(docId!=null)
-      {
-        print('hi');
-        for(int x=0;x<subList.length;x++)
-          {
-            print('ss');
-            String line = subList[x];
-
-            print(line.contains(id));
-            print('hddi');
-            if(line.contains(id))
-              {
-                subList.removeAt(x);
-                print(subList.toString());
-                break;
-              }
-          }
-
-        widget.userList.remove(id);
-        Firestore.instance.collection('events').document(docId).updateData({'userList': widget.userList, 'submissionList': subList});
-
-      }
-
+      if(documents.documents[x].documentID==id)
+        hours=documents.documents[x].data["score"]+int.parse(widget.hours.substring(0,1));
     }
-    void increaseUserHours(String id)
+    if(hours!=-1)
     {
-      int hours=-1;
-      for(int x=0;x<documents.documents.length;x++)
-      {
-        if(documents.documents[x].documentID==id)
-          hours=documents.documents[x].data["score"]+int.parse(widget.hours.substring(0,1));
-      }
-      if(hours!=-1)
-      {
-        Firestore.instance.collection('profiles').document(id).updateData({'score': hours});
-      }
-
+      Firestore.instance.collection('profiles').document(id).updateData({'score': hours});
     }
 
+  }
 
-    Widget volunteerRow(String username, String profilePic, String submissionPic, String userId)
-    {
+  Widget volunteerRow(String username, String profilePic, String submissionPic, String userId)
+  {
 
 
     return new Container(
 
 
-                  child: Row
-                    (mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>
-                    [
-                      Expanded
-                        (
-                        child: FittedBox
-                          (
-                          fit: BoxFit.scaleDown,
-                          child: FloatingActionButton
-                            (
-                              child: const Icon(Icons.cancel),
-                              backgroundColor: Colors.red,
-                              onPressed: () {removeUserFromEvent(userId);setState(() {});}
-                          ),
-                        ),
-                      ),
+      child: Row
+        (mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>
+        [
+          Expanded
+            (
+            child: FittedBox
+              (
+              fit: BoxFit.scaleDown,
+              child: FloatingActionButton
+                (
+                  child: const Icon(Icons.cancel),
+                  backgroundColor: Colors.red,
+                  onPressed: () {removeUserFromEvent(userId);setState(() {});}
+              ),
+            ),
+          ),
 
-                      Expanded
-                        (
-                        child: FittedBox
-                          (
-                          fit: BoxFit.contain,
-                          // otherwise the logo will be tiny
-                          child: Image
-                            (
-                            image: NetworkImage(
-                                profilePic
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded
-                        (
-                        child: FittedBox
-                          (
-                          fit: BoxFit.contain,
-                          // otherwise the logo will be tiny
-                          child: Text(username),
-                        ),
-                      ),
+          Expanded
+            (
+            child: FittedBox
+              (
+              fit: BoxFit.contain,
+              // otherwise the logo will be tiny
+              child: Image
+                (
+                image: NetworkImage(
+                    profilePic
+                ),
+              ),
+            ),
+          ),
+          Expanded
+            (
+            child: FittedBox
+              (
+              fit: BoxFit.contain,
+              // otherwise the logo will be tiny
+              child: Text(username),
+            ),
+          ),
 
-                      Expanded
-                        (
-                        child: FittedBox
-                          (
-                          fit: BoxFit.contain,
-                          // otherwise the logo will be tiny
-                          child: Image
-                            (
-                            image: NetworkImage(
-                                submissionPic),
-                          ),
-                        ),
-                      ),
-                      Expanded
-                        (
-                        child: FittedBox
-                          (
-                          fit: BoxFit.scaleDown,
-                          child: FloatingActionButton
-                            (
-                              child: const Icon(Icons.check),
-                              backgroundColor: Colors.green,
-                              onPressed: () {addEventToUser(userId);removeUserFromEvent(userId);increaseUserHours(userId);setState(() {});}
-                          ),
-                        ),
-                      ),
+          Expanded
+            (
+            child: FittedBox
+              (
+              fit: BoxFit.contain,
+              // otherwise the logo will be tiny
+              child: Image
+                (
+                image: NetworkImage(
+                    submissionPic),
+              ),
+            ),
+          ),
+          Expanded
+            (
+            child: FittedBox
+              (
+              fit: BoxFit.scaleDown,
+              child: FloatingActionButton
+                (
+                  child: const Icon(Icons.check),
+                  backgroundColor: Colors.green,
+                  onPressed: () {addEventToUser(userId);removeUserFromEvent(userId);increaseUserHours(userId);setState(() {});}
+              ),
+            ),
+          ),
 
-                    ],
-                  ),
+        ],
+      ),
 
 
     );
@@ -256,55 +252,62 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
 
 
 
-    }
-    Widget volunteerList()
+  }
+
+  Widget volunteerList()
+  {
+    List<Widget> ll = new List<Widget>();
+    for(int x=0;x<widget.userList.length;x++)
     {
-      List<Widget> ll = new List<Widget>();
-      for(int x=0;x<widget.userList.length;x++)
-      {
-        String username;
-        String profilePic;
-        String userId;
-        String subPic;
-        if(documents.documents!=null) {
-          for (int xx = 0; xx < documents.documents.length; xx++) {
-            if (documents.documents[xx].documentID == widget.userList[x]) {
-              userId = documents.documents[xx].documentID;
-              username = documents.documents[xx].data["username"];
-              StorageReference ref = FirebaseStorage.instance.ref().child(
-                  "images/$userId");
-              imageGetProfile(ref);
-              profilePic = _url2;
+      String username;
+      String profilePic;
+      String userId;
+      String subPic;
+      if(documents!=null) {
+        for (int xx = 0; xx < documents.documents.length; xx++) {
+          if (documents.documents[xx].documentID == widget.userList[x]) {
+            userId = documents.documents[xx].documentID;
+            username = documents.documents[xx].data["username"];
+            StorageReference ref = FirebaseStorage.instance.ref().child(
+                "images/$userId");
+            imageGetProfile(ref);
+            profilePic = _url2;
 
 
-              List subList = new List();
-              for (int x = 0; x < documents2.documents.length; x++) {
-                if (documents2.documents[x].data["Location"] ==
-                    widget.location) {
-                  subList = documents2.documents[x].data["submissionList"];
-                }
+            List subList = new List();
+            for (int x = 0; x < documents2.documents.length; x++) {
+              if (documents2.documents[x].data["Location"] ==
+                  widget.location) {
+                subList = documents2.documents[x].data["submissionList"];
               }
-              for (int x = 0; x < subList.length; x++) {
-                String line = subList[x];
-                if (line.contains(userId)) {
-                  StorageReference ref = FirebaseStorage.instance.ref().child(
-                      "submissions/$line");
-                  imageGet(ref);
-                  subPic = _url;
-                  break;
-                }
+            }
+            for (int x = 0; x < subList.length; x++) {
+              String line = subList[x];
+              if (line.contains(userId)) {
+                StorageReference ref = FirebaseStorage.instance.ref().child(
+                    "submissions/$line");
+                imageGet(ref);
+                subPic = _url;
+                break;
               }
             }
           }
         }
-        if(profilePic!=null && _url!=null) {
-
-          Widget w = volunteerRow(username, profilePic, subPic, userId);
-          ll.add(w);
-        }
       }
-      return new Column(children: ll);
+      if(profilePic!=null && _url!=null) {
+
+        Widget w = volunteerRow(username, profilePic, subPic, userId);
+        ll.add(w);
+      }
     }
+    return new Column(children: ll);
+  }
+
+  @override
+  Widget build(BuildContext context)
+  {
+
+    getUserLocation();
 
     return Stack(
 
