@@ -45,18 +45,30 @@ class _SubmitState extends State<Submit> {
 
   void addUserToEvent() async{
     QuerySnapshot allDocuments = await Firestore.instance.collection("events").getDocuments();
+
     for(int i = 0; i< allDocuments.documents.length; i++){
-      if(allDocuments.documents[i].data["eventID"] == widget.eventId){
-        String uid = allDocuments.documents[i].documentID;
-        List userList = allDocuments.documents[i].data["userList"];
-        List submitList = allDocuments.documents[i].data["submissionList"];
+      print(allDocuments.documents[i].data["eventID"] );
+      print(widget.eventId);
+      if(allDocuments.documents[i].documentID == widget.eventId)
+      {
+        String uid = widget.eventId;
+        List<dynamic> userList = allDocuments.documents[i].data["userList"];
+        List<dynamic> submitList = allDocuments.documents[i].data["submissionList"];
         userList.add(widget.userId);
         String submitId = "${widget.userId}-${widget.eventId}";
         submitList.add(submitId);
         await Firestore.instance.collection("events").document(uid).updateData({"userList":userList});
         await Firestore.instance.collection("events").document(uid).updateData({"submissionList":submitList});
+        print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+        print(uid);
+        print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
+        print(userList.toString());
+
+
       }
     }
+    print('CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC');
+
 
   }
 
