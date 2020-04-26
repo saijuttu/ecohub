@@ -199,6 +199,7 @@ class MyAppState extends State<MyApp>{
             organizer: data[5],
             location: data[6],
             userList: data[7],
+            eventId: data[8],
             myapp:this);
       }
     }

@@ -59,20 +59,18 @@ class OrgDashState extends State<OrgDash> {
                     itemCount: documents.documents.length,
                     shrinkWrap: true,
                     itemBuilder:(context,index){
-
-                      return BlogsTile(
+                      return documents.documents[index].data["organizerID"] == widget.userId ? BlogsTile(
                           myapp: widget.myapp,
                           title: documents.documents[index].data["Event Name"],
                           imgUrl: documents.documents[index].data['imageUrl'],
                           description: documents.documents[index].data["Description"],
                           date: "date",
                           hours: "${documents.documents[index].data["Hours"]}",
-                          organizer: "organizer",
+                          organizer: documents.documents[index].data["organizerID"],
                           location: documents.documents[index].data["Location"],
                           userList: documents.documents[index].data["userList"],
-
-
-                      );
+                          eventId: documents.documents[index].documentID,
+                      ):Container();
                     }
                 ),
               )
@@ -139,7 +137,7 @@ class OrgDashState extends State<OrgDash> {
 
 class BlogsTile extends StatelessWidget {
 
-  String imgUrl, title, description, date, hours, organizer, location;
+  String imgUrl, title, description, date, hours, organizer, location, eventId;
   List<dynamic> userList;
   MyAppState myapp;
   BlogsTile({
@@ -152,11 +150,12 @@ class BlogsTile extends StatelessWidget {
     @required this.location,
     @required this.myapp,
     @required this.userList,
+    @required this.eventId,
   });
 
   openTile(){
     print(title);
-    List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location, this.userList];
+    List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location, this.userList, this.eventId];
     myapp.changePageWithData(PageType.EVENTVIEWORG,data);
   }
 

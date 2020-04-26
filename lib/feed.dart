@@ -49,9 +49,9 @@ class FeedState extends State<Feed> {
                       description: documents.documents[index].data["Description"],
                       date: "date",
                       hours: "${documents.documents[index].data["Hours"]} hours",
-                      organizer: "organizer",
+                      organizer: documents.documents[index].data["Organizer ID"],
                       location: documents.documents[index].data["Location"],
-                    eventId: documents.documents[index].documentID,
+                      eventId: documents.documents[index].documentID,
                   );
                 }
             ),

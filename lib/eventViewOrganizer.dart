@@ -19,13 +19,14 @@ class EventViewOrganizer extends StatefulWidget {
     @required this.organizer,
     @required this.location,
     @required this.userList,
+    @required this.eventId,
     @required this.myapp,
   }) : super(key: key);
 
   final BaseAuth auth;
   final MyAppState myapp;
   final String userId;
-  final String imgUrl, title, description, date, hours, organizer, location;
+  final String imgUrl, title, description, date, hours, organizer, location, eventId;
   final List userList;
 
   @override
@@ -61,9 +62,24 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
   Widget build(BuildContext context)
   {
 
-  //  String url = docsArr.
+    void addEventToUser(userId) async{
+      QuerySnapshot allDocuments = await Firestore.instance.collection("profiles").getDocuments();
 
-  //  print("URL: ${this.widget.imgUrl}");
+      for(int i = 0; i< allDocuments.documents.length; i++){
+        print(allDocuments.documents[i].documentID);
+        if(allDocuments.documents[i].documentID == widget.userId)
+        {
+          String uid = widget.userId;
+          List<dynamic> eventList = allDocuments.documents[i].data["eventList"];
+          List<dynamic> hourList = allDocuments.documents[i].data["hourList"];
+          eventList.add(widget.eventId);
+          hourList.add(widget.hours);
+          await Firestore.instance.collection("profiles").document(uid).updateData({"eventList":eventList});
+          await Firestore.instance.collection("profiles").document(uid).updateData({"hourLIst":hourList});
+        }
+      }
+    }
+
     void getUserLocation() async {//call this async method from whereever you need
 
       final coordinates = new Coordinates(29.791081, -95.808231);
@@ -174,7 +190,7 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
                             (
                               child: const Icon(Icons.check),
                               backgroundColor: Colors.green,
-                              onPressed: () {removeUserFromEvent(userId);increaseUserHours(userId);setState(() {});}
+                              onPressed: () {addEventToUser(userId);removeUserFromEvent(userId);increaseUserHours(userId);setState(() {});}
                           ),
                         ),
                       ),
