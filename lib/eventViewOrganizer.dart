@@ -258,11 +258,11 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
               )
           ),
           body: Container(
-            margin: EdgeInsets.all(25.0),
+            margin: EdgeInsets.all(15.0),
             decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.all(Radius.circular(25.0)
+                borderRadius: BorderRadius.all(Radius.circular(15.0)
                 )
             ),
             child: Padding(
@@ -277,7 +277,7 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
                     child: Stack(
                       children: <Widget>[
                         ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
                           child:  Image.network(
                             this.widget.imgUrl,
                             width: MediaQuery.of(context).size.width,
