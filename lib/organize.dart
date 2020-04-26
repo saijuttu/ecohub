@@ -160,7 +160,9 @@ class OrganizeState extends State<Organize> {
               ),
               SizedBox(height: 20),
 
+
               TextField(textAlign: TextAlign.center, keyboardType: TextInputType.multiline,controller: descriptionController, maxLines: 4, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
+
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
