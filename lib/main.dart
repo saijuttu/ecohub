@@ -85,7 +85,7 @@ class MyAppState extends State<MyApp>{
 
 
 
-    Widget home = new Organize(myapp: this);
+    Widget home = new Login(auth: Auth(), myapp: this, title: "LOGIN", );
     switch(this.currentPage){
       case PageType.LOGIN: {
         home = Login(myapp:this);
