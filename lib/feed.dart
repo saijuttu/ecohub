@@ -48,7 +48,7 @@ class FeedState extends State<Feed> {
                       imgUrl: documents.documents[index].data['imageUrl'],
                       description: documents.documents[index].data["Description"],
                       date: "date",
-                      hours: "${documents.documents[index].data["Hours"]} hours",
+                      hours: "${documents.documents[index].data["Hours"]}",
                       organizer: documents.documents[index].data["Organizer ID"],
                       location: documents.documents[index].data["Location"],
                       eventId: documents.documents[index].documentID,
@@ -136,7 +136,7 @@ class BlogsTile extends StatelessWidget {
                   SizedBox(
                     height: 4,
                   ),
-                  Text(hours,
+                  Text('$hours hours',
                       style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400)
                   ),
                   SizedBox(

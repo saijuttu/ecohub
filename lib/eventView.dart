@@ -67,7 +67,7 @@ class EventView extends StatelessWidget {
                     ),
                     Text(
                       "hub",
-                      style: TextStyle(fontSize: 27),
+                      style: TextStyle(fontSize: 27,color: Colors.white),
                     )
                   ]
               )
@@ -131,7 +131,7 @@ class EventView extends StatelessWidget {
 
                             ),
                             child: Text(
-                              "Event Name",
+                              '${this.title}',
                               style: TextStyle(
                                 fontSize: 40,
                                 color: Colors.white,
