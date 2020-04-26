@@ -13,6 +13,8 @@ import 'package:ecohub_app/submit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecohub_app/maps.dart';
 
+import 'loading.dart';
+
 void main() => runApp(MyApp());
 
 enum AuthStatus {
@@ -55,12 +57,14 @@ class MyApp extends StatefulWidget {
     this.auth,
     this.userId,
     this.currentPage,
+    this.loading,
   }) : super(key: key);
 
   final AuthStatus authState;
   final BaseAuth auth;
   final String userId;
   final PageType currentPage;
+  final bool loading;
 
   // This widget is the root of your application.
   @override
@@ -78,7 +82,11 @@ class MyAppState extends State<MyApp>{
   String email = "email@email.com";
   List  userList = new List();
   List data = [];
+  bool loading = false;
 
+  void setLoading(bool load){
+    setState(() => loading = load);
+  }
 
   void changePage(PageType newPage){
     setState(() {
@@ -194,6 +202,8 @@ class MyAppState extends State<MyApp>{
             myapp:this);
       }
     }
+
+    if(loading)home = Loading();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(

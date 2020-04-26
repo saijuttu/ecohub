@@ -19,58 +19,69 @@ class _LoginState extends State<Login> {
       return false;
     }
 
-    return Scaffold
-      (
+    return Scaffold(
 
-      backgroundColor: Color.fromRGBO(46,139,87, 1),
-      body: Padding
-        (
+      backgroundColor: Colors.black,//Color.fromRGBO(46,139,87, 1),
+      body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 50.0),
 
-    child: SingleChildScrollView(
-        child: Column
-          (
-          mainAxisAlignment: MainAxisAlignment.center,
+            child: SingleChildScrollView(
+                child: Column
+                  (
+                  mainAxisAlignment: MainAxisAlignment.center,
 
-          children: <Widget>
-          [
-            SizedBox(height: 40),
-            new Image(
-              image: new AssetImage("assets/apple.png"),
-              width: 100,
-              height:  100,
-            ),
-            SizedBox(height: 10),
-            Text('EcoHub',style: TextStyle(fontSize: 50,color: Color.fromRGBO(42, 222, 42, 1)),),
-            Text('____________________________',style: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),),
-            SizedBox(height: 100),
+                  children: <Widget>
+                  [
+                    SizedBox(height: 40),
+                    new Image(
+                      image: new AssetImage("assets/apple.png"),
+                      width: 100,
+                      height:  100,
+                    ),
+                    SizedBox(height: 10),
+                    //Text('EcoHub',style: TextStyle(fontSize: 50,color: Color.fromRGBO(42, 222, 42, 1)),),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "eco",
+                            style: TextStyle(fontSize: 40,color: Colors.green),
+                          ),
+                          Text(
+                            "hub",
+                            style: TextStyle(fontSize: 40, color: Colors.white),
+                          )
+                        ]
+                    ),
+                    Text('____________________________',style: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),),
+                    SizedBox(height: 100),
 
 
-            invalid()?
-            TextField(textAlign: TextAlign.center, controller: emailController, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
+                    invalid()?
+                    TextField(textAlign: TextAlign.center, controller: emailController, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.red,
+                          ),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        hintText: 'Email',
+                        hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
+                      ),
+                    ):
+                TextField(textAlign: TextAlign.center, controller: emailController, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
               decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.red,
+                    color: Colors.white,
                   ),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 hintText: 'Email',
                 hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
               ),
-            ):
-        TextField(textAlign: TextAlign.center, controller: emailController, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
-      decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.white,
-          ),
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        hintText: 'Email',
-        hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
-      ),
-    ),
+            ),
             SizedBox(height: 20),
 
             invalid()?
@@ -148,7 +159,9 @@ class Login extends StatefulWidget {
   final String title;
 
   void _login(String email, String password) async {
+    this.myapp.setLoading(true);
     String userId = await auth.signIn(email.trim(), password.trim());
+    if(userId.length == 0)this.myapp.setLoading(false);
     if(userId.length > 0) {
       StorageReference ref = FirebaseStorage.instance.ref().child("images/$userId");
       String url = (await ref.getDownloadURL()).toString();
@@ -159,7 +172,10 @@ class Login extends StatefulWidget {
         myapp.email = email;
         this.myapp.imageUrl = url;
       });
-      this.myapp.changePage(PageType.DASHBOARD);
+      if(url != null && email != null) {
+        this.myapp.setLoading(false);
+        this.myapp.changePage(PageType.DASHBOARD);
+      }
     }else{
 
       print("Failed to login");
