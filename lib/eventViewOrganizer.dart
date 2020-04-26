@@ -1,5 +1,7 @@
+import 'package:ecohub_app/loading.dart';
 import 'package:ecohub_app/services/auth.dart';
 import 'package:ecohub_app/main.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:flutter/services.dart';
@@ -41,25 +43,25 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
     wait();
     wait2();
   }
-  QuerySnapshot documents;
+  QuerySnapshot profiles;
 
   void wait() async {
     QuerySnapshot docs = await Firestore.instance.collection("profiles").getDocuments();
     setState(() {
-      this.documents = docs;
+      this.profiles = docs;
     });
   }
-  QuerySnapshot documents2;
+  QuerySnapshot events;
 
   void wait2() async {
     QuerySnapshot docs = await Firestore.instance.collection("events").getDocuments();
     setState(() {
-      this.documents2 = docs;
+      this.events = docs;
     });
   }
 
-  String _url = null;
-  String _url2 = null;
+  String _url = "";
+  String _url2 = "";
   void imageGet(StorageReference ref) async
   {//call this async method from whereever you need
     String url = (await ref.getDownloadURL()).toString();
@@ -105,25 +107,16 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
     }
   }
 
-  void getUserLocation() async {//call this async method from whereever you need
-
-    final coordinates = new Coordinates(29.791081, -95.808231);
-    var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var first = addresses.first;
-    //     print('ADRESSADRESSASDEAASDASDASD ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare} ADRESSADRESSASDEAASDASDASD');
-    //   return first;
-  }
-
   void removeUserFromEvent(String id)
   {
     String docId=null;
     List subList = new List();
-    for(int x=0;x<documents2.documents.length;x++)
+    for(int x=0;x<events.documents.length;x++)
     {
-      if(documents2.documents[x].data["Location"]==widget.location)
+      if(events.documents[x].data["Location"]==widget.location)
       {
-        docId = documents2.documents[x].documentID;
-        subList = documents2.documents[x].data["submissionList"];
+        docId = events.documents[x].documentID;
+        subList = events.documents[x].data["submissionList"];
         print(subList.toString());
       }
     }
@@ -155,10 +148,10 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
   void increaseUserHours(String id)
   {
     int hours=-1;
-    for(int x=0;x<documents.documents.length;x++)
+    for(int x=0;x<profiles.documents.length;x++)
     {
-      if(documents.documents[x].documentID==id)
-        hours=documents.documents[x].data["score"]+int.parse(widget.hours.substring(0,1));
+      if(profiles.documents[x].documentID==id)
+        hours=profiles.documents[x].data["score"]+int.parse(widget.hours.substring(0,1));
     }
     if(hours!=-1)
     {
@@ -256,34 +249,34 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
 
   Widget volunteerList()
   {
-    List<Widget> ll = new List<Widget>();
+    List<Widget> ll = [];
+    //print(documents2==null);
     for(int x=0;x<widget.userList.length;x++)
     {
       String username;
       String profilePic;
-      String userId;
+      String uId;
       String subPic;
-      if(documents!=null) {
-        for (int xx = 0; xx < documents.documents.length; xx++) {
-          if (documents.documents[xx].documentID == widget.userList[x]) {
-            userId = documents.documents[xx].documentID;
-            username = documents.documents[xx].data["username"];
+      if(profiles!=null && events != null) {
+        for (int xx = 0; xx < profiles.documents.length; xx++) {
+          if (profiles.documents[xx].documentID == widget.userList[x]) {
+            uId = profiles.documents[xx].documentID;
+            username = profiles.documents[xx].data["username"];
             StorageReference ref = FirebaseStorage.instance.ref().child(
-                "images/$userId");
+                "images/$uId");
             imageGetProfile(ref);
             profilePic = _url2;
 
-
-            List subList = new List();
-            for (int x = 0; x < documents2.documents.length; x++) {
-              if (documents2.documents[x].data["Location"] ==
+            List subList = [];
+            for (int x = 0; x < events.documents.length; x++) {
+              if (events.documents[x].data["Location"] ==
                   widget.location) {
-                subList = documents2.documents[x].data["submissionList"];
+                subList = events.documents[x].data["submissionList"];
               }
             }
             for (int x = 0; x < subList.length; x++) {
               String line = subList[x];
-              if (line.contains(userId)) {
+              if (line.contains(uId)) {
                 StorageReference ref = FirebaseStorage.instance.ref().child(
                     "submissions/$line");
                 imageGet(ref);
@@ -293,12 +286,19 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
             }
           }
         }
+      }else{
+        Loading();
       }
-      if(profilePic!=null && _url!=null) {
+      if(profilePic!=null && _url!=null&&subPic!=null) {
 
-        Widget w = volunteerRow(username, profilePic, subPic, userId);
+        Widget w = volunteerRow(username, profilePic, subPic, uId);
         ll.add(w);
+      }else{
+        return Loading();
       }
+    }
+    if(ll==null) {
+      return Text("HELPLME ");
     }
     return new Column(children: ll);
   }
@@ -307,8 +307,7 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
   Widget build(BuildContext context)
   {
 
-    getUserLocation();
-
+    print(widget.description);
     return Stack(
 
       children: <Widget>[

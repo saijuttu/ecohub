@@ -64,13 +64,13 @@ class OrgDashState extends State<OrgDash> {
                     itemBuilder:(context,index){
                       return documents.documents[index].data["organizerID"] == widget.userId ? BlogsTile(
                           myapp: widget.myapp,
-                          title: documents.documents[index].data["Event Name"],
+                          title: "Event",
                           imgUrl: documents.documents[index].data['imageUrl'],
-                          description: documents.documents[index].data["Description"],
+                          description: documents.documents[index].data["description"],
                           date: "date",
-                          hours: "${documents.documents[index].data["Hours"]}",
+                          hours: "${documents.documents[index].data["hours"]}",
                           organizer: documents.documents[index].data["organizerID"],
-                          location: documents.documents[index].data["Location"],
+                          location: documents.documents[index].data["address"],
                           userList: documents.documents[index].data["userList"],
                           eventId: documents.documents[index].documentID,
                       ):Container();

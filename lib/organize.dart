@@ -211,12 +211,14 @@ class OrganizeState extends State<Organize> {
                     //ADD FIRE BASE CODE HERE TO ADD TO DB
                     onPressed: () async {
                       //print("${widget.eventData.address}");
-                          DocumentReference ref = await Firestore.instance.collection("events").add({'organizerID': widget.userId,
-                            'hours':int.parse(hoursController.text),
-                            'description':descriptionController.text,
-                            'address': '${widget.eventData.address}',
-                            'latitude': '${widget.eventData.latitude}',
-                            'longitude': '${widget.eventData.longitude}',});
+                          DocumentReference ref = await Firestore.instance.collection("events").add(
+                              {'organizerID': widget.userId,
+                                'hours': int.parse(hoursController.text),
+                                'description': descriptionController.text,
+                                'address': '${widget.eventData.address}',
+                                'latitude': '${widget.eventData.latitude}',
+                                'longitude': '${widget.eventData.longitude}',
+                              });
                           Uploader uploadTask = Uploader(file: await _image, eventId: ref.documentID);
                           uploadTask.startupUpload();
 //                          StorageReference imageRef = FirebaseStorage.instance.ref().child("events/${ref.documentID}");
@@ -242,6 +244,7 @@ class OrganizeState extends State<Organize> {
 
   Future setEvent(DocumentReference ref, String downloadUrl) async{
     ref.setData({
+      'organizerID': widget.userId,
       'hours':int.parse(hoursController.text),
       'description':descriptionController.text,
       'address': '${widget.eventData.address}',
