@@ -54,7 +54,7 @@ class OrgDashState extends State<OrgDash> {
             children: <Widget>[
               Expanded(
                 child: ListView.builder(
-                    padding: EdgeInsets.symmetric(horizontal:16, vertical: 100),
+                    padding: EdgeInsets.symmetric(horizontal:16, vertical: 16),
                     itemCount: documents.documents.length,
                     shrinkWrap: true,
                     itemBuilder:(context,index){
@@ -88,7 +88,7 @@ class OrgDashState extends State<OrgDash> {
           Padding(padding: EdgeInsets.only(right:31),
             child: Align(
               alignment: Alignment.bottomRight,
-              child: FloatingActionButton(
+              child: FloatingActionButton(backgroundColor: Colors.purple,
                   child: const Icon(Icons.add),
                   onPressed:(){
                     print("update");
@@ -109,6 +109,22 @@ class OrgDashState extends State<OrgDash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black87,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              "eco",
+              style: TextStyle(fontSize: 27,color: Colors.green),
+            ),
+            Text(
+              "hub",
+              style: TextStyle(fontSize: 27),
+            )
+          ]
+        )
+      ),
       body: BlogList(),
       backgroundColor: Colors.black87,
 
