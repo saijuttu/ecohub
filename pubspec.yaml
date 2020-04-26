@@ -65,6 +65,7 @@ flutter:
   assets:
      - assets/apple.png
      - assets/Unknown.jpg
+     - assets/logo.png
 
 
 

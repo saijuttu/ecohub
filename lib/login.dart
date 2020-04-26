@@ -6,11 +6,21 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class _LoginState extends State<Login> {
   String emessage = "";
+  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController passwordController = new TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = new TextEditingController();
-    TextEditingController passwordController = new TextEditingController();
+
 
     bool invalid()
     {
@@ -32,17 +42,22 @@ class _LoginState extends State<Login> {
 
                   children: <Widget>
                   [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 100.0),
+                      child: Image(
+                          image: new AssetImage('assets/logo.png'),
+                          width: MediaQuery.of(context).size.width/3,
+                          height: MediaQuery.of(context).size.height/5,
+                          fit: BoxFit.contain,
 
-                    SizedBox(height: 100),
 
-//                    new Image(
-//                      image: new AssetImage("assets/apple.png"),
-//                      width: 100,
-//                      height:  100,
-//                    ),
 
+
+                      ),
+                    ),
 
                     SizedBox(height: 10),
+
                     //Text('EcoHub',style: TextStyle(fontSize: 50,color: Color.fromRGBO(42, 222, 42, 1)),),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -57,8 +72,8 @@ class _LoginState extends State<Login> {
                           )
                         ]
                     ),
-                    Text('____________________________',style: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),),
-                    SizedBox(height: 100),
+//                    Text('____________________________',style: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),),
+                    SizedBox(height: 50),
 
 
                     invalid()?
