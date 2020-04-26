@@ -45,6 +45,7 @@ and accepting the volunteer works of different users.
  * Flutter
  * Google Firebase
  * Android Studio
+ * Google Maps API
 
 ### Flutter
 We utilized a [Flutter] (https://flutter.dev/) frontend that uses the Dart programming language developed by
@@ -61,6 +62,40 @@ to Firebase. Also it provided quick authentication and usable API with Flutter.
 Finally, Android Studio was used for developing the application and testing by the developers. We
 were able to use the Android virtual devices to test the application.
 
+### Google Maps API
+We use this API in order to tell our users where they can fulfill their event requirements. It
+also helps recommend options for users to choose based on proximity.
+
 ## Usable Platforms
 
 The mobile app runs on both Android and iOS.
+
+## Challenges We Faced
+
+### 1. Challenge 1
+
+We faced many problems with Google Maps API such as cost. We had to search for a free version that
+allowed us to get geological coordinates.
+
+### 2. Challenge 2
+
+We had to learn Dart and Firebase from scratch. We all started this as a new language. This hackathon
+was also our entire team's first hackathon ever, so we got to learn new things and have fun.
+
+### 3. Challenge 3
+
+We had problems up until the last minute with code changes and code breaking down all over the place.
+With a live database, it was hard to work with multiple using it at the same time with different ideas.
+Teamwork also became a double edged sword. Asynchronous code and asynchronous coding can be annoying lol.
+
+## Inspiration
+
+X2Vol and other volunteering sites along with Meetup. We combined the two app ideas to come up with this
+benefical and fun app helps the environment and the users.
+
+## Accomplishments
+
+Our app is completed by the end luckily. We got the core components into the app despite not being able
+to add some features. We had very nice looking dark mode UI and it works well as intended with minimal
+problems.
+
