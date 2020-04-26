@@ -80,7 +80,7 @@ class _RegisterState extends State<Register> {
 
     return Scaffold
       (
-      backgroundColor: Color.fromRGBO(46,139,87, 1),
+      backgroundColor: Colors.black,
       body: Padding
         (
         padding: EdgeInsets.symmetric(horizontal: 50.0),
@@ -147,6 +147,8 @@ class _RegisterState extends State<Register> {
                     }else{
                       print("Success");
                       widget.myapp.changePage(PageType.LOGIN);
+//                      StorageReference ref = FirebaseStorage.instance.ref().child("images/$userId");
+//                      String url = (await ref.getDownloadURL()).toString();
                       Firestore.instance.collection('profiles').document(userId)
                           .setData({ 'username': usernameController.text, 'organizer' : false, 'score' :0, 'pic' : "", 'eventLog':new List(), 'hourLog':new List()});
                       Uploader uploader = Uploader(userId: userId, file: await _image);
