@@ -18,12 +18,15 @@ class EventView extends StatelessWidget {
     @required this.organizer,
     @required this.location,
     @required this.myapp,
+    @required this.userList,
+
   }) : super(key: key);
 
   final BaseAuth auth;
   final MyAppState myapp;
   final String userId;
   final String imgUrl, title, description, date, hours, organizer, location;
+  final List<dynamic> userList;
 
 
 

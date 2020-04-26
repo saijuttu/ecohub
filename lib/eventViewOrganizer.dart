@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-class EventViewOrganizer extends StatelessWidget {
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class EventViewOrganizer extends StatefulWidget {
   const EventViewOrganizer({
     Key key,
     this.auth,
@@ -16,6 +18,7 @@ class EventViewOrganizer extends StatelessWidget {
     @required this.hours,
     @required this.organizer,
     @required this.location,
+    @required this.userList,
     @required this.myapp,
   }) : super(key: key);
 
@@ -23,25 +26,44 @@ class EventViewOrganizer extends StatelessWidget {
   final MyAppState myapp;
   final String userId;
   final String imgUrl, title, description, date, hours, organizer, location;
+  final List<dynamic> userList;
 
+  @override
+  EventViewOrganizerState createState() => EventViewOrganizerState();
+}
+
+class EventViewOrganizerState extends State<EventViewOrganizer>
+{
+  QuerySnapshot documents;
+
+  void wait() async {
+    QuerySnapshot docs = await Firestore.instance.collection("profiles").getDocuments();
+    setState(() {
+      this.documents = docs;
+    });
+  }
 
 
   @override
-  Widget build(BuildContext context) {
-    print("URL: ${this.imgUrl}");
+  Widget build(BuildContext context)
+  {
+    wait();
+  //  String url = docsArr.
+
+  //  print("URL: ${this.widget.imgUrl}");
     void getUserLocation() async {//call this async method from whereever you need
 
       final coordinates = new Coordinates(29.791081, -95.808231);
       var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
       var first = addresses.first;
-      print('ADRESSADRESSASDEAASDASDASD ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare} ADRESSADRESSASDEAASDASDASD');
+ //     print('ADRESSADRESSASDEAASDASDASD ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare} ADRESSADRESSASDEAASDASDASD');
    //   return first;
     }
     getUserLocation();
 
 
 
-    Widget volunteerRow(String name, String p1, String p2)
+    Widget volunteerRow(String username, String profilePic, String submissionPic)
     {
 
 
@@ -75,7 +97,7 @@ class EventViewOrganizer extends StatelessWidget {
                           child: Image
                             (
                             image: NetworkImage(
-                                'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'
+                                profilePic
                             ),
                           ),
                         ),
@@ -86,7 +108,7 @@ class EventViewOrganizer extends StatelessWidget {
                           (
                           fit: BoxFit.contain,
                           // otherwise the logo will be tiny
-                          child: Text("USERNAME"),
+                          child: Text(username),
                         ),
                       ),
 
@@ -130,9 +152,21 @@ class EventViewOrganizer extends StatelessWidget {
     Widget volunteerList()
     {
       List<Widget> ll = new List<Widget>();
-      for(int x=0;x<3;x++)
+      for(int x=0;x<widget.userList.length;x++)
       {
-        Widget w = volunteerRow("name","name","name");
+        String username;
+        String profilePic;
+        for(int xx=0;xx<documents.documents.length;xx++)
+          {
+            if(documents.documents[xx].documentID==widget.userList[x])
+            {
+              username = documents.documents[xx].data["username"];
+              profilePic = documents.documents[xx].data["pic"];
+            }
+
+
+          }
+        Widget w = volunteerRow(username,profilePic,"submittedPic");
         ll.add(w);
       }
       return new Column(children: ll);
@@ -154,7 +188,7 @@ class EventViewOrganizer extends StatelessWidget {
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.85,
                       child:  Image(
-                        image: NetworkImage(this.imgUrl),
+                        image: NetworkImage(this.widget.imgUrl),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -172,7 +206,7 @@ class EventViewOrganizer extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        '${this.title}',
+                        '${this.widget.title}',
                         style: TextStyle(
                           fontSize: 40,
                           color: Colors.white,
@@ -198,7 +232,7 @@ class EventViewOrganizer extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0,10,0, 2),
                   child: Text(
-                    '${this.hours}',
+                    '${this.widget.hours}',
                     style: TextStyle(
                       fontSize: 35,
                     ),
@@ -230,7 +264,7 @@ class EventViewOrganizer extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 40),
                 child: Text(
-                  '${this.description}',
+                  '${this.widget.description}',
                   style: TextStyle(
                     fontSize: 12,
                   ),
@@ -279,7 +313,7 @@ class EventViewOrganizer extends StatelessWidget {
 
               onPressed: (){
                 print("Cancel");
-                myapp.changePage(PageType.DASHBOARD);
+                widget.myapp.changePage(PageType.DASHBOARD);
               }
           ),
         ),
