@@ -41,7 +41,7 @@ class FeedState extends State<Feed> {
                 itemCount: documents.documents.length,
                 shrinkWrap: true,
                 itemBuilder:(context,index){
-                  print(documents.documents[index].data['imageUrl']);
+                  //print(documents.documents[index].data['imageUrl']);
                   return  BlogsTile(
                       myapp: widget.myapp,
                       title: documents.documents[index].data["Event Name"],
@@ -89,7 +89,7 @@ class BlogsTile extends StatelessWidget {
   });
 
   openTile(){
-    print(title);
+    //print(title);
 
 
     List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location,this.eventId];

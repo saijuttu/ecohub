@@ -148,7 +148,7 @@ class _RegisterState extends State<Register> {
                       print("Success");
                       widget.myapp.changePage(PageType.LOGIN);
                       Firestore.instance.collection('profiles').document(userId)
-                          .setData({ 'username': usernameController.text, 'organizer' : false, 'score' :0, 'pic' : "", 'eventLog':[], 'hourLog':[]});
+                          .setData({ 'username': usernameController.text, 'organizer' : false, 'score' :0, 'pic' : "", 'eventLog':new List(), 'hourLog':new List()});
                       Uploader uploader = Uploader(userId: userId, file: await _image);
                       uploader.startupUpload();
                     }

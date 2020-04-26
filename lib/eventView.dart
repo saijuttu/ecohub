@@ -33,13 +33,13 @@ class EventView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("URL: ${this.imgUrl}");
+    //print("URL: ${this.imgUrl}");
     void getUserLocation() async {//call this async method from whereever you need
 
       final coordinates = new Coordinates(29.791081, -95.808231);
       var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
       var first = addresses.first;
-      print('ADRESSADRESSASDEAASDASDASD ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare} ADRESSADRESSASDEAASDASDASD');
+      //print('ADRESSADRESSASDEAASDASDASD ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare} ADRESSADRESSASDEAASDASDASD');
       //   return first;
     }
     getUserLocation();
@@ -228,7 +228,9 @@ class EventView extends StatelessWidget {
               child: const Icon(Icons.check),
               onPressed: (){
 
-                myapp.changePageWithData(PageType.SUBMIT, [eventId]);
+                List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location,this.eventId];
+
+                myapp.changePageWithData(PageType.SUBMIT,data);
               }
           ),
         ),

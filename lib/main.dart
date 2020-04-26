@@ -166,7 +166,7 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.EVENTVIEW:{
-
+        print(data);
         home = EventView(
             userId: userId,
             imgUrl: data[0],
@@ -183,9 +183,17 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.SUBMIT:{
-
-
-        home = Submit(userId: userId, eventId: data[0], myapp:this);
+        home = Submit(
+            userId: userId,
+            imgUrl: data[0],
+            title: data[1],
+            description: data[2],
+            date: data[3],
+            hours: data[4],
+            organizer: data[5],
+            location: data[6],
+            eventId: data[7],
+            myapp:this);
       }
       break;
       case PageType.EVENTVIEWORG:{
