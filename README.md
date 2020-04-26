@@ -10,25 +10,16 @@ All it takes is a simple picture and a hunt for volunteering requests with your 
 
 ## How It Works
 
-1. Register as a user.
+<p>
+  1. Register as a user    2. Profile keeps track of hours.    3. View your opportunities.
+ </p>
+ <img src="/images/step1.PNG" width="200"> <img src="/images/step2.PNG" width="200"> <img src="/images/step3.png" width="200">
+<p>
+  4. Read about an opportunity.    5. Submit your work.
+</p>
 
-![Step1](/images/step1.PNG)
+ <img src="/images/step4.PNG" width="200"><img src="/images/step5.png" width="200">
 
-2. Profile keeps track of hours.
-
-![Step2](/images/step2.PNG)
-
-3. View your opportunities.
-
-![Step3](/images/step3.png)
-
-4. Read about an opportunity.
-
-![Step4](/images/step4.PNG)
-
-5. Submit your work.
-
-![Step5](/images/step5.png)
 
 A simple user can use those 5 steps to gain volunteering hours alone or with their
 friends.
@@ -36,9 +27,7 @@ friends.
 A separate account is given to organizers which allows for the creation of events
 and accepting the volunteer works of different users.
 
-![Map](/images/Map.png)
-![Feed](/images/Feed.png)
-![Accept](/images/acceptances.png)
+<img src="/images/Map.png" width="200"> <img src="/images/Feed.png" width="200"> <img src="/images/acceptances.png" width="200">
 
 ## Technologies Utilized
 
