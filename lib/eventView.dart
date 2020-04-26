@@ -84,7 +84,7 @@ class EventView extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        this.title!=null?this.title:"Event Name",
+                        '${this.title}',
                         style: TextStyle(
                           fontSize: 40,
                           color: Colors.white,
@@ -110,7 +110,7 @@ class EventView extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0,10,0, 2),
                   child: Text(
-                    this.hours!=null?this.hours:"#",
+                    '${this.hours}',
                     style: TextStyle(
                       fontSize: 35,
                     ),
@@ -142,7 +142,7 @@ class EventView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 40),
                 child: Text(
-                  this.description!=null?this.description:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                  '${this.description}',
                   style: TextStyle(
                     fontSize: 12,
                   ),
