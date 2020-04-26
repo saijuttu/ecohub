@@ -74,8 +74,9 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
   {
     if(events!=null) {
       for (int x = 0; x < events.documents.length; x++) {
-        if (events.documents[x].documentID == widget.eventId)
+        if (events.documents[x].documentID == widget.eventId) {
           return events.documents[x].data["latitude"];
+        }
       }
     }
     return "";
@@ -144,7 +145,7 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
     List subList = new List();
     for(int x=0;x<events.documents.length;x++)
     {
-      if(events.documents[x].data["Location"]==widget.location)
+      if(events.documents[x].data["description"]==widget.description)
       {
         docId = events.documents[x].documentID;
         subList = events.documents[x].data["submissionList"];
@@ -501,16 +502,17 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
                   SizedBox(
                     width: 10,
                     height: 200,
-                    child:  GoogleMap(
+                    child:  Stack(children: [GoogleMap(
                       initialCameraPosition: CameraPosition(
 
                           target: LatLng(double.parse(getLat()), double.parse(getLong())),
-                          zoom: 10
+                          zoom: 13
                       ),
                       myLocationEnabled: true,
                       compassEnabled: true,
 
                     ),
+                    ])
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
