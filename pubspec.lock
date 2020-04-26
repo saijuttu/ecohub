@@ -226,13 +226,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.1+1"
-  location:
-    dependency: "direct main"
-    description:
-      name: location
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.2"
   keyboard_visibility:
     dependency: "direct main"
     description:
@@ -240,6 +233,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.6"
+  location:
+    dependency: "direct main"
+    description:
+      name: location
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.2"
   location_permissions:
     dependency: "direct main"
     description:

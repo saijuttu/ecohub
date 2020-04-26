@@ -9,11 +9,13 @@ class EventView extends StatelessWidget {
   const EventView({
     Key key,
     this.auth,
+    this.userId,
     @required this.myapp,
   }) : super(key: key);
 
   final BaseAuth auth;
   final MyAppState myapp;
+  final String userId;
 
 
 
@@ -160,7 +162,7 @@ class EventView extends StatelessWidget {
               child: const Icon(Icons.cancel),
               onPressed: (){
                 print("Cancel");
-                //myapp.changePage(PageType.Feed)
+                myapp.changePage(PageType.DASHBOARD);
               }
           ),
         ),
