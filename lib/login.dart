@@ -216,8 +216,6 @@ class Login extends StatefulWidget {
     }
   }
 
-
-
   void _toRegister(){
     this.myapp.changePage(PageType.REGISTER);
   }

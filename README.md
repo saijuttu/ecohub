@@ -12,11 +12,11 @@ All it takes is a simple picture and a hunt for volunteering requests with your 
 
 1. Register as a user.
 
-![Step1](/images/step1.png)
+![Step1](/images/step1.PNG)
 
 2. Profile keeps track of hours.
 
-![Step2](/images/step2.png)
+![Step2](/images/step2.PNG)
 
 3. View your opportunities.
 
@@ -24,7 +24,7 @@ All it takes is a simple picture and a hunt for volunteering requests with your 
 
 4. Read about an opportunity.
 
-![Step4](/images/step4.png)
+![Step4](/images/step4.PNG)
 
 5. Submit your work.
 
@@ -36,9 +36,8 @@ friends.
 A separate account is given to organizers which allows for the creation of events
 and accepting the volunteer works of different users.
 
-![Map](/images/map.png)
-![Feed](/images/feed.png)
-![Acceptance](/images/acceptance.png)
+![Map](/images/Map.png)
+![Feed](/images/Feed.png)
 
 ## Technologies Utilized
 
