@@ -87,6 +87,7 @@ class _LoginState extends State<Login> {
                 hintText: 'Password',
                 hintStyle: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),
               ),
+              obscureText: true,
             ),
             SizedBox(height: 20),
 

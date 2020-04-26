@@ -61,6 +61,7 @@ class OrgDashState extends State<OrgDash> {
                     itemCount: documents.documents.length,
                     shrinkWrap: true,
                     itemBuilder:(context,index){
+
                       return BlogsTile(
                           myapp: widget.myapp,
                           title: documents.documents[index].data["Event Name"],
