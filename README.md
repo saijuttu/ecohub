@@ -9,16 +9,14 @@ resume and pride while helping the environment.
 All it takes is a simple picture and a hunt for volunteering requests with your friends.
 
 ## How It Works
-
-<p>
-  1. Register as a user    2. Profile keeps track of hours.    3. View your opportunities.
- </p>
-
-<p>
-  4. Read about an opportunity.    5. Submit your work.
-</p>
+1. Register as a user    
+2. Profile keeps track of hours.    
+3. View your opportunities.
+4. Read about an opportunity.    
+5. Submit your work.
 
  <img src="/images/step1.PNG" width="200"><img src="/images/step2.PNG" width="200"><img src="/images/step3.png" width="200">
+ 
  <img src="/images/step4.PNG" width="200"><img src="/images/step5.png" width="200">
 
 
