@@ -30,6 +30,7 @@ enum PageType{
   MAPS,
   EVENTVIEW,
   SUBMIT,
+  EVENTVIEWORG,
 }
 
 Map<int, Color> color =
@@ -144,6 +145,10 @@ class MyAppState extends State<MyApp>{
       break;
       case PageType.SUBMIT:{
         home = Submit(userId: userId, myapp:this);
+      }
+      break;
+      case PageType.EVENTVIEWORG:{
+        home = EventViewOrganizer(userId: userId, myapp:this);
       }
     }
     return MaterialApp(

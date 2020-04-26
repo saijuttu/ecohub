@@ -133,7 +133,7 @@ class BlogsTile extends StatelessWidget {
 
   openTile(){
     print(title);
-    myapp.changePage(PageType.EVENTVIEW);
+    myapp.changePage(PageType.EVENTVIEWORG);
   }
 
   @override
