@@ -34,7 +34,6 @@ class OrgDash extends StatefulWidget {
 }
 
 class OrgDashState extends State<OrgDash> {
-
   QuerySnapshot documents;
 
   void wait() async {
@@ -46,7 +45,6 @@ class OrgDashState extends State<OrgDash> {
 
   Widget BlogList(){
     wait();
-
     if(documents==null){
       return Center(child: Text("Loading", style: TextStyle(color:Colors.white),));
     }
