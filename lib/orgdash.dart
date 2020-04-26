@@ -70,7 +70,9 @@ class OrgDashState extends State<OrgDash> {
                           date: "date",
                           hours: "${documents.documents[index].data["Hours"]}",
                           organizer: "organizer",
-                          location: documents.documents[index].data["Location"]
+                          location: documents.documents[index].data["Location"],
+                          userList: documents.documents[index].data["userList"],
+
 
                       );
                     }
@@ -140,6 +142,7 @@ class OrgDashState extends State<OrgDash> {
 class BlogsTile extends StatelessWidget {
 
   String imgUrl, title, description, date, hours, organizer, location;
+  List<dynamic> userList;
   MyAppState myapp;
   BlogsTile({
     @required this.imgUrl,
@@ -149,11 +152,13 @@ class BlogsTile extends StatelessWidget {
     @required this.hours,
     @required this.organizer,
     @required this.location,
-    @required this.myapp});
+    @required this.myapp,
+    @required this.userList,
+  });
 
   openTile(){
     print(title);
-    List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location];
+    List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location, this.userList];
     myapp.changePageWithData(PageType.EVENTVIEWORG,data);
   }
 

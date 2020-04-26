@@ -41,6 +41,7 @@ class FeedState extends State<Feed> {
                 itemCount: documents.documents.length,
                 shrinkWrap: true,
                 itemBuilder:(context,index){
+                  print(documents.documents[index].data['imageUrl']);
                   return  BlogsTile(
                       myapp: widget.myapp,
                       title: documents.documents[index].data["Event Name"],

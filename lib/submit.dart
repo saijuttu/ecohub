@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecohub_app/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +12,13 @@ class Submit extends StatefulWidget {
     this.auth,
     this.userId,
     this.eventId,
+    @required this.imgUrl,
+    @required this.title,
+    @required this.description,
+    @required this.date,
+    @required this.hours,
+    @required this.organizer,
+    @required this.location,
     @required this.myapp,
   }) : super(key: key);
 
@@ -18,6 +26,7 @@ class Submit extends StatefulWidget {
   final String userId;
   final String eventId;
   final MyAppState myapp;
+  final String imgUrl, title, description, date, hours, organizer, location;
 
   @override
   _SubmitState createState() => _SubmitState();
@@ -32,6 +41,35 @@ class _SubmitState extends State<Submit> {
     setState(() {
       _image = image;
     });
+  }
+
+  void addUserToEvent() async{
+    QuerySnapshot allDocuments = await Firestore.instance.collection("events").getDocuments();
+
+    for(int i = 0; i< allDocuments.documents.length; i++){
+      print(allDocuments.documents[i].data["eventID"] );
+      print(widget.eventId);
+      if(allDocuments.documents[i].documentID == widget.eventId)
+      {
+        String uid = widget.eventId;
+        List<dynamic> userList = allDocuments.documents[i].data["userList"];
+        List<dynamic> submitList = allDocuments.documents[i].data["submissionList"];
+        userList.add(widget.userId);
+        String submitId = "${widget.userId}-${widget.eventId}";
+        submitList.add(submitId);
+        await Firestore.instance.collection("events").document(uid).updateData({"userList":userList});
+        await Firestore.instance.collection("events").document(uid).updateData({"submissionList":submitList});
+        print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+        print(uid);
+        print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
+        print(userList.toString());
+
+
+      }
+    }
+    print('CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC');
+
+
   }
 
   Widget showImage() {
@@ -102,6 +140,7 @@ class _SubmitState extends State<Submit> {
                 }else{
                     Uploader task = Uploader(userId: widget.userId, file: file, eventId: widget.eventId,);
                     task.startupUpload();
+                    addUserToEvent();
                 }
                 widget.myapp.changePage(PageType.DASHBOARD);
               }
@@ -130,6 +169,7 @@ class Uploader extends StatelessWidget{
     if(uploadTask.isSuccessful){
       print("Sucessful upload");
     }
+
 
   }
   @override

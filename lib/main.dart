@@ -76,6 +76,7 @@ class MyAppState extends State<MyApp>{
   String imageUrl = "https://firebasestorage.googleapis.com/v0/b/ecohubfirebase.appspot.com/o/IMG_1734.JPG?alt=media&token=84aa8a1a-cc71-4bee-a798-a8dfdd57bfcb";
   int score = 0;
   String email = "email@email.com";
+  List <dynamic> userList = new List<dynamic>();
   List data = [];
 
 
@@ -165,9 +166,9 @@ class MyAppState extends State<MyApp>{
             hours: data[4],
             organizer: data[5],
             location: data[6],
-            eventId: data[7],
-            myapp:this,
-        );
+            userList: data[7],
+            myapp:this);
+
       }
       break;
       case PageType.SUBMIT:{
@@ -184,6 +185,7 @@ class MyAppState extends State<MyApp>{
             hours: data[4],
             organizer: data[5],
             location: data[6],
+            userList: data[7],
             myapp:this);
       }
     }
