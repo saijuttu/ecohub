@@ -26,7 +26,7 @@ friends.
 A separate account is given to organizers which allows for the creation of events
 and accepting the volunteer works of different users.
 
-<img src="/images/Map.png" width="200"> <img src="/images/Feed.png" width="200"> <img src="/images/acceptances.png" width="200">
+<img src="/images/Map.png" width="200"> <img src="/images/Feed.png" width="200"> <img src="/images/acceptdeny.png" width="200">
 
 ## Technologies Utilized
 
@@ -63,7 +63,8 @@ The mobile app runs on both Android and iOS.
 ### 1. Challenge 1
 
 We faced many problems with Google Maps API such as cost. We had to search for a free version that
-allowed us to get geological coordinates.
+allowed us to get a static image of a map due to the fact that the google maps API requires you
+to link a billing account.
 
 ### 2. Challenge 2
 
