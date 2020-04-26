@@ -34,6 +34,11 @@ class EventViewOrganizer extends StatefulWidget {
 
 class EventViewOrganizerState extends State<EventViewOrganizer>
 {
+  EventViewOrganizerState()
+  {
+    wait();
+    wait2();
+  }
   QuerySnapshot documents;
 
   void wait() async {
@@ -42,12 +47,20 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
       this.documents = docs;
     });
   }
+  QuerySnapshot documents2;
+
+  void wait2() async {
+    QuerySnapshot docs = await Firestore.instance.collection("events").getDocuments();
+    setState(() {
+      this.documents2 = docs;
+    });
+  }
 
 
   @override
   Widget build(BuildContext context)
   {
-    wait();
+
   //  String url = docsArr.
 
   //  print("URL: ${this.widget.imgUrl}");
@@ -60,10 +73,23 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
    //   return first;
     }
     getUserLocation();
+    void removeUserFromEvent(String id)
+    {
+      String docId=null;
+      for(int x=0;x<documents2.documents.length;x++)
+        {
+          if(documents2.documents[x].data["Location"]==widget.location)
+            docId=documents2.documents[x].documentID;
+        }
+      if(docId!=null) {
+        widget.userList.remove(id);
+        Firestore.instance.collection('events').document(docId).updateData({'userList': widget.userList});
+      }
+
+    }
 
 
-
-    Widget volunteerRow(String username, String profilePic, String submissionPic)
+    Widget volunteerRow(String username, String profilePic, String submissionPic, String userId)
     {
 
 
@@ -83,7 +109,7 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
                             (
                               child: const Icon(Icons.cancel),
                               backgroundColor: Colors.red,
-                              onPressed: () {}
+                              onPressed: () {removeUserFromEvent(userId);setState(() {});}
                           ),
                         ),
                       ),
@@ -134,7 +160,7 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
                             (
                               child: const Icon(Icons.check),
                               backgroundColor: Colors.green,
-                              onPressed: () {}
+                     //         onPressed: () {removeUserFromEvent(userId);setState(() {});}
                           ),
                         ),
                       ),
@@ -156,18 +182,25 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
       {
         String username;
         String profilePic;
+        String userId;
         for(int xx=0;xx<documents.documents.length;xx++)
           {
             if(documents.documents[xx].documentID==widget.userList[x])
             {
               username = documents.documents[xx].data["username"];
               profilePic = documents.documents[xx].data["pic"];
+              userId = documents.documents[xx].documentID;
+
             }
 
 
           }
-        Widget w = volunteerRow(username,profilePic,"submittedPic");
-        ll.add(w);
+        if(profilePic!=null) {
+          print(profilePic);
+          print(userId);
+          Widget w = volunteerRow(username, profilePic, "submittedPic", userId);
+          ll.add(w);
+        }
       }
       return new Column(children: ll);
     }
