@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:ecohub_app/maps.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class Organize extends StatefulWidget {
     final String userId;
@@ -43,7 +44,7 @@ class OrganizeState extends State<Organize> {
   final TextEditingController descriptionController = new TextEditingController();
 
   Future getImage() async{
-    Future<File> image = ImagePicker.pickImage(source: ImageSource.gallery);
+    Future<File> image = ImagePicker.pickImage(source: ImageSource.camera);
 
     setState(() {
       _image = image;
@@ -208,18 +209,24 @@ class OrganizeState extends State<Organize> {
                     //ADD FIRE BASE CODE HERE TO ADD TO DB
                     onPressed: () async {
                       //print("${widget.eventData.address}");
-                          DocumentReference ref = await Firestore.instance.collection("events").add({
-                            'organizerID': widget.userId,
-                            'hours':hoursController.text,
+                          DocumentReference ref = await Firestore.instance.collection("events").add({'organizerID': widget.userId,
+                            'hours':int.parse(hoursController.text),
                             'description':descriptionController.text,
                             'address': '${widget.eventData.address}',
                             'latitude': '${widget.eventData.latitude}',
-                            'longitude': '${widget.eventData.longitude}',
-                            'imageUrl': 'put url here u dumbo',
-                            'isAccepted': false,
-                            'submissionList': new List(),
-                            'userList': new List(),
-                      });//find out how to add event ID also
+                            'longitude': '${widget.eventData.longitude}',});
+                          Uploader uploadTask = Uploader(file: await _image, eventId: ref.documentID);
+                          uploadTask.startupUpload();
+//                          StorageReference imageRef = FirebaseStorage.instance.ref().child("events/${ref.documentID}");
+//                          String url = (await imageRef.getDownloadURL()).toString();
+//                          print(url);
+
+                      StorageTaskSnapshot taskSnapshot = await uploadTask.uploadTask.onComplete;
+                      String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+                      print(downloadUrl);
+                      await setEvent(ref, downloadUrl);
+
+                      widget.myapp.changePage(PageType.ORGDASH);
                     }
 
                     ),
@@ -230,5 +237,41 @@ class OrganizeState extends State<Organize> {
         )
     );
   }
+
+  Future setEvent(DocumentReference ref, String downloadUrl) async{
+    ref.setData({
+      'hours':int.parse(hoursController.text),
+      'description':descriptionController.text,
+      'address': '${widget.eventData.address}',
+      'latitude': '${widget.eventData.latitude}',
+      'longitude': '${widget.eventData.longitude}',
+      'imageUrl': downloadUrl,
+      'isAccepted': false,
+      'submissionList': new List(),
+      'userList': new List(),
+
+    });
+  }
+
 }
 
+class Uploader extends StatelessWidget{
+  final File file;
+  final String eventId;
+
+  Uploader({Key key,this.file, this.eventId}) : super(key: key);
+
+  final FirebaseStorage storage = FirebaseStorage(storageBucket: "gs://ecohubfirebase.appspot.com");
+
+  StorageUploadTask uploadTask;
+
+  void startupUpload(){
+    String filepath = 'events/$eventId';
+    uploadTask = storage.ref().child(filepath).putFile(file);
+    if(uploadTask.isSuccessful){
+      print("Sucessful upload");
+    }
+  }
+  @override
+  Widget build(BuildContext context){}
+}
