@@ -28,6 +28,7 @@ class Dashboard extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text('ecohub'),
+            backgroundColor: Color(0xFF006400), // or if you want black put Color(0xFF000000)
             bottom: TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.beach_access)),
