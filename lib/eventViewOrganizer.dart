@@ -8,7 +8,17 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ecohub_app/main.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:flutter/services.dart';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:flutter/rendering.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 class EventViewOrganizer extends StatefulWidget {
   const EventViewOrganizer({
     Key key,
@@ -58,6 +68,27 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
     setState(() {
       this.events = docs;
     });
+  }
+
+  String getLat()
+  {
+    if(events!=null) {
+      for (int x = 0; x < events.documents.length; x++) {
+        if (events.documents[x].documentID == widget.eventId)
+          return events.documents[x].data["latitude"];
+      }
+    }
+    return "";
+  }
+  String getLong()
+  {
+    if(events!=null) {
+      for (int x = 0; x < events.documents.length; x++) {
+        if (events.documents[x].documentID == widget.eventId)
+          return events.documents[x].data["longitude"];
+      }
+    }
+    return "";
   }
 
   String _url = "";
@@ -257,9 +288,13 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
       String profilePic;
       String uId;
       String subPic;
+
       if(profiles!=null && events != null) {
-        for (int xx = 0; xx < profiles.documents.length; xx++) {
-          if (profiles.documents[xx].documentID == widget.userList[x]) {
+        for (int xx = 0; xx < profiles.documents.length; xx++)
+        {
+
+          if (profiles.documents[xx].documentID == widget.userList[x])
+          {
             uId = profiles.documents[xx].documentID;
             username = profiles.documents[xx].data["username"];
             StorageReference ref = FirebaseStorage.instance.ref().child(
@@ -269,19 +304,22 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
 
             List subList = [];
             for (int x = 0; x < events.documents.length; x++) {
-              if (events.documents[x].data["Location"] ==
-                  widget.location) {
+
+              if (events.documents[x].data["description"] == widget.description) {
                 subList = events.documents[x].data["submissionList"];
               }
             }
-            for (int x = 0; x < subList.length; x++) {
-              String line = subList[x];
-              if (line.contains(uId)) {
-                StorageReference ref = FirebaseStorage.instance.ref().child(
-                    "submissions/$line");
-                imageGet(ref);
-                subPic = _url;
-                break;
+
+            if(subList!=null) {
+              for (int x = 0; x < subList.length; x++) {
+                String line = subList[x];
+                if (line.contains(uId)) {
+                  StorageReference ref = FirebaseStorage.instance.ref().child(
+                      "submissions/$line");
+                  imageGet(ref);
+                  subPic = _url;
+                  break;
+                }
               }
             }
           }
@@ -290,23 +328,28 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
         Loading();
       }
       if(profilePic!=null && _url!=null&&subPic!=null) {
+//        print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
+//        print(username);
+//        print(uId);
+//        print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
         Widget w = volunteerRow(username, profilePic, subPic, uId);
         ll.add(w);
-      }else{
-        return Loading();
       }
     }
-    if(ll==null) {
-      return Text("HELPLME ");
+
+
+
+    if(ll==null || ll.length==0) {
+      return Loading();
     }
-    return new Column(children: ll);
+    else
+      return new Column(children: ll);
   }
 
   @override
   Widget build(BuildContext context)
   {
 
-    print(widget.description);
     return Stack(
 
       children: <Widget>[
@@ -438,12 +481,35 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
                     child: Text(
-                      'MAP',
+                      'LOCATION',
                       style: TextStyle(
                           fontSize: 20,
 
                           color: Color.fromRGBO(192, 192, 192, 1)
                       ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
+                    child: Text(
+                      '${this.widget.location}\nCoordinates: '+getLat()+', '+getLong(),
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                    height: 200,
+                    child:  GoogleMap(
+                      initialCameraPosition: CameraPosition(
+
+                          target: LatLng(double.parse(getLat()), double.parse(getLong())),
+                          zoom: 10
+                      ),
+                      myLocationEnabled: true,
+                      compassEnabled: true,
+
                     ),
                   ),
                   Padding(

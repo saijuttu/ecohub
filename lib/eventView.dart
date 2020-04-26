@@ -1,11 +1,25 @@
+import 'package:ecohub_app/loading.dart';
 import 'package:ecohub_app/services/auth.dart';
 import 'package:ecohub_app/main.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-class EventView extends StatelessWidget {
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ecohub_app/main.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:flutter/services.dart';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:flutter/rendering.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+class EventView extends StatefulWidget {
   const EventView({
     Key key,
     this.auth,
@@ -26,11 +40,55 @@ class EventView extends StatelessWidget {
   final MyAppState myapp;
   final String userId;
   final String imgUrl, title, description, date, hours, organizer, location, eventId;
- // final List userList;
 
+  @override
+  EventViewState createState() => EventViewState();
+}
 
+class EventViewState extends State<EventView>
+{
+  EventViewState()
+  {
+    wait();
+    wait2();
+  }
+  QuerySnapshot profiles;
 
+  void wait() async {
+    QuerySnapshot docs = await Firestore.instance.collection("profiles").getDocuments();
+    setState(() {
+      this.profiles = docs;
+    });
+  }
+  QuerySnapshot events;
 
+  void wait2() async {
+    QuerySnapshot docs = await Firestore.instance.collection("events").getDocuments();
+    setState(() {
+      this.events = docs;
+    });
+  }
+
+  String getLat()
+  {
+    if(events!=null) {
+      for (int x = 0; x < events.documents.length; x++) {
+        if (events.documents[x].documentID == widget.eventId)
+          return events.documents[x].data["latitude"];
+      }
+    }
+    return "";
+  }
+  String getLong()
+  {
+    if(events!=null) {
+      for (int x = 0; x < events.documents.length; x++) {
+        if (events.documents[x].documentID == widget.eventId)
+          return events.documents[x].data["longitude"];
+      }
+    }
+    return "";
+  }
   @override
   Widget build(BuildContext context) {
     //print("URL: ${this.imgUrl}");
@@ -102,7 +160,7 @@ class EventView extends StatelessWidget {
 
                             borderRadius: BorderRadius.all(Radius.circular(15.0)),
                             child:  Image.network(
-                              this.imgUrl,
+                              this.widget.imgUrl,
                               width: MediaQuery.of(context).size.width,
                               height: MediaQuery.of(context).size.height * 0.85,
                               fit: BoxFit.cover,
@@ -131,7 +189,7 @@ class EventView extends StatelessWidget {
 
                             ),
                             child: Text(
-                              '${this.title}',
+                              '${this.widget.title}',
                               style: TextStyle(
                                 fontSize: 40,
                                 color: Colors.white,
@@ -157,7 +215,7 @@ class EventView extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(0,10,0, 2),
                         child: Text(
-                          '${this.hours}',
+                          '${this.widget.hours}',
                           style: TextStyle(
                             fontSize: 35,
                           ),
@@ -189,7 +247,7 @@ class EventView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20, 40),
                       child: Text(
-                        '${this.description}',
+                        '${this.widget.description}',
                         style: TextStyle(
                           fontSize: 12,
                         ),
@@ -198,12 +256,35 @@ class EventView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
                       child: Text(
-                        'MAP',
+                        'LOCATION',
                         style: TextStyle(
-                          fontSize: 20,
+                            fontSize: 20,
 
-                          color: Color.fromRGBO(192, 192, 192, 1)
+                            color: Color.fromRGBO(192, 192, 192, 1)
                         ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
+                      child: Text(
+                        '${this.widget.location}\nCoordinates: '+getLat()+', '+getLong(),
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                      height: 200,
+                      child:  GoogleMap(
+                        initialCameraPosition: CameraPosition(
+
+                            target: LatLng(double.parse(getLat()), double.parse(getLong())),
+                            zoom: 10
+                        ),
+                        myLocationEnabled: true,
+                        compassEnabled: true,
+
                       ),
                     ),
                   ],
@@ -218,7 +299,7 @@ class EventView extends StatelessWidget {
               child: const Icon(Icons.cancel),
               onPressed: (){
                 print("Cancel");
-                myapp.changePage(PageType.DASHBOARD);
+                widget.myapp.changePage(PageType.DASHBOARD);
               }
           ),
         ),
@@ -228,9 +309,9 @@ class EventView extends StatelessWidget {
               child: const Icon(Icons.check),
               onPressed: (){
 
-                List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location,this.eventId];
+                List data = [this.widget.imgUrl, this.widget.title, this.widget.description, this.widget.date, this.widget.hours, this.widget.organizer,this.widget.location,this.widget.eventId];
 
-                myapp.changePageWithData(PageType.SUBMIT,data);
+                widget.myapp.changePageWithData(PageType.SUBMIT,data);
               }
           ),
         ),
