@@ -239,147 +239,184 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
 
       children: <Widget>[
         Scaffold(
-          body: ListView(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-            children: <Widget>[
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.85,
-                child: Stack(
+            backgroundColor: Colors.black87,
+
+            appBar: AppBar(
+              backgroundColor: Colors.black87,
+              title: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.85,
-                      child:  Image(
-                        image: NetworkImage(this.widget.imgUrl),
-                        fit: BoxFit.cover,
-                      ),
+                    Text(
+                      "eco",
+                      style: TextStyle(fontSize: 27,color: Colors.green),
                     ),
-                    Container(
-                      alignment: Alignment.bottomCenter,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: <Color>[
-                            Colors.black.withAlpha(0),
-                            Colors.black12,
-                            Colors.black45
-                          ],
+                    Text(
+                      "hub",
+                      style: TextStyle(fontSize: 27),
+                    )
+                  ]
+              )
+          ),
+          body: Container(
+            margin: EdgeInsets.all(25.0),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.all(Radius.circular(25.0)
+                )
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal:0, vertical:0),
+
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                children: <Widget>[
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.85,
+                    child: Stack(
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                          child:  Image.network(
+                            this.widget.imgUrl,
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height * 0.85,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                      ),
+                        Container(
+                          alignment: Alignment.bottomCenter,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: <Color>[
+                                Colors.black.withAlpha(0),
+                                Colors.black12,
+                                Colors.black45
+                              ],
+                            ),
+                          ),
+                          child: Text(
+                            '${this.widget.title}',
+                            style: TextStyle(
+                              fontSize: 40,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
                       child: Text(
-                        '${this.widget.title}',
+                        'SCROLL UP',
                         style: TextStyle(
-                          fontSize: 40,
-                          color: Colors.white,
+                            fontSize: 20,
+                            color: Color.fromRGBO(192, 192, 192, 1)
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text(
-                    'SCROLL UP',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Color.fromRGBO(192, 192, 192, 1)
+                  ),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0,10,0, 2),
+                      child: Text(
+                        '${this.widget.hours}',
+                        style: TextStyle(
+                          fontSize: 35,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0,10,0, 2),
-                  child: Text(
-                    '${this.widget.hours}',
-                    style: TextStyle(
-                      fontSize: 35,
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0,5,0, 20),
+                      child: Text(
+                        'HOURS',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Color.fromRGBO(192, 192, 192, 1)
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0,5,0, 20),
-                  child: Text(
-                    'HOURS',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: Color.fromRGBO(192, 192, 192, 1)
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Text(
+                      'DESCRIPTION',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Color.fromRGBO(192, 192, 192, 1)
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Text(
-                  'DESCRIPTION',
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Color.fromRGBO(192, 192, 192, 1)
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 40),
+                    child: Text(
+                      '${this.widget.description}',
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20, 40),
-                child: Text(
-                  '${this.widget.description}',
-                  style: TextStyle(
-                    fontSize: 12,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
+                    child: Text(
+                      'MAP',
+                      style: TextStyle(
+                          fontSize: 20,
+
+                          color: Color.fromRGBO(192, 192, 192, 1)
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
-                child: Text(
-                  'MAP',
-                  style: TextStyle(
-                      fontSize: 20,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
 
-                      color: Color.fromRGBO(192, 192, 192, 1)
+                    child: Text(
+                      'Volunteer List',
+                      style: TextStyle(
+                          fontSize: 20,
+
+                          color: Color.fromRGBO(192, 192, 192, 1)
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
 
-                child: Text(
-                  'Volunteer List',
-                  style: TextStyle(
-                      fontSize: 20,
-
-                      color: Color.fromRGBO(192, 192, 192, 1)
+                    child: volunteerList(),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
 
-                child: volunteerList(),
+
+
+                ],
               ),
 
+            )
 
-
-            ],
-          ),
+          )
         ),
+        Padding(
+          padding: EdgeInsets.only(left: 15, top: 22 ),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: FloatingActionButton(
+                child: const Icon(Icons.arrow_back_ios),
+                backgroundColor: Colors.transparent,
 
-        Align(
-          alignment: Alignment.topLeft,
-          child: FloatingActionButton(
-              child: const Icon(Icons.cancel),
-              backgroundColor: Colors.red,
-
-              onPressed: (){
-                print("Cancel");
-                widget.myapp.changePage(PageType.DASHBOARD);
-              }
+                onPressed: (){
+                  print("Cancel");
+                  widget.myapp.changePage(PageType.DASHBOARD);
+                }
+            ),
           ),
-        ),
+        )
+
       ],
     );
   }
