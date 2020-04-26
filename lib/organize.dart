@@ -194,9 +194,9 @@ class OrganizeState extends State<Organize> {
                     child: FloatingActionButton(backgroundColor: Colors.red,
                       child: Icon(Icons.cancel),
                         onPressed: (){
-                          print(hoursController.text);
-                          print(descriptionController.text);
-                          //widget._cancel();
+                          //print(hoursController.text);
+                          //print(descriptionController.text);
+                          widget._cancel();
                         }
                     ),
                   ),),
@@ -207,7 +207,7 @@ class OrganizeState extends State<Organize> {
                     child: Icon(Icons.check),
                     //ADD FIRE BASE CODE HERE TO ADD TO DB
                     onPressed: () async {
-                      print("${widget.eventData.address}");
+                      //print("${widget.eventData.address}");
                           DocumentReference ref = await Firestore.instance.collection("events").add({
                               'userId': widget.userId,
                             'hours':hoursController.text,
