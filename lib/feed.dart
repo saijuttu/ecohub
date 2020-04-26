@@ -34,27 +34,25 @@ class FeedState extends State<Feed> {
 
           Expanded(
             child:ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal:16, vertical: 16),
-        itemCount: documents.documents.length,
-        shrinkWrap: true,
-        itemBuilder:(context,index){
-          return  BlogsTile(
-              myapp: widget.myapp,
-              title: documents.documents[index].data["Event Name"],
-              imgUrl: documents.documents[index].data['imageURL'],
-              description: documents.documents[index].data["Description"],
-              date: "date",
-              hours: "${documents.documents[index].data["Hours"]} hours",
-              organizer: "organizer",
-              location: documents.documents[index].data["Location"]);
-        }
-    ),
-        )
-      ],
-
+                padding: EdgeInsets.symmetric(horizontal:16, vertical: 100),
+                itemCount: documents.documents.length,
+                shrinkWrap: true,
+                itemBuilder:(context,index){
+                  return  BlogsTile(
+                      myapp: widget.myapp,
+                      title: documents.documents[index].data["Event Name"],
+                      imgUrl: documents.documents[index].data['imageURL'],
+                      description: documents.documents[index].data["Description"],
+                      date: "date",
+                      hours: "${documents.documents[index].data["Hours"]} hours",
+                      organizer: "organizer",
+                      location: documents.documents[index].data["Location"]);
+                }
+            ),
+          )
+        ],
       )
     );
-
   }
 
   @override
@@ -85,7 +83,8 @@ class BlogsTile extends StatelessWidget {
 
   openTile(){
     print(title);
-    myapp.changePage(PageType.EVENTVIEW);
+    List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location];
+    myapp.changePageWithData(PageType.EVENTVIEW,data);
   }
 
   @override

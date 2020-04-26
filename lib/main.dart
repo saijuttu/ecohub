@@ -1,5 +1,6 @@
 import 'package:ecohub_app/maps.dart';
 import 'package:flutter/material.dart';
+import 'package:ecohub_app/eventViewOrganizer.dart';
 import 'package:ecohub_app/services/auth.dart';
 import 'package:ecohub_app/register.dart';
 import 'package:ecohub_app/login.dart';
@@ -30,6 +31,7 @@ enum PageType{
   MAPS,
   EVENTVIEW,
   SUBMIT,
+  EVENTVIEWORG,
 }
 
 Map<int, Color> color =
@@ -74,8 +76,8 @@ class MyAppState extends State<MyApp>{
   String imageUrl = "https://firebasestorage.googleapis.com/v0/b/ecohubfirebase.appspot.com/o/IMG_1734.JPG?alt=media&token=84aa8a1a-cc71-4bee-a798-a8dfdd57bfcb";
   int score = 0;
   String email = "email@email.com";
-  LocationData eventData;
-  List data =[];
+  List data = [];
+
 
   void changePage(PageType newPage){
     setState(() {
@@ -87,6 +89,7 @@ class MyAppState extends State<MyApp>{
     setState(() {
       currentPage = newPage;
       this.data = data;
+
     });
   }
 
@@ -153,11 +156,33 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.EVENTVIEW:{
-        home = EventView(userId: userId, myapp:this);
+        home = EventView(
+            userId: userId,
+            imgUrl: data[0],
+            title: data[1],
+            description: data[2],
+            date: data[3],
+            hours: data[4],
+            organizer: data[5],
+            location: data[6],
+            myapp:this);
       }
       break;
       case PageType.SUBMIT:{
         home = Submit(userId: userId, myapp:this);
+      }
+      break;
+      case PageType.EVENTVIEWORG:{
+        home = EventViewOrganizer(
+            userId: userId,
+            imgUrl: data[0],
+            title: data[1],
+            description: data[2],
+            date: data[3],
+            hours: data[4],
+            organizer: data[5],
+            location: data[6],
+            myapp:this);
       }
     }
     return MaterialApp(

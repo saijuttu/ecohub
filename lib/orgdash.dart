@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ecohub_app/services/auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 class OrgDash extends StatefulWidget {
@@ -33,9 +34,19 @@ class OrgDash extends StatefulWidget {
 }
 
 class OrgDashState extends State<OrgDash> {
-  int itemCount = 4;
+
+  QuerySnapshot documents;
+
+  void wait() async {
+    QuerySnapshot docs = await Firestore.instance.collection("Locations").getDocuments();
+    setState(() {
+      this.documents = docs;
+    });
+  }
 
   Widget BlogList(){
+    wait();
+
     return Stack(
         children: <Widget>[
           Container(
@@ -43,18 +54,19 @@ class OrgDashState extends State<OrgDash> {
             children: <Widget>[
               Expanded(
                 child: ListView.builder(
-                    padding: EdgeInsets.symmetric(horizontal:16, vertical: 16),
-                    itemCount: itemCount,
+                    padding: EdgeInsets.symmetric(horizontal:16, vertical: 100),
+                    itemCount: documents.documents.length,
                     shrinkWrap: true,
                     itemBuilder:(context,index){
                       return BlogsTile(
-                          imgUrl: "https://drive.google.com/open?id=1TQrjw3l8cdWlL6GXzpU8e58aNlxHG2E8",
-                          title: "schletus",
-                          description: "yeetus",
+                          myapp: widget.myapp,
+                          title: documents.documents[index].data["Event Name"],
+                          imgUrl: documents.documents[index].data['imageURL'],
+                          description: documents.documents[index].data["Description"],
                           date: "date",
-                          hours: "hours",
+                          hours: "${documents.documents[index].data["Hours"]} hours",
                           organizer: "organizer",
-                          location: "meetus"
+                          location: documents.documents[index].data["Location"]
 
                       );
                     }
@@ -73,18 +85,20 @@ class OrgDashState extends State<OrgDash> {
                   }
               ),
             ),),
+          Padding(padding: EdgeInsets.only(right:31),
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: FloatingActionButton(
+                  child: const Icon(Icons.add),
+                  onPressed:(){
+                    print("update");
+                    widget._submit();
+                  }
+              ),
 
-          Align(
-            alignment: Alignment.bottomRight,
-            child: FloatingActionButton(
-                child: const Icon(Icons.add),
-                onPressed:(){
-                  print("update");
-                  widget._submit();
-                }
             ),
+          )
 
-          ),
 
         ],
 
@@ -106,7 +120,7 @@ class OrgDashState extends State<OrgDash> {
 class BlogsTile extends StatelessWidget {
 
   String imgUrl, title, description, date, hours, organizer, location;
-
+  MyAppState myapp;
   BlogsTile({
     @required this.imgUrl,
     @required this.title,
@@ -114,14 +128,20 @@ class BlogsTile extends StatelessWidget {
     @required this.date,
     @required this.hours,
     @required this.organizer,
-    @required this.location});
+    @required this.location,
+    @required this.myapp});
 
+  openTile(){
+    print(title);
+    List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location];
+    myapp.changePageWithData(PageType.EVENTVIEWORG,data);
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: (){
-          print(title);
+          openTile();
         },
         child: Container(
           margin: EdgeInsets.only(bottom: 16),
@@ -130,7 +150,7 @@ class BlogsTile extends StatelessWidget {
             ClipRRect(
                 borderRadius: BorderRadius.circular(6),
                 child: Image.network(
-                    'https://cdn.pixabay.com/photo/2016/10/22/17/46/scotland-1761292_960_720.jpg',
+                    imgUrl,
                     width: MediaQuery.of(context).size.width,
                     fit: BoxFit.cover)
             ),
