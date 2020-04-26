@@ -75,10 +75,18 @@ class MyAppState extends State<MyApp>{
   String imageUrl = "https://firebasestorage.googleapis.com/v0/b/ecohubfirebase.appspot.com/o/IMG_1734.JPG?alt=media&token=84aa8a1a-cc71-4bee-a798-a8dfdd57bfcb";
   int score = 0;
   String email = "email@email.com";
+  List data = [];
 
   void changePage(PageType newPage){
     setState(() {
       currentPage = newPage;
+    });
+  }
+
+  void changePageWithData(PageType newPage, List newData){
+    setState((){
+      currentPage = newPage;
+      data = newData;
     });
   }
 
@@ -140,7 +148,16 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.EVENTVIEW:{
-        home = EventView(userId: userId, myapp:this);
+        home = EventView(
+            userId: userId,
+            imgUrl: data[0],
+            title: data[1],
+            description: data[2],
+            date: data[3],
+            hours: data[4],
+            organizer: data[5],
+            location: data[6],
+            myapp:this);
       }
       break;
       case PageType.SUBMIT:{
@@ -148,7 +165,16 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.EVENTVIEWORG:{
-        home = EventViewOrganizer(userId: userId, myapp:this);
+        home = EventViewOrganizer(
+            userId: userId,
+            imgUrl: data[0],
+            title: data[1],
+            description: data[2],
+            date: data[3],
+            hours: data[4],
+            organizer: data[5],
+            location: data[6],
+            myapp:this);
       }
     }
     return MaterialApp(
