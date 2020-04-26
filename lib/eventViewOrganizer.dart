@@ -87,6 +87,20 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
       }
 
     }
+    void increaseUserHours(String id)
+    {
+      int hours=-1;
+      for(int x=0;x<documents.documents.length;x++)
+      {
+        if(documents.documents[x].documentID==id)
+          hours=documents.documents[x].data["score"]+int.parse(widget.hours.substring(0,1));
+      }
+      if(hours!=-1)
+      {
+        Firestore.instance.collection('profiles').document(id).updateData({'score': hours});
+      }
+
+    }
 
 
     Widget volunteerRow(String username, String profilePic, String submissionPic, String userId)
@@ -160,7 +174,7 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
                             (
                               child: const Icon(Icons.check),
                               backgroundColor: Colors.green,
-                     //         onPressed: () {removeUserFromEvent(userId);setState(() {});}
+                              onPressed: () {removeUserFromEvent(userId);increaseUserHours(userId);setState(() {});}
                           ),
                         ),
                       ),
