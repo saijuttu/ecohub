@@ -38,6 +38,7 @@ and accepting the volunteer works of different users.
 
 ![Map](/images/Map.png)
 ![Feed](/images/Feed.png)
+![Accept](/images/acceptances.png)
 
 ## Technologies Utilized
 
