@@ -32,12 +32,15 @@ class _LoginState extends State<Login> {
 
                   children: <Widget>
                   [
-                    SizedBox(height: 40),
+
+                    SizedBox(height: 100),
+
 //                    new Image(
 //                      image: new AssetImage("assets/apple.png"),
 //                      width: 100,
 //                      height:  100,
 //                    ),
+
 
                     SizedBox(height: 10),
                     //Text('EcoHub',style: TextStyle(fontSize: 50,color: Color.fromRGBO(42, 222, 42, 1)),),
@@ -113,25 +116,40 @@ class _LoginState extends State<Login> {
             ),
             SizedBox(height: 20),
 
-            RaisedButton(color: Color.fromRGBO(42, 222, 42, 1),
-                onPressed: () async {
-                  widget._login(emailController.text, passwordController.text);
-                  setState(() {
-                    emessage = "Invalid username or password";
-                  });
-                },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: const Text('Login', style: TextStyle(fontSize: 20, color: Colors.white))
-            ),
-            RaisedButton(color: Color.fromRGBO(42, 222, 42, 1),
-                onPressed: (){
-                    widget._toRegister();
-                },
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10)),
-                child: const Text('Register', style: TextStyle(fontSize: 20, color: Colors.white))
-            ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+
+                    children: <Widget>[
+                      Padding(
+                          padding: const EdgeInsets.only(left:10.0,right:20.0,top: 10.0),
+                          child: RaisedButton(
+                              color: Color.fromRGBO(42, 222, 42, 1),
+                              onPressed: () async {
+                                widget._login(emailController.text, passwordController.text);
+                                setState(() {
+                                  emessage = "Invalid username or password";
+                                });
+                              },
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: const Text('Login', style: TextStyle(fontSize: 20, color: Colors.white))
+                          ),
+
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left:10.0,right:20.0,top: 10.0),
+                        child: RaisedButton(color: Color.fromRGBO(42, 222, 42, 1),
+                            onPressed: (){
+                              widget._toRegister();
+                            },
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            child: const Text('Register', style: TextStyle(fontSize: 20, color: Colors.white))
+                        ),
+
+                      ),
+                    ],
+                  ),
             SizedBox(height: 20),
             Text("$emessage")
           ],
