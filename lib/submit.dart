@@ -8,10 +8,12 @@ class Submit extends StatefulWidget {
   const Submit({
     Key key,
     this.auth,
+    this.userId,
     @required this.myapp,
   }) : super(key: key);
 
   final BaseAuth auth;
+  final String userId;
   final MyAppState myapp;
 
   @override
@@ -73,6 +75,7 @@ class _SubmitState extends State<Submit> {
               child: const Icon(Icons.cancel),
               onPressed: (){
                 print("Cancel");
+                widget.myapp.changePage(PageType.EVENTVIEW);
               }
           ),
         ),
@@ -82,6 +85,7 @@ class _SubmitState extends State<Submit> {
               child: const Icon(Icons.send),
               onPressed: (){
                 print("Accepted");
+                widget.myapp.changePage(PageType.DASHBOARD);
               }
           ),
         ),

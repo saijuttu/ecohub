@@ -172,7 +172,7 @@ class EventView extends StatelessWidget {
               child: const Icon(Icons.check),
               onPressed: (){
                 print("Accepted");
-                //myapp.changePage(PageType.Submit, event_id)
+                myapp.changePage(PageType.SUBMIT);
               }
           ),
         ),

@@ -1,9 +1,5 @@
 import 'package:ecohub_app/maps.dart';
 import 'package:flutter/material.dart';
-import './profile.dart' as profile;
-import './feed.dart' as feed;
-import './orgdash.dart' as orgdash;
-import 'feed.dart';
 import 'package:ecohub_app/services/auth.dart';
 import 'package:ecohub_app/register.dart';
 import 'package:ecohub_app/login.dart';
@@ -11,10 +7,9 @@ import 'package:ecohub_app/profile.dart';
 import 'package:ecohub_app/orgdash.dart';
 import 'package:ecohub_app/organize.dart';
 import 'package:ecohub_app/dashboard.dart';
-import 'package:flutter/material.dart';
 import 'package:ecohub_app/eventView.dart';
+import 'package:ecohub_app/submit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 void main() => runApp(MyApp());
 
@@ -33,6 +28,7 @@ enum PageType{
   ORGDASH,
   MAPS,
   EVENTVIEW,
+  SUBMIT,
 }
 
 Map<int, Color> color =
@@ -147,6 +143,9 @@ class MyAppState extends State<MyApp>{
         home = EventView(userId: userId, myapp:this);
       }
       break;
+      case PageType.SUBMIT:{
+        home = Submit(userId: userId, myapp:this);
+      }
     }
     return MaterialApp(
       title: 'Flutter Demo',
