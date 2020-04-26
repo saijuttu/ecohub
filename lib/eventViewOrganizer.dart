@@ -8,7 +8,17 @@ import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:ecohub_app/main.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:flutter/services.dart';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:flutter/rendering.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 class EventViewOrganizer extends StatefulWidget {
   const EventViewOrganizer({
     Key key,
@@ -58,6 +68,27 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
     setState(() {
       this.events = docs;
     });
+  }
+
+  String getLat()
+  {
+    if(events!=null) {
+      for (int x = 0; x < events.documents.length; x++) {
+        if (events.documents[x].documentID == widget.eventId)
+          return events.documents[x].data["latitude"];
+      }
+    }
+    return "";
+  }
+  String getLong()
+  {
+    if(events!=null) {
+      for (int x = 0; x < events.documents.length; x++) {
+        if (events.documents[x].documentID == widget.eventId)
+          return events.documents[x].data["longitude"];
+      }
+    }
+    return "";
   }
 
   String _url = "";
@@ -439,12 +470,35 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
                   Padding(
                     padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
                     child: Text(
-                      'MAP',
+                      'ADDRESS',
                       style: TextStyle(
                           fontSize: 20,
 
                           color: Color.fromRGBO(192, 192, 192, 1)
                       ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
+                    child: Text(
+                      '${this.widget.location}\nCoordinates: '+getLat()+', '+getLong(),
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                    height: 200,
+                    child:  GoogleMap(
+                      initialCameraPosition: CameraPosition(
+
+                          target: LatLng(double.parse(getLat()), double.parse(getLong())),
+                          zoom: 10
+                      ),
+                      myLocationEnabled: true,
+                      compassEnabled: true,
+
                     ),
                   ),
                   Padding(
