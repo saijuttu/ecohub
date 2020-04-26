@@ -32,18 +32,25 @@ class _LoginState extends State<Login> {
 
                   children: <Widget>
                   [
-                    ClipRRect(
 
-                      child:  Image.network(
-                        'https://www.graphicsprings.com/filestorage/stencils/dfaefae4af3fadbeee8f4adc41a620e0.png?width=500&height=500',
-                        width: MediaQuery.of(context).size.width/3,
-                        height: MediaQuery.of(context).size.height/3,
-                        fit: BoxFit.contain,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 100.0),
+                      child: ClipRRect(
 
+                        child:  Image.network(
+                          'https://www.graphicsprings.com/filestorage/stencils/dfaefae4af3fadbeee8f4adc41a620e0.png?width=500&height=500',
+                          width: MediaQuery.of(context).size.width/3,
+                          height: MediaQuery.of(context).size.height/5,
+                          fit: BoxFit.contain,
+
+
+                        ),
 
                       ),
-
                     ),
+
+                    SizedBox(height: 10),
+
                     //Text('EcoHub',style: TextStyle(fontSize: 50,color: Color.fromRGBO(42, 222, 42, 1)),),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,

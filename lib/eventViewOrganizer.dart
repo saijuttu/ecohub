@@ -5,6 +5,7 @@ import 'package:geocoder/geocoder.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class EventViewOrganizer extends StatefulWidget {
   const EventViewOrganizer({
@@ -57,7 +58,22 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
     });
   }
 
-
+  String _url = null;
+  String _url2 = null;
+  void imageGet(StorageReference ref) async
+  {//call this async method from whereever you need
+    String url = (await ref.getDownloadURL()).toString();
+    setState(() {
+      _url = url;
+    });
+  }
+  void imageGetProfile(StorageReference ref) async
+  {//call this async method from whereever you need
+    String url = (await ref.getDownloadURL()).toString();
+    setState(() {
+      _url2 = url;
+    });
+  }
   @override
   Widget build(BuildContext context)
   {
@@ -65,17 +81,29 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
     void addEventToUser(userId) async{
       QuerySnapshot allDocuments = await Firestore.instance.collection("profiles").getDocuments();
 
+
       for(int i = 0; i< allDocuments.documents.length; i++){
-        print(allDocuments.documents[i].documentID);
-        if(allDocuments.documents[i].documentID == widget.userId)
+
+
+        if(allDocuments.documents[i].documentID == userId)
         {
-          String uid = widget.userId;
-          List<dynamic> eventList = allDocuments.documents[i].data["eventList"];
-          List<dynamic> hourList = allDocuments.documents[i].data["hourList"];
+          print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+
+          List<dynamic> eventList = allDocuments.documents[i].data["eventLog"];
+          print(eventList.toString());
+
+          List<dynamic> hourList = allDocuments.documents[i].data["hourLog"];
+          print(hourList.toString());
+
           eventList.add(widget.eventId);
           hourList.add(widget.hours);
-          await Firestore.instance.collection("profiles").document(uid).updateData({"eventList":eventList});
-          await Firestore.instance.collection("profiles").document(uid).updateData({"hourLIst":hourList});
+          print(eventList.toString());
+          print(hourList.toString());
+
+          print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
+
+          await Firestore.instance.collection("profiles").document(userId).updateData({"eventLog":eventList});
+          await Firestore.instance.collection("profiles").document(userId).updateData({"hourLog":hourList});
         }
       }
     }
@@ -88,18 +116,42 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
  //     print('ADRESSADRESSASDEAASDASDASD ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare} ADRESSADRESSASDEAASDASDASD');
    //   return first;
     }
+
     getUserLocation();
     void removeUserFromEvent(String id)
     {
       String docId=null;
+      List subList = new List();
       for(int x=0;x<documents2.documents.length;x++)
         {
           if(documents2.documents[x].data["Location"]==widget.location)
-            docId=documents2.documents[x].documentID;
+          {
+            docId = documents2.documents[x].documentID;
+            subList = documents2.documents[x].data["submissionList"];
+            print(subList.toString());
+          }
         }
-      if(docId!=null) {
+      if(docId!=null)
+      {
+        print('hi');
+        for(int x=0;x<subList.length;x++)
+          {
+            print('ss');
+            String line = subList[x];
+
+            print(line.contains(id));
+            print('hddi');
+            if(line.contains(id))
+              {
+                subList.removeAt(x);
+                print(subList.toString());
+                break;
+              }
+          }
+
         widget.userList.remove(id);
-        Firestore.instance.collection('events').document(docId).updateData({'userList': widget.userList});
+        Firestore.instance.collection('events').document(docId).updateData({'userList': widget.userList, 'submissionList': subList});
+
       }
 
     }
@@ -177,7 +229,7 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
                           child: Image
                             (
                             image: NetworkImage(
-                                'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+                                submissionPic),
                           ),
                         ),
                       ),
@@ -213,22 +265,41 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
         String username;
         String profilePic;
         String userId;
-        for(int xx=0;xx<documents.documents.length;xx++)
-          {
-            if(documents.documents[xx].documentID==widget.userList[x])
-            {
-              username = documents.documents[xx].data["username"];
-              profilePic = documents.documents[xx].data["pic"];
+        String subPic;
+        if(documents.documents!=null) {
+          for (int xx = 0; xx < documents.documents.length; xx++) {
+            if (documents.documents[xx].documentID == widget.userList[x]) {
               userId = documents.documents[xx].documentID;
+              username = documents.documents[xx].data["username"];
+              StorageReference ref = FirebaseStorage.instance.ref().child(
+                  "images/$userId");
+              imageGetProfile(ref);
+              profilePic = _url2;
 
+
+              List subList = new List();
+              for (int x = 0; x < documents2.documents.length; x++) {
+                if (documents2.documents[x].data["Location"] ==
+                    widget.location) {
+                  subList = documents2.documents[x].data["submissionList"];
+                }
+              }
+              for (int x = 0; x < subList.length; x++) {
+                String line = subList[x];
+                if (line.contains(userId)) {
+                  StorageReference ref = FirebaseStorage.instance.ref().child(
+                      "submissions/$line");
+                  imageGet(ref);
+                  subPic = _url;
+                  break;
+                }
+              }
             }
-
-
           }
-        if(profilePic!=null) {
-          print(profilePic);
-          print(userId);
-          Widget w = volunteerRow(username, profilePic, "submittedPic", userId);
+        }
+        if(profilePic!=null && _url!=null) {
+
+          Widget w = volunteerRow(username, profilePic, subPic, userId);
           ll.add(w);
         }
       }
