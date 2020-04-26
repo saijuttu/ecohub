@@ -11,6 +11,7 @@ import 'package:ecohub_app/dashboard.dart';
 import 'package:ecohub_app/eventView.dart';
 import 'package:ecohub_app/submit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecohub_app/maps.dart';
 
 void main() => runApp(MyApp());
 
@@ -78,22 +79,23 @@ class MyAppState extends State<MyApp>{
   List <dynamic> userList = new List<dynamic>();
   List data = [];
 
+
   void changePage(PageType newPage){
     setState(() {
       currentPage = newPage;
     });
   }
 
-  void changePageWithData(PageType newPage, List newData){
-    setState((){
+  void changePageWithData(PageType newPage, List data){
+    setState(() {
       currentPage = newPage;
-      data = newData;
+      this.data = data;
+
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     Widget home = new Login(auth: Auth(), myapp: this, title: "LOGIN", );
     switch(this.currentPage){
       case PageType.LOGIN: {
@@ -141,7 +143,13 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.ORGANIZE:{
-        home = Organize(userId: userId, myapp:this);
+        if(data.length>0){
+          print("THIS IS ADDRESS ${data[0].address}");
+          home = Organize(userId: userId, myapp: this, eventData: data[0],);
+        }else {
+          print("data is emptyy");
+          home = Organize(userId: userId, myapp: this,);
+        }
       }
       break;
       case PageType.MAPS:{
@@ -160,10 +168,11 @@ class MyAppState extends State<MyApp>{
             location: data[6],
             userList: data[7],
             myapp:this);
+
       }
       break;
       case PageType.SUBMIT:{
-        home = Submit(userId: userId, myapp:this);
+        home = Submit(userId: userId, eventId: data[0], myapp:this);
       }
       break;
       case PageType.EVENTVIEWORG:{

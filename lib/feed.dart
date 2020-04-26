@@ -18,7 +18,7 @@ class FeedState extends State<Feed> {
   QuerySnapshot documents;
 
   void wait() async {
-    QuerySnapshot docs = await Firestore.instance.collection("Locations").getDocuments();
+    QuerySnapshot docs = await Firestore.instance.collection("events").getDocuments();
     setState(() {
       this.documents = docs;
     });
@@ -28,6 +28,9 @@ class FeedState extends State<Feed> {
   Widget BlogList(){
   wait();
 
+  if(documents==null){
+    return Center(child: Text("Loading", style: TextStyle(color:Colors.white),));
+  }
     return Container(
       child: Column(
         children: <Widget>[
@@ -38,15 +41,18 @@ class FeedState extends State<Feed> {
                 itemCount: documents.documents.length,
                 shrinkWrap: true,
                 itemBuilder:(context,index){
+                  print(documents.documents[index].data['imageUrl']);
                   return  BlogsTile(
                       myapp: widget.myapp,
                       title: documents.documents[index].data["Event Name"],
-                      imgUrl: documents.documents[index].data['imageURL'],
+                      imgUrl: documents.documents[index].data['imageUrl'],
                       description: documents.documents[index].data["Description"],
                       date: "date",
                       hours: "${documents.documents[index].data["Hours"]} hours",
                       organizer: "organizer",
-                      location: documents.documents[index].data["Location"]);
+                      location: documents.documents[index].data["Location"],
+                    eventId: documents.documents[index].documentID,
+                  );
                 }
             ),
           )
@@ -68,7 +74,7 @@ class FeedState extends State<Feed> {
 
 class BlogsTile extends StatelessWidget {
 
-  String imgUrl, title, description, date, hours, organizer, location;
+  String imgUrl, title, description, date, hours, organizer, location, eventId;
   MyAppState myapp;
   BlogsTile({
     @required this.imgUrl,
@@ -79,11 +85,12 @@ class BlogsTile extends StatelessWidget {
     @required this.organizer,
     @required this.location,
     @required this.myapp,
+    @required this.eventId,
   });
 
   openTile(){
     print(title);
-    List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location];
+    List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location,this.eventId];
     myapp.changePageWithData(PageType.EVENTVIEW,data);
   }
 
