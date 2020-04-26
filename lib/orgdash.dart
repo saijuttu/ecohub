@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ecohub_app/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'loading.dart';
 import 'main.dart';
 class OrgDash extends StatefulWidget {
   final String userId;
@@ -46,7 +47,7 @@ class OrgDashState extends State<OrgDash> {
   Widget BlogList(){
     wait();
     if(documents==null){
-      return Center(child: Text("Loading", style: TextStyle(color:Colors.white),));
+      return new Loading();
     }
     return Stack(
         children: <Widget>[
@@ -155,8 +156,12 @@ class BlogsTile extends StatelessWidget {
 
   openTile(){
     print(title);
+    myapp.setLoading(true);
     List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location, this.userList, this.eventId];
     myapp.changePageWithData(PageType.EVENTVIEWORG,data);
+    if(myapp.currentPage == PageType.EVENTVIEWORG){
+      myapp.setLoading(false);
+    }
   }
 
   @override
