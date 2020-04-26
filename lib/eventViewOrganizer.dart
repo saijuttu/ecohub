@@ -59,6 +59,21 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
   }
 
   String _url = null;
+  String _url2 = null;
+  void imageGet(StorageReference ref) async
+  {//call this async method from whereever you need
+    String url = (await ref.getDownloadURL()).toString();
+    setState(() {
+      _url = url;
+    });
+  }
+  void imageGetProfile(StorageReference ref) async
+  {//call this async method from whereever you need
+    String url = (await ref.getDownloadURL()).toString();
+    setState(() {
+      _url2 = url;
+    });
+  }
   @override
   Widget build(BuildContext context)
   {
@@ -101,13 +116,7 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
  //     print('ADRESSADRESSASDEAASDASDASD ${first.locality}, ${first.adminArea},${first.subLocality}, ${first.subAdminArea},${first.addressLine}, ${first.featureName},${first.thoroughfare}, ${first.subThoroughfare} ADRESSADRESSASDEAASDASDASD');
    //   return first;
     }
-    void imageGet(StorageReference ref) async
-    {//call this async method from whereever you need
-      String url = (await ref.getDownloadURL()).toString();
-      setState(() {
-        _url = url;
-      });
-    }
+
     getUserLocation();
     void removeUserFromEvent(String id)
     {
@@ -257,37 +266,37 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
         String profilePic;
         String userId;
         String subPic;
-        for(int xx=0;xx<documents.documents.length;xx++)
-          {
-            if(documents.documents[xx].documentID==widget.userList[x])
-            {
-              username = documents.documents[xx].data["username"];
-              profilePic = documents.documents[xx].data["pic"];
+        if(documents.documents!=null) {
+          for (int xx = 0; xx < documents.documents.length; xx++) {
+            if (documents.documents[xx].documentID == widget.userList[x]) {
               userId = documents.documents[xx].documentID;
+              username = documents.documents[xx].data["username"];
+              StorageReference ref = FirebaseStorage.instance.ref().child(
+                  "images/$userId");
+              imageGetProfile(ref);
+              profilePic = _url2;
+
 
               List subList = new List();
-              for(int x=0;x<documents2.documents.length;x++)
-              {
-                if(documents2.documents[x].data["Location"]==widget.location)
-                {
+              for (int x = 0; x < documents2.documents.length; x++) {
+                if (documents2.documents[x].data["Location"] ==
+                    widget.location) {
                   subList = documents2.documents[x].data["submissionList"];
                 }
               }
-              for(int x=0;x<subList.length;x++)
-              {
+              for (int x = 0; x < subList.length; x++) {
                 String line = subList[x];
-                if(line.contains(userId))
-                {
-                  StorageReference ref = FirebaseStorage.instance.ref().child("submissions/$line");
+                if (line.contains(userId)) {
+                  StorageReference ref = FirebaseStorage.instance.ref().child(
+                      "submissions/$line");
                   imageGet(ref);
                   subPic = _url;
                   break;
                 }
               }
             }
-
-
           }
+        }
         if(profilePic!=null && _url!=null) {
 
           Widget w = volunteerRow(username, profilePic, subPic, userId);
