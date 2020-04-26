@@ -22,7 +22,7 @@ class OrgDash extends StatefulWidget {
   }
 
   void _logout(){
-    auth.signOut();
+    Auth().signOut();
     this.myapp.changePage(PageType.LOGIN);
     this.myapp.setState((){
       myapp.userId = "";

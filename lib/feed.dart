@@ -44,13 +44,13 @@ class FeedState extends State<Feed> {
                   //print(documents.documents[index].data['imageUrl']);
                   return  BlogsTile(
                       myapp: widget.myapp,
-                      title: documents.documents[index].data["Event Name"],
+                      title: "Event",
                       imgUrl: documents.documents[index].data['imageUrl'],
-                      description: documents.documents[index].data["Description"],
+                      description: documents.documents[index].data["description"],
                       date: "date",
-                      hours: "${documents.documents[index].data["Hours"]}",
-                      organizer: documents.documents[index].data["Organizer ID"],
-                      location: documents.documents[index].data["Location"],
+                      hours: "${documents.documents[index].data["hours"]}",
+                      organizer: documents.documents[index].data["organizerID"],
+                      location: documents.documents[index].data["address"],
                       eventId: documents.documents[index].documentID,
                   );
                 }
