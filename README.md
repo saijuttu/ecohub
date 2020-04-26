@@ -26,7 +26,7 @@ friends.
 A separate account is given to organizers which allows for the creation of events
 and accepting the volunteer works of different users.
 
-<img src="/images/Map.png" width="200"> <img src="/images/Feed.png" width="200"> <img src="/images/acceptdeny.png" width="200">
+<img src="/images/Map.png" width="200"> <img src="/images/Feed.png" width="200"> <img src="/images/acceptdenygood.png" width="200">
 
 ## Technologies Utilized
 

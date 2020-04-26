@@ -278,7 +278,10 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
 
 
   }
-
+  Widget box()
+  {
+    return SizedBox(height: 10);
+  }
   Widget volunteerList()
   {
     List<Widget> ll = [];
@@ -335,8 +338,10 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
 //        print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
         Widget w = volunteerRow(username, profilePic, subPic, uId);
         ll.add(w);
+        ll.add(box());
       }
     }
+
 
 
 
