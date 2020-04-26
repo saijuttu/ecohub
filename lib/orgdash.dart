@@ -204,7 +204,7 @@ class BlogsTile extends StatelessWidget {
                       SizedBox(
                         height: 4,
                       ),
-                      Text(hours,
+                      Text("$hours Hours",
                           style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400)
                       ),
                       SizedBox(
