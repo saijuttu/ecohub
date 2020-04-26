@@ -321,7 +321,6 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
         Loading();
       }
       if(profilePic!=null && _url!=null&&subPic!=null) {
-
         Widget w = volunteerRow(username, profilePic, subPic, uId);
         ll.add(w);
       }else{
