@@ -125,7 +125,7 @@ class OrgDashState extends State<OrgDash> {
             ),
             Text(
               "hub",
-              style: TextStyle(fontSize: 27),
+              style: TextStyle(fontSize: 27, color: Colors.white),
             )
           ]
         )

@@ -26,6 +26,7 @@ class Profile extends StatelessWidget {
     TextEditingController passwordController = new TextEditingController();
 
     return Scaffold(
+      backgroundColor: Colors.black87,
       body: Container(
           child: ListView(
             children: <Widget>[
@@ -57,7 +58,7 @@ class Profile extends StatelessWidget {
                   'Email',
                   style: TextStyle(
                       fontSize: 20,
-                      color: Color.fromRGBO(192, 192, 192, 1)
+                      color: Color.fromRGBO(42, 222, 42, 1)
                   ),
                 ),
               ),
@@ -66,6 +67,7 @@ class Profile extends StatelessWidget {
                   email,
                   style: TextStyle(
                     fontSize: 20,
+                      color: Color.fromRGBO(255, 255, 255, 1)// for the smaller fonts
                   ),
                 ),
               ),
@@ -75,7 +77,7 @@ class Profile extends StatelessWidget {
                   'Username',
                   style: TextStyle(
                       fontSize: 20,
-                      color: Color.fromRGBO(192, 192, 192, 1)
+                      color: Color.fromRGBO(42, 222, 42, 1)
                   ),
                 ),
               ),
@@ -84,6 +86,7 @@ class Profile extends StatelessWidget {
                   username,
                   style: TextStyle(
                     fontSize: 20,
+                      color: Color.fromRGBO(255, 255, 255, 1)// for the smaller fonts
                   ),
                 ),
               ),
@@ -94,6 +97,7 @@ class Profile extends StatelessWidget {
                     '$score',
                     style: TextStyle(
                       fontSize: 40,
+                        color: Color.fromRGBO(255, 255, 255, 1)
                     ),
                   ),
                 ),
@@ -105,7 +109,7 @@ class Profile extends StatelessWidget {
                     'Total Hours',
                     style: TextStyle(
                         fontSize: 20,
-                        color: Color.fromRGBO(192, 192, 192, 1)
+                        color: Color.fromRGBO(42, 222, 42, 1)
                     ),
                   ),
                 ),

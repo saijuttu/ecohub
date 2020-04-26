@@ -27,7 +27,7 @@ class Dashboard extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            title: Text('ecohub'),
+            backgroundColor: Color(0xFF000000),
             bottom: TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.beach_access)),
@@ -35,6 +35,22 @@ class Dashboard extends StatelessWidget {
 
               ],
             ),
+              title: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "eco",
+                      style: TextStyle(fontSize: 27,color: Colors.green),
+                    ),
+                    Text(
+                      "hub",
+                      style: TextStyle(fontSize: 27),
+                    )
+                  ]
+              )
+             // or if you want black put Color(0xFF000000)
+
+
           ),
           body: TabBarView(
             children: <Widget>[

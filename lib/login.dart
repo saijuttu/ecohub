@@ -42,19 +42,16 @@ class _LoginState extends State<Login> {
 
                   children: <Widget>
                   [
-
                     Padding(
                       padding: const EdgeInsets.only(top: 100.0),
-                      child: ClipRRect(
-
-                        child:  Image.network(
-                          'https://www.graphicsprings.com/filestorage/stencils/dfaefae4af3fadbeee8f4adc41a620e0.png?width=500&height=500',
+                      child: Image(
+                          image: new AssetImage('assets/logo.png'),
                           width: MediaQuery.of(context).size.width/3,
                           height: MediaQuery.of(context).size.height/5,
                           fit: BoxFit.contain,
 
 
-                        ),
+
 
                       ),
                     ),
