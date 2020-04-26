@@ -66,6 +66,7 @@ class _RegisterState extends State<Register> {
             tooltip: 'Pick Image',
             child: Icon(Icons.add_a_photo),
           );
+
         }
       },
     );
@@ -79,7 +80,7 @@ class _RegisterState extends State<Register> {
 
     return Scaffold
       (
-      backgroundColor: Color.fromRGBO(44, 47, 51, 1),
+      backgroundColor: Color.fromRGBO(46,139,87, 1),
       body: Padding
         (
         padding: EdgeInsets.symmetric(horizontal: 50.0),
@@ -140,6 +141,7 @@ class _RegisterState extends State<Register> {
               RaisedButton(color: Color.fromRGBO(42, 222, 42, 1),
                   onPressed: () async {
                     String userId = await widget.auth.signUp(emailController.text.trim(), passwordController.text.trim());
+
                     if(userId==""){
                       print("Failure");
                     }else{
@@ -150,10 +152,26 @@ class _RegisterState extends State<Register> {
                       Uploader uploader = Uploader(userId: userId, file: await _image);
                       uploader.startupUpload();
                     }
+
                   },
+
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
                   child: const Text('Register', style: TextStyle(fontSize: 20, color: Colors.white))
               ),
+
               SizedBox(height: 20),
+
+              RaisedButton(color: Color.fromRGBO(42, 222, 42, 1),
+                  onPressed: () async {
+                    //widget._toRegister();
+                    widget.myapp.changePage(PageType.LOGIN);
+                  },
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  child: const Text('BACK', style: TextStyle(fontSize: 20, color: Colors.white))
+              ),
+
 
             ],
           ),
@@ -172,7 +190,9 @@ class Uploader extends StatefulWidget{
   final String userId;
   final File file;
 
+
   Uploader({Key key, this.userId, this.file}) : super(key: key);
+  //final MyAppState myapp;
 
   final FirebaseStorage storage = FirebaseStorage(storageBucket: "gs://ecohubfirebase.appspot.com");
 
@@ -197,5 +217,9 @@ class UploaderState extends State<Uploader>{
   Widget build(BuildContext context){
 
   }
+
 }
+
+
+
 

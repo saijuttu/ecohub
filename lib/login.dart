@@ -11,6 +11,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     TextEditingController emailController = new TextEditingController();
     TextEditingController passwordController = new TextEditingController();
+
     bool invalid()
     {
       if(emessage!="")
@@ -20,10 +21,12 @@ class _LoginState extends State<Login> {
 
     return Scaffold
       (
-      backgroundColor: Color.fromRGBO(44, 47, 51, 1),
+
+      backgroundColor: Color.fromRGBO(46,139,87, 1),
       body: Padding
         (
         padding: EdgeInsets.symmetric(horizontal: 50.0),
+
     child: SingleChildScrollView(
         child: Column
           (
@@ -31,10 +34,17 @@ class _LoginState extends State<Login> {
 
           children: <Widget>
           [
-            SizedBox(height: 100),
+            SizedBox(height: 40),
+            new Image(
+              image: new AssetImage("assets/apple.png"),
+              width: 100,
+              height:  100,
+            ),
+            SizedBox(height: 10),
             Text('EcoHub',style: TextStyle(fontSize: 50,color: Color.fromRGBO(42, 222, 42, 1)),),
             Text('____________________________',style: TextStyle(color: Color.fromRGBO(42, 222, 42, 1)),),
             SizedBox(height: 100),
+
 
             invalid()?
             TextField(textAlign: TextAlign.center, controller: emailController, style: new TextStyle(fontSize: 25,color: Color.fromRGBO(42, 222, 42, 1)),
@@ -98,12 +108,16 @@ class _LoginState extends State<Login> {
                     emessage = "Invalid username or password";
                   });
                 },
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
                 child: const Text('Login', style: TextStyle(fontSize: 20, color: Colors.white))
             ),
             RaisedButton(color: Color.fromRGBO(42, 222, 42, 1),
                 onPressed: (){
                     widget._toRegister();
                 },
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
                 child: const Text('Register', style: TextStyle(fontSize: 20, color: Colors.white))
             ),
             SizedBox(height: 20),
@@ -115,6 +129,8 @@ class _LoginState extends State<Login> {
     );
   }
 }
+
+
 
 class Login extends StatefulWidget {
   @override
@@ -145,6 +161,7 @@ class Login extends StatefulWidget {
       });
       this.myapp.changePage(PageType.DASHBOARD);
     }else{
+
       print("Failed to login");
     }
   }
