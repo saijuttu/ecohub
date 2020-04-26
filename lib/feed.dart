@@ -41,14 +41,14 @@ class FeedState extends State<Feed> {
                 itemCount: documents.documents.length,
                 shrinkWrap: true,
                 itemBuilder:(context,index){
-                  print(documents.documents[index].data['imageUrl']);
+                  //print(documents.documents[index].data['imageUrl']);
                   return  BlogsTile(
                       myapp: widget.myapp,
                       title: documents.documents[index].data["Event Name"],
                       imgUrl: documents.documents[index].data['imageUrl'],
                       description: documents.documents[index].data["Description"],
                       date: "date",
-                      hours: "${documents.documents[index].data["Hours"]} hours",
+                      hours: "${documents.documents[index].data["Hours"]}",
                       organizer: documents.documents[index].data["Organizer ID"],
                       location: documents.documents[index].data["Location"],
                       eventId: documents.documents[index].documentID,
@@ -89,7 +89,7 @@ class BlogsTile extends StatelessWidget {
   });
 
   openTile(){
-    print(title);
+    //print(title);
 
 
     List data = [this.imgUrl, this.title, this.description, this.date, this.hours, this.organizer,this.location,this.eventId];
@@ -136,7 +136,7 @@ class BlogsTile extends StatelessWidget {
                   SizedBox(
                     height: 4,
                   ),
-                  Text(hours,
+                  Text('$hours hours',
                       style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400)
                   ),
                   SizedBox(

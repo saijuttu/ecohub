@@ -38,18 +38,18 @@ enum PageType{
 
 Map<int, Color> color =
 {
-  50:Color.fromRGBO(136,14,79, .1),
-  100:Color.fromRGBO(136,14,79, .2),
-  200:Color.fromRGBO(136,14,79, .3),
-  300:Color.fromRGBO(136,14,79, .4),
-  400:Color.fromRGBO(136,14,79, .5),
-  500:Color.fromRGBO(136,14,79, .6),
-  600:Color.fromRGBO(136,14,79, .7),
-  700:Color.fromRGBO(136,14,79, .8),
-  800:Color.fromRGBO(136,14,79, .9),
-  900:Color.fromRGBO(136,14,79, 1),
+  50:Color.fromRGBO(132, 196, 67, .1),
+  100:Color.fromRGBO(132, 196, 67, .2),
+  200:Color.fromRGBO(132, 196, 67, .3),
+  300:Color.fromRGBO(132, 196, 67, .4),
+  400:Color.fromRGBO(132, 196, 67, .5),
+  500:Color.fromRGBO(132, 196, 67, .6),
+  600:Color.fromRGBO(132, 196, 67, .7),
+  700:Color.fromRGBO(132, 196, 67, .8),
+  800:Color.fromRGBO(132, 196, 67, .9),
+  900:Color.fromRGBO(132, 196, 67, 1),
 };
-MaterialColor colorCustom = MaterialColor(0xFF880E4F, color);
+MaterialColor colorCustom = MaterialColor(0xff84c443, color);
 class MyApp extends StatefulWidget {
   const MyApp({
     Key key,
@@ -166,7 +166,7 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.EVENTVIEW:{
-
+        print(data);
         home = EventView(
             userId: userId,
             imgUrl: data[0],
@@ -183,9 +183,17 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.SUBMIT:{
-
-
-        home = Submit(userId: userId, eventId: data[0], myapp:this);
+        home = Submit(
+            userId: userId,
+            imgUrl: data[0],
+            title: data[1],
+            description: data[2],
+            date: data[3],
+            hours: data[4],
+            organizer: data[5],
+            location: data[6],
+            eventId: data[7],
+            myapp:this);
       }
       break;
       case PageType.EVENTVIEWORG:{

@@ -115,7 +115,8 @@ class _SubmitState extends State<Submit> {
               child: const Icon(Icons.cancel),
               onPressed: (){
                 print("Cancel");
-                widget.myapp.changePage(PageType.EVENTVIEW);
+                List data = [widget.imgUrl, widget.title, widget.description, widget.date, widget.hours, widget.organizer,widget.location,widget.eventId];
+                widget.myapp.changePageWithData(PageType.EVENTVIEW,data);
               }
           ),
         ),
