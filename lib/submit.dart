@@ -59,17 +59,26 @@ class _SubmitState extends State<Submit> {
         submitList.add(submitId);
         await Firestore.instance.collection("events").document(uid).updateData({"userList":userList});
         await Firestore.instance.collection("events").document(uid).updateData({"submissionList":submitList});
-        print('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-        print(uid);
-        print('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB');
-        print(userList.toString());
-
-
       }
     }
-    print('CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC');
+  }
 
+  void addEventToUser() async{
+    QuerySnapshot allDocuments = await Firestore.instance.collection("profiles").getDocuments();
 
+    for(int i = 0; i< allDocuments.documents.length; i++){
+      print(allDocuments.documents[i].documentID);
+      if(allDocuments.documents[i].documentID == widget.userId)
+      {
+        String uid = widget.userId;
+        List<dynamic> eventList = allDocuments.documents[i].data["eventList"];
+        List<dynamic> hourList = allDocuments.documents[i].data["hourList"];
+        eventList.add(widget.eventId);
+        hourList.add(widget.hours);
+        await Firestore.instance.collection("profiles").document(uid).updateData({"eventList":eventList});
+        await Firestore.instance.collection("profiles").document(uid).updateData({"hourLIst":hourList});
+      }
+    }
   }
 
   Widget showImage() {
@@ -141,6 +150,7 @@ class _SubmitState extends State<Submit> {
                     Uploader task = Uploader(userId: widget.userId, file: file, eventId: widget.eventId,);
                     task.startupUpload();
                     addUserToEvent();
+                    addEventToUser();
                 }
                 widget.myapp.changePage(PageType.DASHBOARD);
               }
