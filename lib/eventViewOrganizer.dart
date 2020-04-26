@@ -1,12 +1,11 @@
 import 'package:ecohub_app/services/auth.dart';
 import 'package:ecohub_app/main.dart';
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-class EventView extends StatelessWidget {
-  const EventView({
+class EventViewOrganizer extends StatelessWidget {
+  const EventViewOrganizer({
     Key key,
     this.auth,
     @required this.myapp,
@@ -29,18 +28,106 @@ class EventView extends StatelessWidget {
    //   return first;
     }
     getUserLocation();
-//    _getLocation() async
-//    {
-//      Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-//      debugPrint('location: ${position.latitude}');
-//      final coordinates = new Coordinates(position.latitude, position.longitude);
-//      var addresses = await Geocoder.local.findAddressesFromCoordinates(coordinates);
-//      var first = addresses.first;
-//      print("${first.featureName} : ${first.addressLine}");
-//    }
+
+
+
+    Widget volunteerRow(String name, String p1, String p2)
+    {
+
+
+    return new Container(
+
+
+                  child: Row
+                    (mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>
+                    [
+                      Expanded
+                        (
+                        child: FittedBox
+                          (
+                          fit: BoxFit.scaleDown,
+                          child: FloatingActionButton
+                            (
+                              child: const Icon(Icons.cancel),
+                              backgroundColor: Colors.red,
+                              onPressed: () {}
+                          ),
+                        ),
+                      ),
+
+                      Expanded
+                        (
+                        child: FittedBox
+                          (
+                          fit: BoxFit.contain,
+                          // otherwise the logo will be tiny
+                          child: Image
+                            (
+                            image: NetworkImage(
+                                'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+                          ),
+                        ),
+                      ),
+                      Expanded
+                        (
+                        child: FittedBox
+                          (
+                          fit: BoxFit.contain,
+                          // otherwise the logo will be tiny
+                          child: Text("USERNAME"),
+                        ),
+                      ),
+
+                      Expanded
+                        (
+                        child: FittedBox
+                          (
+                          fit: BoxFit.contain,
+                          // otherwise the logo will be tiny
+                          child: Image
+                            (
+                            image: NetworkImage(
+                                'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+                          ),
+                        ),
+                      ),
+                      Expanded
+                        (
+                        child: FittedBox
+                          (
+                          fit: BoxFit.scaleDown,
+                          child: FloatingActionButton
+                            (
+                              child: const Icon(Icons.check),
+                              backgroundColor: Colors.green,
+                              onPressed: () {}
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
+
+
+    );
+
+
+
+
+    }
+    Widget volunteerList()
+    {
+      List<Widget> ll = new List<Widget>();
+      for(int x=0;x<3;x++)
+      {
+        Widget w = volunteerRow("name","name","name");
+        ll.add(w);
+      }
+      return new Column(children: ll);
+    }
+
     return Stack(
-
-
 
       children: <Widget>[
         Scaffold(
@@ -149,28 +236,39 @@ class EventView extends StatelessWidget {
                   ),
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
+
+                child: Text(
+                  'Volunteer List',
+                  style: TextStyle(
+                      fontSize: 20,
+
+                      color: Color.fromRGBO(192, 192, 192, 1)
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 60),
+
+                child: volunteerList(),
+              ),
+
+
+
             ],
           ),
-
         ),
 
         Align(
-          alignment: Alignment.bottomLeft,
+          alignment: Alignment.topLeft,
           child: FloatingActionButton(
               child: const Icon(Icons.cancel),
+              backgroundColor: Colors.red,
+
               onPressed: (){
                 print("Cancel");
                 //myapp.changePage(PageType.Feed)
-              }
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomRight,
-          child: FloatingActionButton(
-              child: const Icon(Icons.check),
-              onPressed: (){
-                print("Accepted");
-                //myapp.changePage(PageType.Submit, event_id)
               }
           ),
         ),
