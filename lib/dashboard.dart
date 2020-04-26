@@ -38,8 +38,8 @@ class Dashboard extends StatelessWidget {
           ),
           body: TabBarView(
             children: <Widget>[
-              new Profile(userId: this.userId, username: this.username, imageURL: this.imageURL, score: this.score,email: this.email),
-              new Feed()
+              new Profile(userId: this.userId, username: this.username, imageURL: this.imageURL, score: this.score,email: this.email, myapp: this.myapp),
+              new Feed(myapp: this.myapp)
             ],
           ),
         ),

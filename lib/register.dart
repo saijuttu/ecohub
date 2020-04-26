@@ -40,11 +40,19 @@ class _RegisterState extends State<Register> {
       builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
-          return Image.file(
+          return
+            Column(children: [
+              Image.file(
             snapshot.data,
             width: 100,
             height: 100,
-          );
+          ),
+        FloatingActionButton(
+        onPressed: getImage,
+        tooltip: 'Pick Image',
+        child: Icon(Icons.add_a_photo),
+        ),
+            ]);
         } else if (snapshot.error != null) {
           return   FloatingActionButton(
             onPressed: getImage,

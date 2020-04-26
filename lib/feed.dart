@@ -1,38 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:ecohub_app/main.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Feed extends StatefulWidget {
+  final MyAppState myapp;
+  const Feed({Key key,
+    @required this.myapp,
+  }
+      ): super(key: key);
 
   @override
-  _FeedState createState() => _FeedState();
+  FeedState createState() => FeedState();
 }
 
-class _FeedState extends State<Feed> {
-  int itemCount = 4;
+class FeedState extends State<Feed> {
+
+  QuerySnapshot documents;
+
+  void wait() async {
+    QuerySnapshot docs = await Firestore.instance.collection("Locations").getDocuments();
+    setState(() {
+      this.documents = docs;
+    });
+  }
+
 
   Widget BlogList(){
+  wait();
+
     return Container(
       child: Column(
         children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal:16, vertical: 16),
-              itemCount: itemCount,
-              shrinkWrap: true,
-              itemBuilder:(context,index){
-              return BlogsTile(
-                  imgUrl: "https://drive.google.com/open?id=1TQrjw3l8cdWlL6GXzpU8e58aNlxHG2E8",
-                  title: "title",
-                  description: "description",
-                  date: "date",
-                  hours: "hours",
-                  organizer: "organizer",
-                  location: "location"
 
-              );
-            }
-          ),
+          Expanded(
+            child:ListView.builder(
+      padding: EdgeInsets.symmetric(horizontal:16, vertical: 16),
+        itemCount: documents.documents.length,
+        shrinkWrap: true,
+        itemBuilder:(context,index){
+          return  BlogsTile(
+              myapp: widget.myapp,
+              title: documents.documents[index].data["Event Name"],
+              imgUrl: documents.documents[index].data['imageURL'],
+              description: documents.documents[index].data["Description"],
+              date: "date",
+              hours: "${documents.documents[index].data["Hours"]} hours",
+              organizer: "organizer",
+              location: documents.documents[index].data["Location"]);
+        }
+    ),
         )
       ],
+
       )
     );
 
@@ -52,7 +71,7 @@ class _FeedState extends State<Feed> {
 class BlogsTile extends StatelessWidget {
 
   String imgUrl, title, description, date, hours, organizer, location;
-
+  MyAppState myapp;
   BlogsTile({
     @required this.imgUrl,
     @required this.title,
@@ -60,15 +79,21 @@ class BlogsTile extends StatelessWidget {
     @required this.date,
     @required this.hours,
     @required this.organizer,
-    @required this.location});
+    @required this.location,
+    @required this.myapp,
+  });
 
+  openTile(){
+    print(title);
+    myapp.changePage(PageType.EVENTVIEW);
+  }
 
   @override
   Widget build(BuildContext context) {
 
     return GestureDetector(
         onTap: (){
-          print(title);
+          openTile();
         },
       child: Container(
       margin: EdgeInsets.only(bottom: 16),
@@ -77,7 +102,7 @@ class BlogsTile extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(6),
           child: Image.network(
-              'https://cdn.pixabay.com/photo/2016/10/22/17/46/scotland-1761292_960_720.jpg',
+              imgUrl,
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.cover)
         ),

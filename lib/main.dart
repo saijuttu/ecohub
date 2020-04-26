@@ -1,9 +1,5 @@
 import 'package:ecohub_app/maps.dart';
 import 'package:flutter/material.dart';
-import './profile.dart' as profile;
-import './feed.dart' as feed;
-import './orgdash.dart' as orgdash;
-import 'feed.dart';
 import 'package:ecohub_app/services/auth.dart';
 import 'package:ecohub_app/register.dart';
 import 'package:ecohub_app/login.dart';
@@ -11,9 +7,10 @@ import 'package:ecohub_app/profile.dart';
 import 'package:ecohub_app/orgdash.dart';
 import 'package:ecohub_app/organize.dart';
 import 'package:ecohub_app/dashboard.dart';
-import 'package:flutter/material.dart';
+import 'package:ecohub_app/eventView.dart';
+import 'package:ecohub_app/submit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:ecohub_app/maps.dart';
 
 void main() => runApp(MyApp());
 
@@ -31,6 +28,8 @@ enum PageType{
   ORGANIZE,
   ORGDASH,
   MAPS,
+  EVENTVIEW,
+  SUBMIT,
 }
 
 Map<int, Color> color =
@@ -75,10 +74,19 @@ class MyAppState extends State<MyApp>{
   String imageUrl = "https://firebasestorage.googleapis.com/v0/b/ecohubfirebase.appspot.com/o/IMG_1734.JPG?alt=media&token=84aa8a1a-cc71-4bee-a798-a8dfdd57bfcb";
   int score = 0;
   String email = "email@email.com";
+  LocationData eventData;
+  List data =[];
 
   void changePage(PageType newPage){
     setState(() {
       currentPage = newPage;
+    });
+  }
+
+  void changePageWithData(PageType newPage, List data){
+    setState(() {
+      currentPage = newPage;
+      this.data = data;
     });
   }
 
@@ -131,13 +139,26 @@ class MyAppState extends State<MyApp>{
       }
       break;
       case PageType.ORGANIZE:{
-        home = Organize(userId: userId, myapp:this);
+        if(data.length>0){
+          print("THIS IS ADDRESS ${data[0].address}");
+          home = Organize(userId: userId, myapp: this, eventData: data[0],);
+        }else {
+          print("data is emptyy");
+          home = Organize(userId: userId, myapp: this,);
+        }
       }
       break;
       case PageType.MAPS:{
         home = Maps(userId: userId, myapp:this);
       }
       break;
+      case PageType.EVENTVIEW:{
+        home = EventView(userId: userId, myapp:this);
+      }
+      break;
+      case PageType.SUBMIT:{
+        home = Submit(userId: userId, myapp:this);
+      }
     }
     return MaterialApp(
       title: 'Flutter Demo',
@@ -148,5 +169,4 @@ class MyAppState extends State<MyApp>{
     );
   }
 }
-
 
