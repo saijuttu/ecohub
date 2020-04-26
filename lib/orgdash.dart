@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'loading.dart';
 import 'main.dart';
+import 'maps.dart';
+
 class OrgDash extends StatefulWidget {
   final String userId;
   final MyAppState myapp;
@@ -16,7 +18,7 @@ class OrgDash extends StatefulWidget {
   }) : super(key: key);
 
   void _submit(){
-    this.myapp.changePage(PageType.ORGANIZE);
+    this.myapp.changePageWithData(PageType.ORGANIZE, [LocationData("", "", "")]);
   }
 
   void _logout(){

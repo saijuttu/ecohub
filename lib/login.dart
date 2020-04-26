@@ -6,11 +6,21 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class _LoginState extends State<Login> {
   String emessage = "";
+  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController passwordController = new TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = new TextEditingController();
-    TextEditingController passwordController = new TextEditingController();
+
 
     bool invalid()
     {
