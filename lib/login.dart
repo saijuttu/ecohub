@@ -32,7 +32,15 @@ class _LoginState extends State<Login> {
 
                   children: <Widget>
                   [
+
                     SizedBox(height: 100),
+
+//                    new Image(
+//                      image: new AssetImage("assets/apple.png"),
+//                      width: 100,
+//                      height:  100,
+//                    ),
+
 
                     SizedBox(height: 10),
                     //Text('EcoHub',style: TextStyle(fontSize: 50,color: Color.fromRGBO(42, 222, 42, 1)),),

@@ -482,7 +482,13 @@ class EventViewOrganizerState extends State<EventViewOrganizer>
 
                 onPressed: (){
                   print("Cancel");
-                  widget.myapp.changePage(PageType.DASHBOARD);
+                  widget.myapp.setLoading(true);
+                  widget.myapp.changePage(PageType.ORGDASH);
+                  if(widget.myapp.currentPage == PageType.ORGDASH){
+                    widget.myapp.setLoading(false);
+                  }
+
+
                 }
             ),
           ),
